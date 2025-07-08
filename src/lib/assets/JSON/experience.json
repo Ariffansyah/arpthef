@@ -1,0 +1,20 @@
+[
+	{
+		"company": "I30 Competition - Silver Medal",
+		"title": "Participant - Firmware development",
+		"date": "April, 2025 – June, 2025",
+		"description": "Programmed the Wio Terminal with Arduino sketches to continuously monitor vibration and motion data for early earthquake detection."
+	},
+	{
+		"company": "MIPI Informatika Logical Programming Competition 2023 - Runner-up 1",
+		"title": "Participant",
+		"date": "August, 2023",
+		"description": "Competed in a city/district level logical programming competition, solving a series of algorithmic and logic-based challenges under time constraints. Demonstrated strong problem-solving skills and teamwork, achieving Runner-up 1 among all participants."
+	},
+	{
+		"company": "OSN-P Papua Province - Informatics/Computer - 8th Place",
+		"title": "Participant",
+		"date": "June, 2023",
+		"description": "Competed in a province-level informatics competition, solving programming and computational logic problems. Despite facing limitations with the available devices, I was able to finish all required tasks and achieved 8th place in the Papua Province round, highlighting strong skills in algorithms and problem-solving."
+	}
+]

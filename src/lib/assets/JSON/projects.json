@@ -1,0 +1,66 @@
+[
+	{
+		"projectName": "Personal Website",
+		"technologies": [
+			{
+				"name": "Svelte",
+				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg"
+			},
+			{
+				"name": "Tailwind CSS",
+				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg"
+			}
+		],
+		"projectDescription": "This is my personal website where I showcase my projects and skills.",
+		"projectImage": "/assets/arpthef.png",
+		"projectLink": "/"
+	},
+	{
+		"projectName": "Orb-OS",
+		"technologies": [
+			{
+				"name": "Docker",
+				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"
+			},
+			{
+				"name": "Shell",
+				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"
+			}
+		],
+		"projectDescription": "Orb OS is a Linux-based operating system designed with developers in mind.",
+		"projectImage": "/assets/Orb.png",
+		"projectLink": "/projects/orb-os"
+	},
+	{
+		"projectName": "Lucy - Discord Bot",
+		"technologies": [
+			{
+				"name": "Go",
+				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
+			},
+			{
+				"name": "sqlite",
+				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg"
+			}
+		],
+		"projectDescription": "Lucy is a Discord bot designed to enhance user experience with Join To Create feature.",
+		"projectImage": "/assets/SourceCode.png",
+		"projectLink": "/projects/lucy-discord-bot"
+	},
+	{
+		"projectName": "Wonderful Papua",
+		"technologies": [
+			{
+				"name": "React",
+				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+			},
+			{
+				"name": "Bootstrap",
+				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg"
+			}
+		],
+		"projectDescription": "Orb OS is a Linux-based operating system designed with developers in mind.",
+		"projectImage": "/assets/Paradiseisland.png",
+		"projectLink": "/projects/wonderful-papua"
+	}
+]
