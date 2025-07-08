@@ -27,7 +27,7 @@
 								alt={project.projectName}
 								class="h-80 w-full rounded-lg object-cover opacity-80 shadow-lg"
 							/>
-							<a href={project.projectLink} target="_blank" rel="noopener noreferrer">
+							<a href={project.projectLink} rel="noopener noreferrer">
 								<div
 									class="absolute bottom-0 left-0 h-1/3 w-full rounded-b-lg bg-gradient-to-t from-black/100 via-black/70 to-transparent transition duration-300 hover:bg-gradient-to-t hover:from-black/80 hover:via-black/30 hover:to-transparent"
 								>

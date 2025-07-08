@@ -27,11 +27,8 @@
 			<div class="mt-5 flex flex-row items-center gap-2">
 				<img src="https://cdn.simpleicons.org/react/ffffff" alt="React" class="h-8 w-8" />
 				<img src="https://cdn.simpleicons.org/typescript/ffffff" alt="Typescript" class="h-8 w-8" />
-				<img
-					src="https://cdn.simpleicons.org/tailwindcss/ffffff"
-					alt="Tailwind CSS"
-					class="h-8 w-8"
-				/>
+				<img src="https://cdn.simpleicons.org/vite/ffffff" alt="Vite" class="h-8 w-8" />
+				<img src="https://cdn.simpleicons.org/bootstrap/ffffff" alt="Bootstrap" class="h-8 w-8" />
 			</div>
 		</div>
 		<div class="mt-4 flex flex-col items-start justify-center gap-2 text-gray-300">
