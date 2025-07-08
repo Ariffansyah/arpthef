@@ -4,11 +4,19 @@
 		"technologies": [
 			{
 				"name": "Svelte",
-				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg"
+				"icon": "https://cdn.simpleicons.org/svelte/ffffff"
+			},
+			{
+				"name": "TypeScript",
+				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
 			},
 			{
 				"name": "Tailwind CSS",
-				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg"
+				"icon": "https://cdn.simpleicons.org/tailwindcss/ffffff"
+			},
+			{
+				"name": "Vite",
+				"icon": "https://cdn.simpleicons.org/vite/ffffff"
 			}
 		],
 		"projectDescription": "This is my personal website where I showcase my projects and skills.",
@@ -20,11 +28,11 @@
 		"technologies": [
 			{
 				"name": "Docker",
-				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"
+				"icon": "https://cdn.simpleicons.org/docker/ffffff"
 			},
 			{
 				"name": "Shell",
-				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"
+				"icon": "https://cdn.simpleicons.org/gnubash/ffffff"
 			}
 		],
 		"projectDescription": "Orb OS is a Linux-based operating system designed with developers in mind.",
@@ -36,11 +44,15 @@
 		"technologies": [
 			{
 				"name": "Go",
-				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
+				"icon": "https://cdn.simpleicons.org/go/ffffff"
+			},
+			{
+				"name": "Discord.js",
+				"icon": "https://cdn.simpleicons.org/discord/ffffff"
 			},
 			{
 				"name": "sqlite",
-				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg"
+				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
 			}
 		],
 		"projectDescription": "Lucy is a Discord bot designed to enhance user experience with Join To Create feature.",
@@ -52,11 +64,19 @@
 		"technologies": [
 			{
 				"name": "React",
-				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+				"icon": "https://cdn.simpleicons.org/react/ffffff"
+			},
+			{
+				"name": "TypeScript",
+				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
+			},
+			{
+				"name": "Vite",
+				"icon": "https://cdn.simpleicons.org/vite/ffffff"
 			},
 			{
 				"name": "Bootstrap",
-				"icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg"
+				"icon": "https://cdn.simpleicons.org/bootstrap/ffffff"
 			}
 		],
 		"projectDescription": "Orb OS is a Linux-based operating system designed with developers in mind.",
