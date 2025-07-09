@@ -18,7 +18,7 @@
 			<a href="https://github.com/Ariffansyah/Lucy" target="_blank" rel="noopener noreferrer">
 				<button
 					type="button"
-					class="rounded-lg px-4 py-2 text-white shadow-lg transition duration-300 hover:bg-gray-300 hover:text-gray-800 hover:shadow-lg"
+					class="py-2 text-gray-400 transition duration-300 hover:text-white hover:underline"
 				>
 					View on GitHub
 				</button>

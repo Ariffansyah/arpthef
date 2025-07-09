@@ -3,6 +3,41 @@
 	import ExperienceData from '$lib/assets/JSON/experience.json';
 	import ProjectsData from '$lib/assets/JSON/projects.json';
 
+	function customAlert(message: string) {
+		const alertDiv = document.createElement('div');
+		alertDiv.className = `
+    fixed inset-0 flex items-center justify-center
+    bg-black bg-opacity-50 z-[2147483647]
+    pointer-events-auto
+  `.trim();
+
+		alertDiv.innerHTML = `
+    <div class="relative bg-darkgray rounded-lg shadow-lg p-6 max-w-sm w-full">
+      <h2 class="text-lg font-semibold mb-4">Alert</h2>
+      <p class="mb-4">${message}</p>
+      <button
+        id="alert-ok-button"
+        class="text-white py-2 rounded hover:underline"
+      >
+        OK
+      </button>
+    </div>
+  `;
+
+		document.body.appendChild(alertDiv);
+
+		const okButton = alertDiv.querySelector('#alert-ok-button');
+		okButton?.addEventListener('click', () => {
+			document.body.removeChild(alertDiv);
+		});
+
+		setTimeout(() => {
+			if (document.body.contains(alertDiv)) {
+				document.body.removeChild(alertDiv);
+			}
+		}, 5000);
+	}
+
 	const textColors = [
 		'text-cyan-400',
 		'text-pink-400',
@@ -43,6 +78,76 @@
 	const experience = ExperienceData;
 
 	const projects = ProjectsData;
+
+	function openTiktaktoe() {
+		tiktaktoeVisible = true;
+	}
+
+	function closeTiktaktoe() {
+		tiktaktoeVisible = false;
+	}
+
+	function resetTiktaktoe() {
+		board = Array(9).fill(null);
+	}
+
+	function handleTiktaktoeKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape') {
+			closeTiktaktoe();
+		}
+	}
+
+	let tiktaktoeVisible = false;
+	let board = Array(9).fill(null);
+	let currentPlayer = 'x';
+
+	function handleTiktaktoeClick(index: any) {
+		if (!board[index]) {
+			board[index] = currentPlayer;
+			const row = Math.floor(index / 3);
+			const col = index % 3;
+
+			const rowWin =
+				board[row * 3] === currentPlayer &&
+				board[row * 3 + 1] === currentPlayer &&
+				board[row * 3 + 2] === currentPlayer;
+
+			const colWin =
+				board[col] === currentPlayer &&
+				board[col + 3] === currentPlayer &&
+				board[col + 6] === currentPlayer;
+
+			const diag1Win =
+				index % 4 === 0 &&
+				board[0] === currentPlayer &&
+				board[4] === currentPlayer &&
+				board[8] === currentPlayer;
+
+			const diag2Win =
+				index % 2 === 0 &&
+				index !== 0 &&
+				index !== 8 &&
+				board[2] === currentPlayer &&
+				board[4] === currentPlayer &&
+				board[6] === currentPlayer;
+
+			const isDraw = board.every((cell) => cell !== null);
+
+			if (rowWin || colWin || diag1Win || diag2Win) {
+				customAlert(`${currentPlayer} wins!`);
+				resetTiktaktoe();
+				return;
+			}
+
+			if (isDraw) {
+				customAlert('Draw!');
+				resetTiktaktoe();
+				return;
+			}
+
+			currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+		}
+	}
 </script>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
@@ -61,26 +166,33 @@
 					aria-label="GitHub Profile"
 					target="_blank"
 					rel="noopener noreferrer"
+					class="text-gray-400 hover:text-white"
 				>
-					<i class="fa-brands fa-github fa-xl" style="color: #deddda;"></i>
+					<i class="fa-brands fa-github fa-xl"></i>
 				</a>
 				<a
 					href="https://www.linkedin.com/in/arpthef/"
 					aria-label="LinkedIn Profile"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="ml-4"
+					class="ml-4 text-gray-400 hover:text-white"
 				>
-					<i class="fa-brands fa-linkedin fa-xl" style="color: #deddda;"></i>
+					<i class="fa-brands fa-linkedin fa-xl"></i>
 				</a>
 			</div>
 		</div>
-		<div class="mt-4">
+		<div class="mt-4 flex flex-col items-start justify-center gap-2">
 			<p class="text-justify text-gray-300">
 				Hi, I'm an undergraduate collage student with a passion for technology and software
 				development. I enjoy building projects, exploring new tools, and connecting with others in
 				tech.
 			</p>
+			<button
+				class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
+				on:click={openTiktaktoe}
+			>
+				Click me
+			</button>
 		</div>
 	</div>
 	<div class="mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:w-1/3">
@@ -140,7 +252,7 @@
 						/>
 						<a href={project.projectLink} rel="noopener noreferrer">
 							<div
-								class="absolute bottom-0 left-0 h-1/3 w-full rounded-b-lg bg-gradient-to-t from-black/100 via-black/70 to-transparent transition duration-300 hover:bg-gradient-to-t hover:from-black/80 hover:via-black/30 hover:to-transparent"
+								class="absolute bottom-0 left-0 h-full w-full rounded-b-lg bg-gradient-to-t from-black/100 via-black/70 to-transparent transition duration-300 hover:bg-gradient-to-t hover:from-black/80 hover:via-black/30 hover:to-transparent"
 							>
 								<div class="absolute bottom-2 left-2 m-3 flex flex-col gap-2">
 									<h2 class="text-xl font-bold text-white">{project.projectName}</h2>
@@ -159,6 +271,59 @@
 		</div>
 	</div>
 </section>
+
+{#if tiktaktoeVisible}>
+	<div
+		role="dialog"
+		aria-modal="true"
+		tabindex="0"
+		class="bg-opacity-80 fixed inset-0 z-50 flex items-center justify-center bg-black"
+		on:keydown={handleTiktaktoeKeydown}
+	>
+		<div
+			class="
+			bg-darkgray relative flex h-[500px] w-[500px] flex-col items-center justify-center rounded-lg p-5 shadow-lg"
+		>
+			<button
+				class="absolute top-2 right-2 text-gray-400 hover:text-white"
+				on:click={closeTiktaktoe}
+				aria-label="Close Tiktaktoe"
+			>
+				<i class="fa-solid fa-xmark fa-lg"></i>
+			</button>
+			<table class="h-full w-full">
+				<thead>
+					<tr>
+						<th colspan="3" class="text-center text-lg font-bold text-white">Tiktaktoe</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each [0, 1, 2] as row}
+						<tr>
+							{#each [0, 1, 2] as col}
+								<td class="w-1/3 items-center justify-center">
+									<button
+										class="h-28 w-28 border border-white bg-gray-700 text-3xl"
+										on:click={() => handleTiktaktoeClick(row * 3 + col)}
+									>
+										{board[row * 3 + col] ?? ' '}
+									</button>
+								</td>
+							{/each}
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+			<button
+				class="mt-x absolute right-2 bottom-2 text-gray-400 hover:text-white"
+				on:click={resetTiktaktoe}
+				aria-label="Reset Tiktaktoe"
+			>
+				<i class="fa-solid fa-rotate-right"></i>
+			</button>
+		</div>
+	</div>
+{/if}
 
 <style>
 	.bg-darkgray {
