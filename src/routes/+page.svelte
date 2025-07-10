@@ -211,11 +211,11 @@
 	<div class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3">
 		<div class="flex w-full flex-row items-center justify-between">
 			<h1 class="mb-2 text-3xl font-bold text-white">Experience</h1>
-			<!-- <a href="/experience" class="text-sm text-gray-400 hover:text-white"> See all</a> -->
+			<a href="/about" class="text-sm text-gray-400 hover:text-white"> See all</a>
 		</div>
-		<div class="h-150 overflow-auto">
+		<div class="h-auto">
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each experience as exp, i}
+				{#each experience.slice(0, 3) as exp, i}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -239,8 +239,11 @@
 			<h1 class="mb-2 text-3xl font-bold text-white">Project</h1>
 			<a href="/projects" class="text-sm text-gray-400 hover:text-white"> See all</a>
 		</div>
-		<div class="max-h-[500px] w-full overflow-auto pr-2">
-			{#each projects as project}
+		<p class="text-justify text-sm text-gray-400">
+			Here are some of my recent projects that I have worked on. You can find more on my GitHub.
+		</p>
+		<div class="h-full w-full pr-2">
+			{#each projects.slice(0, 3) as project}
 				<div
 					class="mb-4 flex w-full flex-col items-start justify-center gap-2 transition duration-300 hover:scale-105"
 				>
@@ -270,9 +273,18 @@
 			{/each}
 		</div>
 	</div>
+
+	<a href="/contact" class="mx-auto mb-6 w-full max-w-md">
+		<button
+			class="w-full px-4 py-2 font-bold text-gray-400 transition duration-200 hover:text-white hover:underline"
+		>
+			Contact me
+		</button>
+	</a>
 </section>
 
-{#if tiktaktoeVisible}>
+{#if tiktaktoeVisible}>Here are some of my recent projects that I have worked on. You can find more
+	on my GitHub.
 	<div
 		role="dialog"
 		aria-modal="true"
@@ -303,7 +315,7 @@
 							{#each [0, 1, 2] as col}
 								<td class="w-1/3 items-center justify-center">
 									<button
-										class="h-28 w-28 border border-white bg-gray-700 text-3xl"
+										class="h-28 w-28 border border-white text-3xl"
 										on:click={() => handleTiktaktoeClick(row * 3 + col)}
 									>
 										{board[row * 3 + col] ?? ' '}
