@@ -1,5 +1,21 @@
 [
 	{
+		"projectName": "PyMailer - Mailtrap Email Sender",
+		"technologies": [
+			{
+				"name": "Python",
+				"icon": "https://cdn.simpleicons.org/python/ffffff"
+			},
+			{
+				"name": "Mailtrap",
+				"icon": "https://cdn.simpleicons.org/mailtrap/ffffff"
+			}
+		],
+		"projectDescription": "A simple email sender application using Mailtrap.",
+		"projectImage": "/assets/pymailer.png",
+		"projectLink": "/projects/pymailer"
+	},
+	{
 		"projectName": "Personal Website",
 		"technologies": [
 			{

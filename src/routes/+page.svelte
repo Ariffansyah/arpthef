@@ -248,7 +248,7 @@
 						<img
 							src={project.projectImage}
 							alt={project.projectName}
-							class=" h-64 w-full rounded-lg opacity-70 shadow-lg"
+							class=" h-64 w-full rounded-lg object-cover opacity-70 shadow-lg"
 						/>
 						<a href={project.projectLink} rel="noopener noreferrer">
 							<div
