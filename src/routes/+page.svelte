@@ -1,7 +1,8 @@
 <script lang="ts">
 	import TechnologiesData from '$lib/assets/JSON/tehcnologies.json';
-	import ExperienceData from '$lib/assets/JSON/experience.json';
+	import AchievementsData from '$lib/assets/JSON/achievements.json';
 	import ProjectsData from '$lib/assets/JSON/projects.json';
+	import ExperiencesData from '$lib/assets/JSON/experiences.json';
 	import { intersect } from '$lib/actions/intersect';
 	import { customAlert } from '$lib/components/customAlerts';
 	import { handleHistory } from '$lib/components/handleHistory';
@@ -43,8 +44,9 @@
 	];
 
 	const technologies = TechnologiesData;
-	const experience = ExperienceData;
+	const achievements = AchievementsData;
 	const projects = ProjectsData;
+	const experiences = ExperiencesData;
 
 	function openTiktaktoe() {
 		tiktaktoeVisible = true;
@@ -116,7 +118,7 @@
 		}
 	}
 
-	const sectionIds = ['arpthef', 'technologies', 'experiences', 'projects'];
+	const sectionIds = ['arpthef', 'technologies', 'experiences', 'achievements', 'projects'];
 	let currentSectionIndex = 0;
 	let showScrollTop = false;
 	let showScrollBottom = false;
@@ -245,17 +247,49 @@
 		</div>
 		<div class="h-auto">
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each experience.slice(0, 3) as exp, i}
+				{#each experiences.slice(0, 3) as exp, i}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
 								i % bgColors.length
 							]}"
 						></div>
-						<p class="text-sm font-medium {textColors[i % textColors.length]}">{exp.company}</p>
+						<p class="text-sm font-medium {textColors[i % textColors.length]}">
+							{exp.experienceName}
+						</p>
 						<h3 class="text-lg font-bold">{exp.title}</h3>
 						<p class="text-sm text-gray-400">{exp.date}</p>
 						<p class="mt-1 text-justify text-gray-300">{exp.description}</p>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</div>
+
+	<div
+		id="achievements"
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
+	>
+		<div class="flex w-full flex-row items-center justify-between">
+			<h1 class="mb-2 text-3xl font-bold text-white">Achievements</h1>
+			<a href="/about" class="text-sm text-gray-400 hover:text-white"> See all</a>
+		</div>
+		<div class="h-auto">
+			<div class="relative ml-6 border-l border-gray-700">
+				{#each achievements.slice(0, 3) as ach, i}
+					<div class="relative pb-10 pl-6">
+						<div
+							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
+								i % bgColors.length
+							]}"
+						></div>
+						<p class="text-sm font-medium {textColors[i % textColors.length]}">
+							{ach.achievementName}
+						</p>
+						<h3 class="text-lg font-bold">{ach.title}</h3>
+						<p class="text-sm text-gray-400">{ach.date}</p>
+						<p class="mt-1 text-justify text-gray-300">{ach.description}</p>
 					</div>
 				{/each}
 			</div>

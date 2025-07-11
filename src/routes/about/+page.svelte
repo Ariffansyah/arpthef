@@ -1,5 +1,6 @@
 <script lang="ts">
-	import ExperienceData from '$lib/assets/JSON/experience.json';
+	import AchievementsData from '$lib/assets/JSON/achievements.json';
+	import ExperiencesData from '$lib/assets/JSON/experiences.json';
 
 	const textColors = [
 		'text-cyan-400',
@@ -36,15 +37,27 @@
 		'bg-violet-400'
 	];
 
-	let isShowMore = false;
-	let experience = ExperienceData.slice(0, 3);
+	let isShowMoreAch = false;
+	let achievements = AchievementsData.slice(0, 3);
 
-	function toggleShowMore() {
-		isShowMore = !isShowMore;
-		if (isShowMore) {
-			experience = ExperienceData;
+	function toggleShowMoreAch() {
+		isShowMoreAch = !isShowMoreAch;
+		if (isShowMoreAch) {
+			achievements = AchievementsData;
 		} else {
-			experience = ExperienceData.slice(0, 3);
+			achievements = AchievementsData.slice(0, 3);
+		}
+	}
+
+	let isShowMoreExp = false;
+	let experiences = ExperiencesData.slice(0, 3);
+
+	function toggleShowMoreExp() {
+		isShowMoreExp = !isShowMoreExp;
+		if (isShowMoreExp) {
+			experiences = ExperiencesData;
+		} else {
+			experiences = ExperiencesData.slice(0, 3);
 		}
 	}
 </script>
@@ -105,32 +118,72 @@
 		</p>
 	</div>
 	<div class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3">
-		<h2 class="text-2xl font-bold text-white">Experience</h2>
+		<h2 class="text-2xl font-bold text-white">Experiences</h2>
 		<p class="text-justify text-gray-300">
-			Here are some of my experiences in journey as a software engineer.
+			Here are some highlights from my professional experiences.
 		</p>
 		<div class="h-auto">
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each experience as exp, i}
+				{#each experiences as exp, i}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
 								i % bgColors.length
 							]}"
 						></div>
-						<p class="text-sm font-medium {textColors[i % textColors.length]}">{exp.company}</p>
+						<p class="text-sm font-medium {textColors[i % textColors.length]}">
+							{exp.experienceName}
+						</p>
 						<h3 class="text-lg font-bold">{exp.title}</h3>
 						<p class="text-sm text-gray-400">{exp.date}</p>
 						<p class="mt-1 text-justify text-gray-300">{exp.description}</p>
 					</div>
 				{/each}
 			</div>
-			{#if ExperienceData.length > 3}
+			{#if ExperiencesData.length > 3}
 				<button
 					class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
-					on:click={toggleShowMore}
+					on:click={toggleShowMoreExp}
 				>
-					{#if isShowMore}
+					{#if isShowMoreExp}
+						Show Less
+					{:else}
+						Show More
+					{/if}
+				</button>
+			{/if}
+		</div>
+	</div>
+
+	<div class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3">
+		<h2 class="text-2xl font-bold text-white">Achievements</h2>
+		<p class="text-justify text-gray-300">
+			Here are some of my achievements in journey as a software engineer.
+		</p>
+		<div class="h-auto">
+			<div class="relative ml-6 border-l border-gray-700">
+				{#each achievements as ach, i}
+					<div class="relative pb-10 pl-6">
+						<div
+							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
+								i % bgColors.length
+							]}"
+						></div>
+						<p class="text-sm font-medium {textColors[i % textColors.length]}">
+							{ach.achievementName}
+						</p>
+						<h3 class="text-lg font-bold">{ach.title}</h3>
+						<p class="text-sm text-gray-400">{ach.date}</p>
+						<p class="mt-1 text-justify text-gray-300">{ach.description}</p>
+					</div>
+				{/each}
+			</div>
+			{#if AchievementsData.length > 3}
+				<button
+					class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
+					on:click={toggleShowMoreAch}
+				>
+					{#if isShowMoreAch}
 						Show Less
 					{:else}
 						Show More
