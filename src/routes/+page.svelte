@@ -242,7 +242,7 @@
 		use:intersect={{ threshold: 0.3 }}
 	>
 		<div class="flex w-full flex-row items-center justify-between">
-			<h1 class="mb-2 text-3xl font-bold text-white">Experiences</h1>
+			<h1 class="mb-2 text-3xl font-bold text-white">Recent experiences</h1>
 			<a href="/about" class="text-sm text-gray-400 hover:text-white"> See all</a>
 		</div>
 		<div class="h-auto">
@@ -272,7 +272,7 @@
 		use:intersect={{ threshold: 0.3 }}
 	>
 		<div class="flex w-full flex-row items-center justify-between">
-			<h1 class="mb-2 text-3xl font-bold text-white">Achievements</h1>
+			<h1 class="mb-2 text-3xl font-bold text-white">Recent achievements</h1>
 			<a href="/about" class="text-sm text-gray-400 hover:text-white"> See all</a>
 		</div>
 		<div class="h-auto">
