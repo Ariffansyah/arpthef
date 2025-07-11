@@ -120,7 +120,7 @@
 	<div class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3">
 		<h2 class="text-2xl font-bold text-white">Experiences</h2>
 		<p class="text-justify text-gray-300">
-			Here are some highlights from my professional experiences.
+			Here are some of my organizational and work experiences.
 		</p>
 		<div class="h-auto">
 			<div class="relative ml-6 border-l border-gray-700">
