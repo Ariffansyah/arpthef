@@ -1,104 +1,86 @@
 [
 	{
-		"name": "JavaScript",
-		"icon": "https://cdn.simpleicons.org/javascript/ffffff",
-		"alt": "JavaScript",
-		"category": "Language"
-	},
-	{
 		"name": "TypeScript",
 		"icon": "https://cdn.simpleicons.org/typescript/ffffff",
 		"alt": "TypeScript",
-		"category": "Language"
-	},
-	{
-		"name": "Python",
-		"icon": "https://cdn.simpleicons.org/python/ffffff",
-		"alt": "Python",
-		"category": "Language"
+		"category": "Language",
+		"description": "JavaScript but better."
 	},
 	{
 		"name": "Go",
 		"icon": "https://cdn.simpleicons.org/go/ffffff",
 		"alt": "Go",
-		"category": "Language"
+		"category": "Language",
+		"description": "Chill, fast, and typed."
 	},
 	{
 		"name": "SQL",
-		"icon": "https://cdn.simpleicons.org/mysql/ffffff",
+		"icon": "https://cdn.simpleicons.org/postgresql/ffffff",
 		"alt": "SQL",
-		"category": "Language"
+		"category": "Language",
+		"description": "Talk to databases, easy."
 	},
 	{
 		"name": "HTML",
 		"icon": "https://cdn.simpleicons.org/html5/ffffff",
 		"alt": "HTML",
-		"category": "Web"
+		"category": "Web",
+		"description": "Web stuff starter pack."
 	},
 	{
 		"name": "CSS",
 		"icon": "https://img.icons8.com/ios-filled/50/ffffff/css3.png",
 		"alt": "CSS3 (Icons8)",
-		"category": "Web"
+		"category": "Web",
+		"description": "Make it look pretty."
 	},
 	{
 		"name": "React",
 		"icon": "https://cdn.simpleicons.org/react/ffffff",
 		"alt": "React",
-		"category": "Web"
+		"category": "Web",
+		"description": "UI vibes, reusable AF."
 	},
 	{
 		"name": "Svelte",
 		"icon": "https://cdn.simpleicons.org/svelte/ffffff",
 		"alt": "Svelte",
-		"category": "Web"
+		"category": "Web",
+		"description": "UI magic, no BS."
 	},
 	{
-		"name": "TailwindCSS",
+		"name": "Tailwind CSS",
 		"icon": "https://cdn.simpleicons.org/tailwindcss/ffffff",
 		"alt": "TailwindCSS",
-		"category": "Web"
-	},
-	{
-		"name": "Bootstrap",
-		"icon": "https://cdn.simpleicons.org/bootstrap/ffffff",
-		"alt": "Bootstrap",
-		"category": "Web"
-	},
-	{
-		"name": "Windows",
-		"icon": "https://img.icons8.com/ios-filled/50/ffffff/windows8.png",
-		"alt": "Windows (Icons8)",
-		"category": "OS"
+		"category": "Web",
+		"description": "Style speedrun mode."
 	},
 	{
 		"name": "Arch",
 		"icon": "https://cdn.simpleicons.org/archlinux/ffffff",
 		"alt": "Arch",
-		"category": "OS"
-	},
-	{
-		"name": "Ubuntu",
-		"icon": "https://cdn.simpleicons.org/ubuntu/ffffff",
-		"alt": "Ubuntu",
-		"category": "OS"
+		"category": "OS",
+		"description": "I use Arch, btw."
 	},
 	{
 		"name": "Fedora",
 		"icon": "https://cdn.simpleicons.org/fedora/ffffff",
 		"alt": "Fedora",
-		"category": "OS"
+		"category": "OS",
+		"description": "Cutting-edge but chill."
 	},
 	{
 		"name": "Git",
 		"icon": "https://cdn.simpleicons.org/git/ffffff",
 		"alt": "Git",
-		"category": "Tool"
+		"category": "Tool",
+		"description": "Code history unlocked."
 	},
 	{
 		"name": "GitHub",
 		"icon": "https://cdn.simpleicons.org/github/ffffff",
 		"alt": "GitHub",
-		"category": "Tool"
+		"category": "Tool",
+		"description": "Collab zone for code."
 	}
 ]

@@ -3,41 +3,9 @@
 	import ExperienceData from '$lib/assets/JSON/experience.json';
 	import ProjectsData from '$lib/assets/JSON/projects.json';
 	import { intersect } from '$lib/actions/intersect';
-
-	function customAlert(message: string) {
-		const alertDiv = document.createElement('div');
-		alertDiv.className = `
-    fixed inset-0 flex items-center justify-center
-    bg-black bg-opacity-50 z-[2147483647]
-    pointer-events-auto
-  `.trim();
-
-		alertDiv.innerHTML = `
-    <div class="relative bg-darkgray rounded-lg shadow-lg p-6 max-w-sm w-full">
-      <h2 class="text-lg font-semibold mb-4">Alert</h2>
-      <p class="mb-4">${message}</p>
-      <button
-        id="alert-ok-button"
-        class="text-white py-2 rounded hover:underline"
-      >
-        OK
-      </button>
-    </div>
-  `;
-
-		document.body.appendChild(alertDiv);
-
-		const okButton = alertDiv.querySelector('#alert-ok-button');
-		okButton?.addEventListener('click', () => {
-			document.body.removeChild(alertDiv);
-		});
-
-		setTimeout(() => {
-			if (document.body.contains(alertDiv)) {
-				document.body.removeChild(alertDiv);
-			}
-		}, 5000);
-	}
+	import { customAlert } from '$lib/components/customAlerts';
+	import { handleHistory } from '$lib/components/handleHistory';
+	import { onMount } from 'svelte';
 
 	const textColors = [
 		'text-cyan-400',
@@ -75,9 +43,7 @@
 	];
 
 	const technologies = TechnologiesData;
-
 	const experience = ExperienceData;
-
 	const projects = ProjectsData;
 
 	function openTiktaktoe() {
@@ -149,10 +115,62 @@
 			currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
 		}
 	}
+
+	const sectionIds = ['arpthef', 'technologies', 'experiences', 'projects'];
+	let currentSectionIndex = 0;
+	let showScrollTop = false;
+	let showScrollBottom = false;
+
+	function isSectionInView(el: HTMLElement | null): boolean {
+		if (!el) return false;
+		const rect = el.getBoundingClientRect();
+		return Math.abs(rect.top) < 5;
+	}
+
+	function updateSectionIndexAndVisibility() {
+		let closestSection = 0;
+		let minDistance = Infinity;
+		sectionIds.forEach((id, i) => {
+			const el = document.getElementById(id);
+			if (el) {
+				const rect = el.getBoundingClientRect();
+				const distance = Math.abs(rect.top);
+				if (distance < minDistance) {
+					minDistance = distance;
+					closestSection = i;
+				}
+			}
+		});
+		currentSectionIndex = closestSection;
+
+		showScrollTop =
+			currentSectionIndex > 0 &&
+			!isSectionInView(document.getElementById(sectionIds[currentSectionIndex - 1]));
+		showScrollBottom =
+			currentSectionIndex < sectionIds.length - 1 &&
+			!isSectionInView(document.getElementById(sectionIds[currentSectionIndex + 1]));
+	}
+
+	function scrollToSection(index: number) {
+		const section = document.getElementById(sectionIds[index]);
+		if (section) {
+			(e: any) => handleHistory(e, `#${sectionIds[index]}`);
+			section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
+	}
+
+	if (typeof window !== 'undefined') {
+		window.addEventListener('scroll', updateSectionIndexAndVisibility);
+	}
+
+	onMount(() => {
+		updateSectionIndexAndVisibility();
+	});
 </script>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
+		id="arpthef"
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3 }}
 	>
@@ -185,40 +203,44 @@
 		</div>
 		<div class="mt-4 flex flex-col items-start justify-center gap-2">
 			<p class="text-justify text-gray-300">
-				Hi, I'm an undergraduate collage student with a passion for technology and software
-				development. I enjoy building projects, exploring new tools, and connecting with others in
-				tech.
+				Hi, I'm an undergraduate college student passionate about technology and software
+				development. I’m more into backend, but I also work with frontend.
 			</p>
 			<button
 				class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
 				on:click={openTiktaktoe}
 			>
-				Click me
+				Tiktaktoe
 			</button>
 		</div>
 	</div>
 	<div
-		class="animate-fade-in mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:w-1/3"
+		id="technologies"
+		class="animate-fade-in mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-4 md:w-1/3"
 		use:intersect={{ threshold: 0.3 }}
 	>
-		<h1 class="mb-2 text-3xl font-bold text-white">Technologies i work with</h1>
-		<div class="flex flex-wrap justify-between gap-4">
+		<h1 class="mb-2 text-2xl font-bold text-white md:text-3xl">Most use technologies</h1>
+		<div class="grid w-full grid-cols-2 gap-2 sm:grid-cols-3">
 			{#each technologies as tech}
 				<div
-					class="bg-darkgray flex items-center gap-2 rounded px-3 py-1 transition duration-200 hover:scale-105"
+					class="bg-darkgray flex w-full flex-col items-start gap-2 rounded px-2 py-1 transition duration-200 hover:scale-105 md:px-3 md:py-2"
 				>
-					<img src={tech.icon} alt={tech.alt} class="h-3 w-3 md:h-6 md:w-6" />
-					<span class="text-sm text-gray-200">{tech.name}</span>
+					<div class="flex flex-row items-center gap-2">
+						<img src={tech.icon} alt={tech.alt} class="h-5 w-5 md:h-6 md:w-6" />
+						<span class="text-sm text-gray-200">{tech.name}</span>
+					</div>
+					<p class="text-xs text-gray-400 md:text-sm">{tech.description}</p>
 				</div>
 			{/each}
 		</div>
 	</div>
 	<div
+		id="experiences"
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3 }}
 	>
 		<div class="flex w-full flex-row items-center justify-between">
-			<h1 class="mb-2 text-3xl font-bold text-white">Experience</h1>
+			<h1 class="mb-2 text-3xl font-bold text-white">Experiences</h1>
 			<a href="/about" class="text-sm text-gray-400 hover:text-white"> See all</a>
 		</div>
 		<div class="h-auto">
@@ -240,17 +262,15 @@
 		</div>
 	</div>
 	<div
+		id="projects"
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3 }}
-		id="projects"
 	>
 		<div class="flex w-full flex-row items-center justify-between">
-			<h1 class="mb-2 text-3xl font-bold text-white">Project</h1>
+			<h1 class="mb-2 text-3xl font-bold text-white">Recent projects</h1>
 			<a href="/projects" class="text-sm text-gray-400 hover:text-white"> See all</a>
 		</div>
-		<p class="text-justify text-sm text-gray-400">
-			Here are some of my recent projects that I have worked on. You can find more on my GitHub.
-		</p>
+
 		<div class="h-full w-full pr-2">
 			{#each projects.slice(0, 3) as project}
 				<div
@@ -295,6 +315,26 @@
 		</button>
 	</a>
 </section>
+
+{#if showScrollTop}
+	<button
+		class="text-gray-white fixed top-4 left-1/2 z-50 min-w-[120px] -translate-x-1/2 rounded-lg px-4 py-2 text-base shadow transition md:top-8 md:text-lg md:text-gray-400 md:hover:text-white"
+		on:click={() => scrollToSection(currentSectionIndex - 1)}
+		aria-label="Scroll Top"
+	>
+		<i class="fa-solid fa-chevron-up"></i>
+	</button>
+{/if}
+
+{#if showScrollBottom}
+	<button
+		class="fixed bottom-4 left-1/2 z-50 min-w-[120px] -translate-x-1/2 rounded-lg px-4 py-2 text-base text-white shadow transition md:bottom-8 md:text-lg md:text-gray-400 md:hover:text-white"
+		on:click={() => scrollToSection(currentSectionIndex + 1)}
+		aria-label="Scroll Bottom"
+	>
+		<i class="fa-solid fa-chevron-down"></i>
+	</button>
+{/if}
 
 {#if tiktaktoeVisible}>Here are some of my recent projects that I have worked on. You can find more
 	on my GitHub.
