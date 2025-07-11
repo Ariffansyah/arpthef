@@ -2,6 +2,7 @@
 	import TechnologiesData from '$lib/assets/JSON/tehcnologies.json';
 	import ExperienceData from '$lib/assets/JSON/experience.json';
 	import ProjectsData from '$lib/assets/JSON/projects.json';
+	import { intersect } from '$lib/actions/intersect';
 
 	function customAlert(message: string) {
 		const alertDiv = document.createElement('div');
@@ -152,7 +153,8 @@
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
-		class="my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
 	>
 		<div class="flex w-full flex-row items-start justify-between text-white">
 			<div class="flex flex-col">
@@ -195,7 +197,10 @@
 			</button>
 		</div>
 	</div>
-	<div class="mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:w-1/3">
+	<div
+		class="animate-fade-in mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
+	>
 		<h1 class="mb-2 text-3xl font-bold text-white">Technologies i work with</h1>
 		<div class="flex flex-wrap justify-between gap-4">
 			{#each technologies as tech}
@@ -208,7 +213,10 @@
 			{/each}
 		</div>
 	</div>
-	<div class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3">
+	<div
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
+	>
 		<div class="flex w-full flex-row items-center justify-between">
 			<h1 class="mb-2 text-3xl font-bold text-white">Experience</h1>
 			<a href="/about" class="text-sm text-gray-400 hover:text-white"> See all</a>
@@ -232,7 +240,8 @@
 		</div>
 	</div>
 	<div
-		class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
 		id="projects"
 	>
 		<div class="flex w-full flex-row items-center justify-between">
@@ -274,7 +283,11 @@
 		</div>
 	</div>
 
-	<a href="/contact" class="mx-auto mb-6 w-full max-w-md">
+	<a
+		href="/contact"
+		class="animate-fade-in mx-auto mb-6 w-full max-w-md"
+		use:intersect={{ threshold: 0.3 }}
+	>
 		<button
 			class="w-full px-4 py-2 font-bold text-gray-400 transition duration-200 hover:text-white hover:underline"
 		>

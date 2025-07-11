@@ -1,9 +1,20 @@
 @import 'tailwindcss';
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
 
 :root {
 	background-color: #0f0f0f;
 	color: #e0e0e0;
 	font-family: 'Fira Code', monospace;
+}
+
+.animate-fade-in {
+	opacity: 0;
+	transform: translateY(20px);
+	transition:
+		opacity 0.5s ease-out,
+		transform 0.5s ease-out;
+}
+
+.animate-fade-in.visible {
+	opacity: 1;
+	transform: translateY(0);
 }
