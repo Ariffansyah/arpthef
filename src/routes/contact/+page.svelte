@@ -1,6 +1,11 @@
+<script lang="ts">
+	import { intersect } from '$lib/actions/intersect';
+</script>
+
 <section class="flex min-h-screen flex-col items-center justify-center px-4">
 	<div
-		class="my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
 	>
 		<div class="flex w-full flex-row items-center justify-between text-white">
 			<div class="flex flex-col">

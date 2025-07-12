@@ -1,6 +1,7 @@
 <script lang="ts">
 	import AchievementsData from '$lib/assets/JSON/achievements.json';
 	import ExperiencesData from '$lib/assets/JSON/experiences.json';
+	import { intersect } from '$lib/actions/intersect';
 
 	const textColors = [
 		'text-cyan-400',
@@ -64,7 +65,8 @@
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
-		class="my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
 	>
 		<div class="flex w-full flex-col items-start text-white">
 			<h1 class="text-3xl font-bold">About me</h1>
@@ -84,7 +86,10 @@
 		</a>
 	</div>
 
-	<div class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3">
+	<div
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
+	>
 		<p class="text-justify text-gray-300">
 			I first became interested in computers when I was in elementary school, but it wasn't until my
 			last year of high school that I began to focus on programming. The first time I learned how to
@@ -117,7 +122,10 @@
 			many more exciting opportunities in the world of technology.
 		</p>
 	</div>
-	<div class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3">
+	<div
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
+	>
 		<h2 class="text-2xl font-bold text-white">Experiences</h2>
 		<p class="text-justify text-gray-300">
 			Here are some of my organizational and work experiences.
@@ -155,7 +163,10 @@
 		</div>
 	</div>
 
-	<div class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3">
+	<div
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
+		use:intersect={{ threshold: 0.3 }}
+	>
 		<h2 class="text-2xl font-bold text-white">Achievements</h2>
 		<p class="text-justify text-gray-300">
 			Here are some of my achievements in journey as a software engineer.

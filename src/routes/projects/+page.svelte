@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ProjectsData from '$lib/assets/JSON/projects.json';
+	import { intersect } from '$lib/actions/intersect';
 
 	const projects = ProjectsData;
 </script>
@@ -9,7 +10,10 @@
 		class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-11/12"
 		id="projects"
 	>
-		<div class="flex w-full flex-row items-center justify-center text-white">
+		<div
+			class="animate-fade-in flex w-full flex-row items-center justify-center text-white"
+			use:intersect={{ threshold: 0.3 }}
+		>
 			<div class="flex flex-col">
 				<h1 class="text-3xl font-bold">Projects</h1>
 				<p class="text-sm text-gray-400">Some of my works</p>
@@ -19,7 +23,8 @@
 			<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
 				{#each projects as project}
 					<div
-						class="flex min-h-[430px] flex-col items-start justify-center gap-4 rounded-2xl bg-white/5 p-6 shadow-xl transition duration-300 hover:scale-105"
+						class="animate-fade-in flex min-h-[430px] flex-col items-start justify-center gap-4 rounded-2xl bg-white/5 p-6 shadow-xl transition duration-300 hover:scale-105"
+						use:intersect={{ threshold: 0.3 }}
 					>
 						<div class="relative w-full">
 							<img
