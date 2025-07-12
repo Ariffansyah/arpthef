@@ -56,6 +56,22 @@
 		"projectLink": "/projects/orb-os"
 	},
 	{
+		"projectName": "Petshop",
+		"technologies": [
+			{
+				"name": "Kotlin",
+				"icon": "https://cdn.simpleicons.org/kotlin/ffffff"
+			},
+			{
+				"name": "Sqlite",
+				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
+			}
+		],
+		"projectDescription": "OOP collage project for a pet shop management system using Kotlin and SQLite.",
+		"projectImage": "/assets/petshop.png",
+		"projectLink": "/projects/petshop-oop"
+	},
+	{
 		"projectName": "Lucy - Discord Bot",
 		"technologies": [
 			{

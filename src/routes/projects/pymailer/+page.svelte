@@ -99,7 +99,7 @@
 	>
 		<img
 			src={modalSrc}
-			alt="Orb OS screenshot in full view"
+			alt="Pymailer screenshot in full view"
 			class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl"
 		/>
 	</div>
