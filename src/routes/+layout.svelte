@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Particles from '$lib/components/Particles.svelte';
 	import '../app.css';
 
 	let isOpen = false;
@@ -59,6 +60,8 @@
 	<footer class="bg-softblack px-4 py-6 text-center text-gray-400">
 		<p>&copy; {new Date().getFullYear()} arpthef. All rights reserved.</p>
 	</footer>
+
+	<Particles className="absolute inset-0" refresh={true} />
 </div>
 
 <style>

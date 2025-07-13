@@ -208,12 +208,6 @@
 				Hi, I'm an undergraduate college student passionate about technology and software
 				development. I’m more into backend, but I also work with frontend.
 			</p>
-			<button
-				class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
-				on:click={openTiktaktoe}
-			>
-				Tiktaktoe
-			</button>
 		</div>
 	</div>
 	<div
@@ -348,6 +342,13 @@
 			Contact me
 		</button>
 	</a>
+
+	<button
+		class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
+		on:click={openTiktaktoe}
+	>
+		Tiktaktoe
+	</button>
 </section>
 
 {#if showScrollTop}
