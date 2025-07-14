@@ -65,14 +65,17 @@
 
 	function resizeCanvas() {
 		if (canvasContainerRef && canvasRef && context) {
-			circles.length = 0;
+			const mainContainer = document.getElementById('main-container');
 			canvasSize.w = canvasContainerRef.offsetWidth;
-			canvasSize.h = canvasContainerRef.offsetHeight;
+			canvasSize.h = mainContainer
+				? mainContainer.offsetHeight
+				: document.documentElement.scrollHeight;
 			canvasRef.width = canvasSize.w * dpr;
 			canvasRef.height = canvasSize.h * dpr;
 			canvasRef.style.width = `${canvasSize.w}px`;
 			canvasRef.style.height = `${canvasSize.h}px`;
 			context.scale(dpr, dpr);
+			drawParticles();
 		}
 	}
 
@@ -100,6 +103,7 @@
 
 	function drawParticles() {
 		clearContext();
+		circles.length = 0;
 		for (let i = 0; i < quantity; i++) {
 			const circle = circleParams();
 			drawCircle(circle);
@@ -157,36 +161,35 @@
 			let { w, h } = canvasSize;
 			let x = event.clientX - rect.left - w / 2;
 			let y = event.clientY - rect.top - h / 2;
-			let inside = x < w / 2 && x > -w / 2 && y < h / 2 && y > -h / 2;
-			if (inside) {
-				mouse.x = x;
-				mouse.y = y;
-			}
+			mouse.x = x;
+			mouse.y = y;
 		}
 	}
 
+	let observer: ResizeObserver;
 	onMount(() => {
 		if (canvasRef) {
 			context = canvasRef.getContext('2d');
 			resizeCanvas();
 			animate();
-			window.addEventListener('resize', resizeCanvas);
 			window.addEventListener('mousemove', onMouseMove);
+
+			observer = new ResizeObserver(resizeCanvas);
+			const mainContainer = document.getElementById('main-container');
+			if (mainContainer) {
+				observer.observe(mainContainer);
+			} else {
+				observer.observe(document.documentElement);
+			}
 		}
 
 		return () => {
-			window.removeEventListener('resize', resizeCanvas);
 			window.removeEventListener('mousemove', onMouseMove);
+			if (observer) {
+				observer.disconnect();
+			}
 		};
 	});
-
-	$: {
-		if (canvasRef) {
-			drawParticles();
-			//   animate();
-		}
-	}
-	//   Building Stage
 </script>
 
 <div class={className} bind:this={canvasContainerRef} aria-hidden="true">
