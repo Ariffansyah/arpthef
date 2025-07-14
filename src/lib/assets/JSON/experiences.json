@@ -1,26 +1,49 @@
 [
 	{
 		"experienceName": "GrandFinal ADUJAK GenRe Papua - Local Food Local Pride",
+		"category": "Work",
 		"title": "Media and Event Documentation Team Member; Video Technician",
 		"date": "Jun, 2024 – Jul, 2024",
 		"description": "Supported event preparation by documenting key moments and contributing to thematic decorations during the pre–Grand Final phase. Responsibilities included creating visual content, photo and video coverage, and venue styling aligned with the “Local Food Local Pride” concept. On Grand Final day, operated the video system, ensuring smooth transitions and real-time multimedia displays for the audience and live viewers."
 	},
 	{
 		"experienceName": "GrandFinal ADUJAK GenRe Papua - Nothing's Impossible",
+		"category": "Work",
 		"title": "Media and Event Documentation Team Member; Video Technician",
 		"date": "May, 2023 – Jun, 2023",
 		"description": "Played an active role in documenting and decorating the venue in the lead-up to the Grand Final, focusing on visual storytelling and consistent branding. Captured event footage, assisted in media setup, and helped with on-site decorations. During the main event, served as the video technician responsible for managing the live video feed and ensuring seamless multimedia coordination throughout the program."
 	},
 	{
 		"experienceName": "Organisasi Siswa Intra Sekolah - SMA Negeri 1 Jayapura",
+		"category": "Organization",
 		"title": "Tresurer Student Council",
 		"date": "Nov, 2022 – Nov, 2023",
 		"description": "As the Treasurer, I was responsible for managing the financial activities of the organization. My key duties included budgeting, tracking income and expenses, and preparing financial reports. I worked closely with the team to ensure that the funds were allocated properly and that financial records were accurate and transparent. Through this role, I developed strong organizational and financial management skills, ensuring that the organization's financial operations ran smoothly and efficiently."
 	},
 	{
+		"experienceName": "PIK-R Ready - SMA Negeri 1 Jayapura",
+		"category": "Organization",
+		"title": "Peer Educator Coordinator",
+		"date": "Dec, 2022 – Dec, 2023",
+		"description": "In my role as Peer Educator Coordinator, I led a team of peer educators to promote health and well-being among students. My responsibilities included organizing training sessions, developing educational materials, and coordinating outreach programs. I focused on fostering a supportive environment for students to learn about health issues and make informed decisions. This experience enhanced my leadership skills and my ability to communicate effectively with diverse groups."
+	},
+	{
 		"experienceName": "Organisasi Siswa Intra Sekolah - SMA Negeri 1 Jayapura",
+		"category": "Organization",
 		"title": "ICT Coordinator Student Council",
 		"date": "Nov, 2021 – Nov, 2022",
 		"description": "During my term as ICT Coordinator, I was responsible for leading technology-related projects and managing the organization's digital communication systems. I successfully developed digital solutions to enhance the efficiency of the team. Additionally, I managed internal and external digital communication to ensure smooth and secure information flow. This role strengthened my skills in project leadership, problem-solving, and ensuring operational continuity through technology.During"
+	},
+	{
+		"experienceName": "State University of Surabaya",
+		"category": "Education",
+		"date": "2024 – Present",
+		"description": "Bachelor of Computer Science, Informatics Engineering"
+	},
+	{
+		"experienceName": "SMA Negeri 1 Jayapura",
+		"category": "Education",
+		"date": "2021 – 2024",
+		"description": "High School, Science Major"
 	}
 ]

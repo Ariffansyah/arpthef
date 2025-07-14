@@ -48,6 +48,51 @@
 	const projects = ProjectsData;
 	const experiences = ExperiencesData;
 
+	let activeTab = 'work';
+	const tabs = [
+		{ label: 'Work', value: 'work' },
+		{ label: 'Education', value: 'education' },
+		{ label: 'Organization', value: 'organization' },
+		{ label: 'Achievement', value: 'achievement' }
+	];
+
+	const workExperiences = experiences.filter((e) => e.category?.toLowerCase() === 'work');
+	const educationExperiences = experiences.filter((e) => e.category?.toLowerCase() === 'education');
+	const organizationExperiences = experiences.filter(
+		(e) => e.category?.toLowerCase() === 'organization'
+	);
+	const achievementItems = achievements;
+
+	// Show More / Show Less logic for each tab
+	let isShowMoreWork = false;
+	let showWorkExperiences = workExperiences.slice(0, 3);
+	function toggleShowMoreWork() {
+		isShowMoreWork = !isShowMoreWork;
+		showWorkExperiences = isShowMoreWork ? workExperiences : workExperiences.slice(0, 3);
+	}
+	let isShowMoreEdu = false;
+	let showEducationExperiences = educationExperiences.slice(0, 3);
+	function toggleShowMoreEdu() {
+		isShowMoreEdu = !isShowMoreEdu;
+		showEducationExperiences = isShowMoreEdu
+			? educationExperiences
+			: educationExperiences.slice(0, 3);
+	}
+	let isShowMoreOrg = false;
+	let showOrganizationExperiences = organizationExperiences.slice(0, 3);
+	function toggleShowMoreOrg() {
+		isShowMoreOrg = !isShowMoreOrg;
+		showOrganizationExperiences = isShowMoreOrg
+			? organizationExperiences
+			: organizationExperiences.slice(0, 3);
+	}
+	let isShowMoreAch = false;
+	let showAchievements = achievementItems.slice(0, 3);
+	function toggleShowMoreAch() {
+		isShowMoreAch = !isShowMoreAch;
+		showAchievements = isShowMoreAch ? achievementItems : achievementItems.slice(0, 3);
+	}
+
 	function openTiktaktoe() {
 		tiktaktoeVisible = true;
 	}
@@ -118,7 +163,7 @@
 		}
 	}
 
-	const sectionIds = ['arpthef', 'technologies', 'experiences', 'achievements', 'projects'];
+	const sectionIds = ['arpthef', 'technologies', 'experiences', 'projects'];
 	let currentSectionIndex = 0;
 	let showScrollTop = false;
 	let showScrollBottom = false;
@@ -171,6 +216,7 @@
 </script>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
+	<!-- Profile / About -->
 	<div
 		id="arpthef"
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
@@ -181,7 +227,6 @@
 				<h1 class="text-3xl font-bold">arpthef</h1>
 				<p class="text-sm text-gray-400">Surabaya, Indonesia</p>
 			</div>
-
 			<div class="flex items-center">
 				<a
 					href="https://github.com/Ariffansyah"
@@ -210,6 +255,7 @@
 			</p>
 		</div>
 	</div>
+	<!-- Technologies -->
 	<div
 		id="technologies"
 		class="animate-fade-in mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-4 md:w-1/3"
@@ -232,16 +278,25 @@
 	</div>
 	<div
 		id="experiences"
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3 }}
 	>
-		<div class="flex w-full flex-row items-center justify-between">
-			<h1 class="mb-2 text-3xl font-bold text-white">Recent experiences</h1>
-			<a href="/about" class="text-sm text-gray-400 hover:text-white"> See all</a>
+		<div class="mb-4 flex w-full items-center justify-center space-x-4">
+			{#each tabs as tab}
+				<button
+					class="rounded-t-lg px-4 py-2 font-semibold text-white transition-shadow duration-200 focus:outline-none {activeTab ===
+					tab.value
+						? 'shadow-[0_4px_16px_rgba(255,255,255,0.2)]'
+						: 'opacity-60'}"
+					on:click={() => (activeTab = tab.value)}
+				>
+					{tab.label}
+				</button>
+			{/each}
 		</div>
-		<div class="h-auto">
+		{#if activeTab === 'work'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each experiences.slice(0, 3) as exp, i}
+				{#each showWorkExperiences as exp, i}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -256,22 +311,70 @@
 						<p class="mt-1 text-justify text-gray-300">{exp.description}</p>
 					</div>
 				{/each}
+				{#if workExperiences.length > 3}
+					<button
+						class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
+						on:click={toggleShowMoreWork}
+					>
+						{#if isShowMoreWork}Show Less{:else}Show More{/if}
+					</button>
+				{/if}
 			</div>
-		</div>
-	</div>
-
-	<div
-		id="achievements"
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
-		use:intersect={{ threshold: 0.3 }}
-	>
-		<div class="flex w-full flex-row items-center justify-between">
-			<h1 class="mb-2 text-3xl font-bold text-white">Recent achievements</h1>
-			<a href="/about" class="text-sm text-gray-400 hover:text-white"> See all</a>
-		</div>
-		<div class="h-auto">
+		{:else if activeTab === 'education'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each achievements.slice(0, 3) as ach, i}
+				{#each showEducationExperiences as edu, i}
+					<div class="relative pb-10 pl-6">
+						<div
+							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
+								i % bgColors.length
+							]}"
+						></div>
+						<p class="text-lg font-bold {textColors[i % textColors.length]}">
+							{edu.experienceName}
+						</p>
+						<p class="text-sm text-gray-400">{edu.date}</p>
+						<p class="mt-1 text-justify text-gray-300">{edu.description}</p>
+					</div>
+				{/each}
+				{#if educationExperiences.length > 3}
+					<button
+						class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
+						on:click={toggleShowMoreEdu}
+					>
+						{#if isShowMoreEdu}Show Less{:else}Show More{/if}
+					</button>
+				{/if}
+			</div>
+		{:else if activeTab === 'organization'}
+			<div class="relative ml-6 border-l border-gray-700">
+				{#each showOrganizationExperiences as org, i}
+					<div class="relative pb-10 pl-6">
+						<div
+							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
+								i % bgColors.length
+							]}"
+						></div>
+						<p class="text-sm font-medium {textColors[i % textColors.length]}">
+							{org.experienceName}
+						</p>
+						<h3 class="text-lg font-bold">{org.title}</h3>
+
+						<p class="text-sm text-gray-400">{org.date}</p>
+						<p class="mt-1 text-justify text-gray-300">{org.description}</p>
+					</div>
+				{/each}
+				{#if organizationExperiences.length > 3}
+					<button
+						class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
+						on:click={toggleShowMoreOrg}
+					>
+						{#if isShowMoreOrg}Show Less{:else}Show More{/if}
+					</button>
+				{/if}
+			</div>
+		{:else if activeTab === 'achievement'}
+			<div class="relative ml-6 border-l border-gray-700">
+				{#each showAchievements as ach, i}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -281,13 +384,21 @@
 						<p class="text-sm font-medium {textColors[i % textColors.length]}">
 							{ach.achievementName}
 						</p>
-						<h3 class="text-lg font-bold">{ach.title}</h3>
+						<p class="text-lg font-bold">{ach.title}</p>
 						<p class="text-sm text-gray-400">{ach.date}</p>
 						<p class="mt-1 text-justify text-gray-300">{ach.description}</p>
 					</div>
 				{/each}
+				{#if achievementItems.length > 3}
+					<button
+						class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
+						on:click={toggleShowMoreAch}
+					>
+						{#if isShowMoreAch}Show Less{:else}Show More{/if}
+					</button>
+				{/if}
 			</div>
-		</div>
+		{/if}
 	</div>
 	<div
 		id="projects"
@@ -371,8 +482,7 @@
 	</button>
 {/if}
 
-{#if tiktaktoeVisible}>Here are some of my recent projects that I have worked on. You can find more
-	on my GitHub.
+{#if tiktaktoeVisible}
 	<div
 		role="dialog"
 		aria-modal="true"
@@ -381,8 +491,7 @@
 		on:keydown={handleTiktaktoeKeydown}
 	>
 		<div
-			class="
-			bg-darkgray relative flex h-[500px] w-[500px] flex-col items-center justify-center rounded-lg p-5 shadow-lg"
+			class="bg-darkgray relative flex h-[500px] w-[500px] flex-col items-center justify-center rounded-lg p-5 shadow-lg"
 		>
 			<button
 				class="absolute top-2 right-2 text-gray-400 hover:text-white"
