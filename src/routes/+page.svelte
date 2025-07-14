@@ -281,10 +281,12 @@
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3 }}
 	>
-		<div class="mb-4 flex w-full items-center justify-center space-x-4">
+		<div
+			class="mb-4 flex w-full flex-col items-center justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4"
+		>
 			{#each tabs as tab}
 				<button
-					class="rounded-t-lg px-4 py-2 font-semibold text-white transition-shadow duration-200 focus:outline-none {activeTab ===
+					class="w-full rounded-lg px-4 py-2 font-semibold text-white transition-shadow duration-200 focus:outline-none md:w-auto md:rounded-t-lg {activeTab ===
 					tab.value
 						? 'shadow-[0_4px_16px_rgba(255,255,255,0.2)]'
 						: 'opacity-60'}"
@@ -294,6 +296,7 @@
 				</button>
 			{/each}
 		</div>
+
 		{#if activeTab === 'work'}
 			<div class="relative ml-6 border-l border-gray-700">
 				{#each showWorkExperiences as exp, i}
