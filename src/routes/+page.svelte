@@ -63,7 +63,6 @@
 	);
 	const achievementItems = achievements;
 
-	// Show More / Show Less logic for each tab
 	let isShowMoreWork = false;
 	let showWorkExperiences = workExperiences.slice(0, 3);
 	function toggleShowMoreWork() {
@@ -213,10 +212,11 @@
 	onMount(() => {
 		updateSectionIndexAndVisibility();
 	});
+
+	let cvDropdownVisible = false;
 </script>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
-	<!-- Profile / About -->
 	<div
 		id="arpthef"
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
@@ -250,12 +250,51 @@
 		</div>
 		<div class="mt-4 flex flex-col items-start justify-center gap-2">
 			<p class="text-justify text-gray-300">
-				Hi, I'm an undergraduate college student passionate about technology and software
-				development. I’m more into backend, but I also work with frontend.
+				I am an undergraduate student passionate about software development. I primarily focus on
+				backend development, building and maintaining the systems that operate behind the scenes,
+				while also contributing to frontend development to enhance user experience.
 			</p>
+			<div class="flex w-full flex-row items-center justify-between gap-2">
+				<a
+					href="/about"
+					class="rounded py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
+					>Learn more about me</a
+				>
+				<button
+					class="rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
+					on:click={() => (cvDropdownVisible = !cvDropdownVisible)}
+				>
+					Download CV
+				</button>
+			</div>
 		</div>
 	</div>
-	<!-- Technologies -->
+	{#if cvDropdownVisible}
+		<div
+			class="animate-fade-in mx-auto my-6 flex w-auto flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)]"
+			use:intersect={{ threshold: 0.3 }}
+		>
+			<p class="text-sm text-gray-400">Select curriculum vitae languages</p>
+			<div class="mt-2 flex flex-col gap-2">
+				<a
+					href="/assets/cv/arpcv-id.pdf"
+					class="rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
+					download="arpcv-id.pdf">Indonesia</a
+				>
+				<a
+					href="/assets/cv/arpcv-en.pdf"
+					class="hidden rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
+					download="arpcv-en.pdf">English</a
+				>
+			</div>
+			<button
+				class="mt-4 w-full rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
+				on:click={() => (cvDropdownVisible = false)}
+			>
+				Close
+			</button>
+		</div>
+	{/if}
 	<div
 		id="technologies"
 		class="animate-fade-in mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-4 md:w-1/3"
@@ -282,11 +321,11 @@
 		use:intersect={{ threshold: 0.3 }}
 	>
 		<div
-			class="mb-4 flex w-full flex-col items-center justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4"
+			class="mb-4 flex w-full flex-row items-center justify-start space-x-4 overflow-x-auto md:justify-center"
 		>
 			{#each tabs as tab}
 				<button
-					class="w-full rounded-lg px-4 py-2 font-semibold text-white transition-shadow duration-200 focus:outline-none md:w-auto md:rounded-t-lg {activeTab ===
+					class="rounded-lg px-4 py-2 font-semibold whitespace-nowrap text-white transition-shadow duration-200 focus:outline-none md:rounded-t-lg {activeTab ===
 					tab.value
 						? 'shadow-[0_4px_16px_rgba(255,255,255,0.2)]'
 						: 'opacity-60'}"
@@ -314,15 +353,15 @@
 						<p class="mt-1 text-justify text-gray-300">{exp.description}</p>
 					</div>
 				{/each}
-				{#if workExperiences.length > 3}
-					<button
-						class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
-						on:click={toggleShowMoreWork}
-					>
-						{#if isShowMoreWork}Show Less{:else}Show More{/if}
-					</button>
-				{/if}
 			</div>
+			{#if workExperiences.length > 3}
+				<button
+					class="mt-2 ml-6 rounded py-2 text-gray-400 transition duration-200 hover:text-white hover:underline"
+					on:click={toggleShowMoreWork}
+				>
+					{#if isShowMoreWork}Show Less{:else}Show More{/if}
+				</button>
+			{/if}
 		{:else if activeTab === 'education'}
 			<div class="relative ml-6 border-l border-gray-700">
 				{#each showEducationExperiences as edu, i}
@@ -339,15 +378,15 @@
 						<p class="mt-1 text-justify text-gray-300">{edu.description}</p>
 					</div>
 				{/each}
-				{#if educationExperiences.length > 3}
-					<button
-						class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
-						on:click={toggleShowMoreEdu}
-					>
-						{#if isShowMoreEdu}Show Less{:else}Show More{/if}
-					</button>
-				{/if}
 			</div>
+			{#if educationExperiences.length > 3}
+				<button
+					class="mt-2 ml-6 rounded py-2 text-gray-400 transition duration-200 hover:text-white hover:underline"
+					on:click={toggleShowMoreEdu}
+				>
+					{#if isShowMoreEdu}Show Less{:else}Show More{/if}
+				</button>
+			{/if}
 		{:else if activeTab === 'organization'}
 			<div class="relative ml-6 border-l border-gray-700">
 				{#each showOrganizationExperiences as org, i}
@@ -366,15 +405,15 @@
 						<p class="mt-1 text-justify text-gray-300">{org.description}</p>
 					</div>
 				{/each}
-				{#if organizationExperiences.length > 3}
-					<button
-						class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
-						on:click={toggleShowMoreOrg}
-					>
-						{#if isShowMoreOrg}Show Less{:else}Show More{/if}
-					</button>
-				{/if}
 			</div>
+			{#if organizationExperiences.length > 3}
+				<button
+					class="mt-2 ml-6 rounded py-2 text-gray-400 transition duration-200 hover:text-white hover:underline"
+					on:click={toggleShowMoreOrg}
+				>
+					{#if isShowMoreOrg}Show Less{:else}Show More{/if}
+				</button>
+			{/if}
 		{:else if activeTab === 'achievement'}
 			<div class="relative ml-6 border-l border-gray-700">
 				{#each showAchievements as ach, i}
@@ -392,15 +431,15 @@
 						<p class="mt-1 text-justify text-gray-300">{ach.description}</p>
 					</div>
 				{/each}
-				{#if achievementItems.length > 3}
-					<button
-						class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
-						on:click={toggleShowMoreAch}
-					>
-						{#if isShowMoreAch}Show Less{:else}Show More{/if}
-					</button>
-				{/if}
 			</div>
+			{#if achievementItems.length > 3}
+				<button
+					class="mt-2 ml-6 rounded py-2 text-gray-400 transition duration-200 hover:text-white hover:underline"
+					on:click={toggleShowMoreAch}
+				>
+					{#if isShowMoreAch}Show Less{:else}Show More{/if}
+				</button>
+			{/if}
 		{/if}
 	</div>
 	<div
