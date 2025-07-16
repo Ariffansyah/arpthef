@@ -118,9 +118,9 @@
 			<h1 class="text-3xl font-bold">About me</h1>
 		</div>
 		<p class="text-justify text-gray-300">
-			Hello! I'm Arifansyah, a software engineer from Surabaya, Indonesia. I specialize in building
-			applications using Go and TypeScript. My passion lies in creating efficient, scalable
-			solutions that enhance user experiences and streamline processes.
+			I am an undergraduate student passionate about software development. I primarily focus on
+			backend development, building and maintaining the systems that operate behind the scenes,
+			while also contributing to frontend development to enhance user experience.
 		</p>
 		<a href="/contact">
 			<button
@@ -140,8 +140,8 @@
 			My interest in computers began in elementary school, but it was during my final year of high
 			school that I started focusing on programming. My initial exposure to computers came from my
 			brother, who introduced me to basic usage. This sparked my journey into the online tech
-			community, where I connected with peers who inspired me to deepen my understanding of
-			computing.
+			community, where I connected with a lot of new friends who inspired me to deepen my
+			understanding of computing.
 			{#if isBioExpanded}
 				<span in:bioAnimation={{ duration: 500 }} out:bioAnimation={{ duration: 500 }}>
 					<br /><br />

@@ -250,9 +250,7 @@
 		</div>
 		<div class="mt-4 flex flex-col items-start justify-center gap-2">
 			<p class="text-justify text-gray-300">
-				I am an undergraduate student passionate about software development. I primarily focus on
-				backend development, building and maintaining the systems that operate behind the scenes,
-				while also contributing to frontend development to enhance user experience.
+				I enjoy creating web applications and exploring new technologies.
 			</p>
 			<div class="flex w-full flex-row items-center justify-between gap-2">
 				<a
