@@ -250,7 +250,7 @@
 		</div>
 		<div class="mt-4 flex flex-col items-start justify-center gap-2">
 			<p class="text-justify text-gray-300">
-				I enjoy creating web applications and exploring new technologies.
+				I enjoy building full-stack web applications and exploring new technologies.
 			</p>
 			<div class="flex w-full flex-row items-center justify-between gap-2">
 				<a
