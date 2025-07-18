@@ -212,8 +212,6 @@
 	onMount(() => {
 		updateSectionIndexAndVisibility();
 	});
-
-	let cvDropdownVisible = false;
 </script>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
@@ -258,41 +256,19 @@
 					class="rounded py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
 					>Learn more about me</a
 				>
-				<button
+				<a
 					class="rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
-					on:click={() => (cvDropdownVisible = !cvDropdownVisible)}
+					href="/assets/cv/cv-en.pdf"
+					download="arpthef-cv-en.pdf"
+					aria-label="Download CV"
+					target="_blank"
+					rel="noopener noreferrer"
 				>
 					Download CV
-				</button>
+				</a>
 			</div>
 		</div>
 	</div>
-	{#if cvDropdownVisible}
-		<div
-			class="animate-fade-in mx-auto my-6 flex w-auto flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)]"
-			use:intersect={{ threshold: 0.3 }}
-		>
-			<p class="text-sm text-gray-400">Select curriculum vitae languages</p>
-			<div class="mt-2 flex flex-col gap-2">
-				<a
-					href="/assets/cv/arpcv-id.pdf"
-					class="rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
-					download="arpcv-id.pdf">Indonesia</a
-				>
-				<a
-					href="/assets/cv/arpcv-en.pdf"
-					class="hidden rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
-					download="arpcv-en.pdf">English</a
-				>
-			</div>
-			<button
-				class="mt-4 w-full rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
-				on:click={() => (cvDropdownVisible = false)}
-			>
-				Close
-			</button>
-		</div>
-	{/if}
 	<div
 		id="technologies"
 		class="animate-fade-in mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-4 md:w-1/3"
@@ -319,7 +295,7 @@
 		use:intersect={{ threshold: 0.3 }}
 	>
 		<div
-			class="mb-4 flex w-full flex-row items-center justify-start space-x-4 overflow-x-auto md:justify-center"
+			class="mb-4 flex w-full scroll-pr-4 scroll-pl-4 flex-row items-center justify-start space-x-4 overflow-x-auto md:justify-between"
 		>
 			{#each tabs as tab}
 				<button
