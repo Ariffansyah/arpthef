@@ -184,7 +184,7 @@
 		use:intersect={{ threshold: 0.3 }}
 	>
 		<div
-			class="mb-4 flex w-full flex-row items-center justify-start space-x-4 overflow-x-auto md:justify-center"
+			class="mb-4 flex w-full scroll-pr-4 scroll-pl-4 flex-row items-center justify-start space-x-4 overflow-x-auto md:justify-between"
 		>
 			{#each tabs as tab}
 				<button
