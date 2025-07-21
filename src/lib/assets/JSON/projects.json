@@ -72,6 +72,22 @@
 		"projectLink": "/projects/petshop-oop"
 	},
 	{
+		"projectName": "TODO QT",
+		"technologies": [
+			{
+				"name": "C++",
+				"icon": "https://cdn.simpleicons.org/cplusplus/ffffff"
+			},
+			{
+				"name": "Qt",
+				"icon": "https://cdn.simpleicons.org/qt/ffffff"
+			}
+		],
+		"projectDescription": "A simple To-Do application built with C++ and Qt.",
+		"projectImage": "/assets/todo-qt.png",
+		"projectLink": "/projects/todo-qt"
+	},
+	{
 		"projectName": "Lucy - Discord Bot",
 		"technologies": [
 			{
