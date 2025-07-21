@@ -65,7 +65,7 @@
 			<div class="flex gap-4">
 				<button
 					type="button"
-					aria-label="Open full-size Paradiseisland2 screenshot"
+					aria-label="Open full-size Pymailer screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
 					on:click={() => openModal('/assets/pymailer.png')}
 				>
@@ -78,7 +78,7 @@
 
 				<button
 					type="button"
-					aria-label="Open full-size Paradiseisland3 screenshot"
+					aria-label="Open full-size Pymailer2 screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
 					on:click={() => openModal('/assets/pymailer2.png')}
 				>
