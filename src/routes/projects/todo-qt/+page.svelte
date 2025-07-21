@@ -29,6 +29,7 @@
 			<div class="mt-5 flex flex-row items-center gap-2">
 				<img src="https://cdn.simpleicons.org/cplusplus/ffffff" alt="C++" class="h-8 w-8" />
 				<img src="https://cdn.simpleicons.org/qt/ffffff" alt="Qt" class="h-8 w-8" />
+				<img src="https://cdn.simpleicons.org/sqlite/ffffff" alt="SQLite" class="h-8 w-8" />
 			</div>
 		</div>
 		<div class="mt-4 flex flex-col items-start justify-center gap-2 text-gray-300">
@@ -52,7 +53,7 @@
 	>
 		<p class="text-justify text-gray-300">
 			TODO QT is a simple, cross-platform desktop application for managing your tasks. It is built
-			using C++ and the Qt framework, providing a user-friendly interface for task management.
+			using C++, Qt framework and SQLite, providing a user-friendly interface for task management.
 		</p>
 
 		<div class="mt-4 space-y-4">

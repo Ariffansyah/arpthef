@@ -81,9 +81,13 @@
 			{
 				"name": "Qt",
 				"icon": "https://cdn.simpleicons.org/qt/ffffff"
+			},
+			{
+				"name": "SQLite",
+				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
 			}
 		],
-		"projectDescription": "A simple To-Do application built with C++ and Qt.",
+		"projectDescription": "A simple To-Do application built with C++, Qt and SQLite.",
 		"projectImage": "/assets/todo-qt.png",
 		"projectLink": "/projects/todo-qt"
 	},
