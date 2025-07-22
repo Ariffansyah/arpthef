@@ -1,38 +1,59 @@
-# sv
+# arpthef - Personal Web Portfolio
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Welcome to my personal web portfolio project!  
+This repository contains the source code for [arpthef](https://github.com/Ariffansyah/arpthef), built to showcase my work, skills, and background as a developer.
 
-## Creating a project
+## Tech Stack
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **Framework:** [Svelte](https://svelte.dev/)
+- **Languages:** TypeScript, JavaScript, HTML, CSS
+- **Runtime & Package Manager:** [Bun](https://bun.sh/)
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Features
 
-# create a new project in my-app
-npx sv create my-app
-```
+- Modern, responsive design
+- Interactive components and smooth navigation
+- Projects and experience showcased
+- Contact information
 
-## Developing
+## Getting Started (with Bun)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
+To run this project locally using Bun:
 
 ```bash
-npm run build
+git clone https://github.com/Ariffansyah/arpthef.git
+cd arpthef
+
+bun install
+
+bun run dev
 ```
 
-You can preview the production build with `npm run preview`.
+Then open [http://localhost:5173](http://localhost:5173) in your browser.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Build
+
+To build for production with Bun:
+
+```bash
+bun run build
+```
+
+## Learn More
+
+- [Svelte Documentation](https://svelte.dev/docs)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [Bun Documentation](https://bun.sh/docs)
+
+## About Me
+
+I'm Ariffansyah, a passionate developer interested in web technologies, design, and user experience.  
+Feel free to reach out via the contact section of this site or through GitHub issues.
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+Thank you for visiting my portfolio!
