@@ -12,7 +12,7 @@
 	>
 		<div
 			class="animate-fade-in flex w-full flex-row items-center justify-center text-white"
-			use:intersect={{ threshold: 0.3 }}
+			use:intersect={{ threshold: 0.3, once: true }}
 		>
 			<div class="flex flex-col">
 				<h1 class="text-3xl font-bold">Projects</h1>
@@ -24,7 +24,7 @@
 				{#each projects as project}
 					<div
 						class="animate-fade-in flex min-h-[430px] flex-col items-start justify-center gap-4 rounded-2xl bg-white/5 p-6 shadow-xl transition duration-300 hover:scale-105"
-						use:intersect={{ threshold: 0.3 }}
+						use:intersect={{ threshold: 0.3, once: true }}
 					>
 						<div class="relative w-full">
 							<img

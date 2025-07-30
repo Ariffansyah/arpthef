@@ -5,7 +5,7 @@
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
-		use:intersect={{ threshold: 0.3 }}
+		use:intersect={{ threshold: 0.3, once: true }}
 	>
 		<div class="flex w-full flex-col items-start text-white">
 			<h1 class="text-3xl font-bold">Lucy - Discord bot</h1>
@@ -33,7 +33,7 @@
 
 	<div
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
-		use:intersect={{ threshold: 0.3 }}
+		use:intersect={{ threshold: 0.3, once: true }}
 	>
 		<p class="text-justify text-gray-300">
 			Lucy is a Discord bot written in Go, primarily designed to facilitate the "join to create"
