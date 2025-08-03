@@ -25,7 +25,9 @@
 			<p class="mt-4 text-gray-300">Or connect with me on social media:</p>
 			<div class="mt-4 flex flex-col gap-2">
 				<a
-					href="https://github.com/Ariffnasyah"
+					href="https://github.com/Ariffansyah"
+					target="_blank"
+					rel="noopener noreferrer"
 					class="text-blue-500 hover:underline"
 					aria-label="Visit my GitHub profile"
 				>
@@ -33,6 +35,8 @@
 				</a>
 				<a
 					href="https://www.linkedin.com/in/arpthef/"
+					target="_blank"
+					rel="noopener noreferrer"
 					class="text-blue-500 hover:underline"
 					aria-label="Visit my LinkedIn profile"
 				>
@@ -40,6 +44,8 @@
 				</a>
 				<a
 					href="https://x.com/nishimiyaa12"
+					target="_blank"
+					rel="noopener noreferrer"
 					class="text-blue-500 hover:underline"
 					aria-label="Visit my X profile"
 				>
@@ -47,6 +53,8 @@
 				</a>
 				<a
 					href="https://www.instagram.com/arppthef/"
+					target="_blank"
+					rel="noopener noreferrer"
 					class="text-blue-500 hover:underline"
 					aria-label="Visit my Instagram profile"
 				>
