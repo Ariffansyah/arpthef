@@ -1,5 +1,21 @@
 [
 	{
+		"projectName": "GenRe Papua",
+		"technologies": [
+			{
+				"name": "SvelteKit",
+				"icon": "https://cdn.simpleicons.org/svelte/ffffff"
+			},
+			{
+				"name": "TypeScript",
+				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
+			}
+		],
+		"projectDescription": "GenRe Papua is a website that provides information about the GenRe Papua community, including news, events, and resources.",
+		"projectImage": "/assets/genrepapua.png",
+		"projectLink": "/projects/genrepapua"
+	},
+	{
 		"projectName": "Fatebound",
 		"technologies": [
 			{

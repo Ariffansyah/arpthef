@@ -49,6 +49,27 @@
 		"description": "UI magic, no BS."
 	},
 	{
+		"name": "C#",
+		"icon": "https://img.icons8.com/?size=100&id=111972&format=png&color=ffffff",
+		"alt": "C#",
+		"category": "Language",
+		"description": "Game dev and more."
+	},
+	{
+		"name": "Unity",
+		"icon": "https://cdn.simpleicons.org/unity/ffffff",
+		"alt": "Unity",
+		"category": "Game Engine",
+		"description": "Game dev playground."
+	},
+	{
+		"name": "C++",
+		"icon": "https://cdn.simpleicons.org/cplusplus/ffffff",
+		"alt": "C++",
+		"category": "Language",
+		"description": "Powerful, complex, fast."
+	},
+	{
 		"name": "Tailwind CSS",
 		"icon": "https://cdn.simpleicons.org/tailwindcss/ffffff",
 		"alt": "TailwindCSS",
