@@ -62,16 +62,28 @@
 		</p>
 
 		<div class="mt-4 space-y-4">
+			<button
+				type="button"
+				class="w-full py-2 text-gray-400 transition duration-300 hover:text-white hover:underline"
+				on:click={() => openModal('/assets/genrepapua.png')}
+			>
+				<img
+					src="/assets/genrepapua.png"
+					alt="genrepapua screenshot"
+					class="h-[300px] w-full rounded-lg object-cover object-top shadow-lg"
+				/>
+			</button>
+
 			<div class="flex gap-4">
 				<button
 					type="button"
 					aria-label="Open full-size Pymailer screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/genrepapua.png')}
+					on:click={() => openModal('/assets/genrepapua2.png')}
 				>
 					<img
-						src="/assets/genrepapua.png"
-						alt="genrepapua screenshot"
+						src="/assets/genrepapua2.png"
+						alt="genrepapua screenshot 2"
 						class="h-[500px] w-full rounded-lg object-cover object-right-top shadow-lg"
 					/>
 				</button>
@@ -80,11 +92,11 @@
 					type="button"
 					aria-label="Open full-size Pymailer2 screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/genrepapua2.png')}
+					on:click={() => openModal('/assets/genrepapua3.png')}
 				>
 					<img
-						src="/assets/genrepapua2.png"
-						alt="genrepapua screenshot 2"
+						src="/assets/genrepapua3.png"
+						alt="genrepapua screenshot 3"
 						class="h-[500px] w-full rounded-lg object-cover object-top shadow-lg"
 					/>
 				</button>
