@@ -84,7 +84,7 @@
 					<img
 						src="/assets/genrepapua2.png"
 						alt="genrepapua screenshot 2"
-						class="h-[500px] w-full rounded-lg object-cover object-right-top shadow-lg"
+						class="object-center-top h-[500px] w-full rounded-lg object-cover shadow-lg"
 					/>
 				</button>
 
@@ -97,7 +97,7 @@
 					<img
 						src="/assets/genrepapua3.png"
 						alt="genrepapua screenshot 3"
-						class="h-[500px] w-full rounded-lg object-cover object-top shadow-lg"
+						class="object-center-top h-[500px] w-full rounded-lg object-cover shadow-lg"
 					/>
 				</button>
 			</div>
