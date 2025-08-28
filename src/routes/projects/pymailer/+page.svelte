@@ -19,6 +19,34 @@
 	}
 </script>
 
+<svelte:head>
+	<title>PyMailer - arp</title>
+	<meta
+		name="description"
+		content="A desktop email sender built with Python and CustomTkinter, supporting both Mailtrap sandbox and transactional SMTP for sending plain text or HTML emails."
+	/>
+	<meta
+		name="keywords"
+		content="PyMailer, Python, CustomTkinter, Mailtrap, SMTP, Email Sender, Desktop Application"
+	/>
+	<meta name="author" content="arp" />
+	<meta property="og:title" content="PyMailer - arp" />
+	<meta
+		property="og:description"
+		content="A desktop email sender built with Python and CustomTkinter, supporting both Mailtrap sandbox and transactional SMTP for sending plain text or HTML emails."
+	/>
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://arpthef.com/projects/pymailer" />
+	<meta property="og:image" content="https://arpthef.com/assets/pymailer.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="PyMailer - arp" />
+	<meta
+		name="twitter:description"
+		content="A desktop email sender built with Python and CustomTkinter, supporting both Mailtrap sandbox and transactional SMTP for sending plain text or HTML emails."
+	/>
+	<meta name="twitter:image" content="https://arpthef.com/assets/pymailer.png" />
+</svelte:head>
+
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"

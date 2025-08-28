@@ -19,6 +19,22 @@
 	}
 </script>
 
+<svelte:head>
+	<title>GenRe Papua - arp</title>
+	<meta name="description" content="GenRe Papua Official Website." />
+	<meta name="keywords" content="GenRe Papua, Svelte, TypeScript, Non-Profit, Youth Empowerment" />
+	<meta name="author" content="arp" />
+	<meta property="og:title" content="GenRe Papua - arp" />
+	<meta property="og:description" content="GenRe Papua Official Website." />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://arpthef.com/projects/genrepapua" />
+	<meta property="og:image" content="https://arpthef.com/assets/genrepapua.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="GenRe Papua - arp" />
+	<meta name="twitter:description" content="GenRe Papua Official Website." />
+	<meta name="twitter:image" content="https://arpthef.com/assets/genrepapua.png" />
+</svelte:head>
+
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"

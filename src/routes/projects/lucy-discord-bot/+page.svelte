@@ -2,6 +2,34 @@
 	import { intersect } from '$lib/actions/intersect';
 </script>
 
+<svelte:head>
+	<title>Lucy - arp</title>
+	<meta
+		name="description"
+		content="Lucy is a Discord bot designed to enchance your Discord server experience with Join To Create feature."
+	/>
+	<meta
+		name="keywords"
+		content="Lucy, Discord Bot, Go, SQLite, Join To Create, Voice Channel Management"
+	/>
+	<meta name="author" content="arp" />
+	<meta property="og:title" content="Lucy - arp" />
+	<meta
+		property="og:description"
+		content="Lucy is a Discord bot designed to enchance your Discord server experience with Join To Create feature."
+	/>
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://arpthef.com/projects/lucy" />
+	<meta property="og:image" content="https://arpthef.com/assets/lucy.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Lucy - arp" />
+	<meta
+		name="twitter:description"
+		content="Lucy is a Discord bot designed to enchance your Discord server experience with Join To Create feature."
+	/>
+	<meta name="twitter:image" content="https://arpthef.com/assets/lucy.png" />
+</svelte:head>
+
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"

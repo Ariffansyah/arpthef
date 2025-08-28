@@ -20,6 +20,34 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Wonderful Papua - arp</title>
+	<meta
+		name="description"
+		content="Website for my home island, Wonderful Papua, showcasing its beauty and culture."
+	/>
+	<meta
+		name="keywords"
+		content="Wonderful Papua, Paradise Island, Tourism, Culture, Travel, Indonesia"
+	/>
+	<meta name="author" content="arp" />
+	<meta property="og:title" content="Wonderful Papua - arp" />
+	<meta
+		property="og:description"
+		content="Website for my home island, Wonderful Papua, showcasing its beauty and culture."
+	/>
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://arpthef.com/projects/wonderful-papua" />
+	<meta property="og:image" content="https://arpthef.com/assets/Paradiseisland.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Wonderful Papua - arp" />
+	<meta
+		name="twitter:description"
+		content="Website for my home island, Wonderful Papua, showcasing its beauty and culture."
+	/>
+	<meta name="twitter:image" content="https://arpthef.com/assets/Paradiseisland.png" />
+</svelte:head>
+
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
