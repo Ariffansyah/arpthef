@@ -109,6 +109,25 @@
 	}
 </script>
 
+<svelte:head>
+	<title>About me - arp</title>
+	<meta name="description" content="Learn more about Mohammad Ariffansyah." />
+	<meta
+		name="keywords"
+		content="about, arp, arpthef, mohammad, ariffansyah, developer, programmer, backend, frontend, fullstack"
+	/>
+	<meta name="author" content="Mohammad Ariffansyah" />
+	<meta property="og:title" content="About me - arp" />
+	<meta property="og:image" content="https://arpthef.com/favicon.png" />
+	<meta property="og:description" content="Learn more about Mohammad Ariffansyah." />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://arpthef.com/about" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="About me - arp" />
+	<meta name="twitter:description" content="Learn more about Mohammad Ariffansyah." />
+	<link rel="canonical" href="https://arpthef.com/about" />
+</svelte:head>
+
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"

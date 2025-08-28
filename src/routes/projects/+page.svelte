@@ -5,6 +5,25 @@
 	const projects = ProjectsData;
 </script>
 
+<svelte:head>
+	<title>Projects - arp</title>
+	<meta name="description" content="Explore some of my projects and works." />
+	<meta
+		name="keywords"
+		content="projects, works, portfolio, arp, arpthef, mohammad, ariffansyah, developer, programmer, backend, frontend, fullstack"
+	/>
+	<meta name="author" content="Mohammad Ariffansyah" />
+	<meta property="og:title" content="Projects - arp" />
+	<meta property="og:image" content="https://arpthef.com/favicon.png" />
+	<meta property="og:description" content="Explore some of my projects and works." />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://arpthef.com/projects" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Projects - arp" />
+	<meta name="twitter:description" content="Explore some of my projects and works." />
+	<link rel="canonical" href="https://arpthef.com/projects" />
+</svelte:head>
+
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
 		class="my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-11/12"

@@ -222,7 +222,7 @@
 	>
 		<div class="flex w-full flex-row items-start justify-between text-white">
 			<div class="flex flex-col">
-				<h1 class="text-3xl font-bold">Mohammad "arpthef" Ariffansyah</h1>
+				<h1 class="text-3xl font-bold">Mohammad "arp" Ariffansyah</h1>
 				<p class="text-sm text-gray-400">Surabaya, Indonesia</p>
 			</div>
 			<div class="flex items-center">
