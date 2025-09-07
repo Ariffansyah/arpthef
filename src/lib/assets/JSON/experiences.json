@@ -1,17 +1,17 @@
 [
 	{
-		"experienceName": "Assistant Laboratory - State University of Surabaya",
-		"category": "Work",
-		"title": "Software Development Laboratory Assistant",
-		"date": "Apr, 2025 – Present",
-		"description": "Assisted in the Software Development Laboratories."
-	},
-	{
 		"experienceName": "Freelance Web Developer - GenRe Papua",
 		"category": "Work",
 		"title": "Web Developer",
 		"date": "Aug, 2024 – Present",
 		"description": "Developed and maintained the GenRe Papua website, ensuring a user-friendly experience and up-to-date content. Collaborated with the team to implement new features and optimize performance, contributing to the organization's online presence and outreach efforts."
+	},
+	{
+		"experienceName": "Assistant Laboratory - State University of Surabaya",
+		"category": "Work",
+		"title": "Software Development Laboratory Assistant",
+		"date": "Apr, 2025 – Present",
+		"description": "Assisted in the Software Development Laboratories."
 	},
 	{
 		"experienceName": "GrandFinal ADUJAK GenRe Papua - Local Food Local Pride",
