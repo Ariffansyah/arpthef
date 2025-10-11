@@ -16,6 +16,10 @@ This repository contains the source code for [arpthef](https://github.com/Ariffa
 - Projects and experience showcased
 - Contact information
 
+## Screenshots
+| ![Screenshot 1](./static/assets/SS1.png) | ![Screenshot 2](./static/assets/SS2.png) | ![Screenshot 3](./static/assets/SS3.png) |
+|------------------------------------------|------------------------------------------|------------------------------------------|
+| ![Screenshot 4](./static/assets/SS4.png) | ![Screenshot 5](./static/assets/SS5.png) |                                          |
 ## Getting Started (with Bun)
 
 To run this project locally using Bun:
