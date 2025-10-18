@@ -37,14 +37,14 @@
 	/>
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://arpthef.com/projects/pymailer" />
-	<meta property="og:image" content="https://arpthef.com/assets/pymailer.png" />
+	<meta property="og:image" content="https://arpthef.com/assets/pymailer.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="PyMailer - arp" />
 	<meta
 		name="twitter:description"
 		content="A desktop email sender built with Python and CustomTkinter, supporting both Mailtrap sandbox and transactional SMTP for sending plain text or HTML emails."
 	/>
-	<meta name="twitter:image" content="https://arpthef.com/assets/pymailer.png" />
+	<meta name="twitter:image" content="https://arpthef.com/assets/pymailer.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
@@ -95,10 +95,10 @@
 					type="button"
 					aria-label="Open full-size Pymailer screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/pymailer.png')}
+					on:click={() => openModal('/assets/pymailer.webp')}
 				>
 					<img
-						src="/assets/pymailer.png"
+						src="/assets/pymailer.webp"
 						alt="PyMailer screenshot"
 						class="w-full rounded-lg shadow-lg"
 					/>
@@ -108,10 +108,10 @@
 					type="button"
 					aria-label="Open full-size Pymailer2 screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/pymailer2.png')}
+					on:click={() => openModal('/assets/pymailer2.webp')}
 				>
 					<img
-						src="/assets/pymailer2.png"
+						src="/assets/pymailer2.webp"
 						alt="PyMailer screenshot 2"
 						class="w-full rounded-lg shadow-lg"
 					/>

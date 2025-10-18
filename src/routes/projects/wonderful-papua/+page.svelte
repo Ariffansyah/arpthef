@@ -38,14 +38,14 @@
 	/>
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://arpthef.com/projects/wonderful-papua" />
-	<meta property="og:image" content="https://arpthef.com/assets/Paradiseisland.png" />
+	<meta property="og:image" content="https://arpthef.com/assets/Paradiseisland.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Wonderful Papua - arp" />
 	<meta
 		name="twitter:description"
 		content="Website for my home island, Wonderful Papua, showcasing its beauty and culture."
 	/>
-	<meta name="twitter:image" content="https://arpthef.com/assets/Paradiseisland.png" />
+	<meta name="twitter:image" content="https://arpthef.com/assets/Paradiseisland.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
@@ -93,10 +93,10 @@
 				type="button"
 				aria-label="Open full-size Paradiseisland screenshot"
 				class="block w-full cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-				on:click={() => openModal('/assets/Paradiseisland.png')}
+				on:click={() => openModal('/assets/Paradiseisland.webp')}
 			>
 				<img
-					src="/assets/Paradiseisland.png"
+					src="/assets/Paradiseisland.webp"
 					alt="Wonderful Papua screenshot"
 					class="w-full rounded-lg shadow-lg"
 				/>
@@ -107,10 +107,10 @@
 					type="button"
 					aria-label="Open full-size Paradiseisland2 screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/Paradiseisland2.png')}
+					on:click={() => openModal('/assets/Paradiseisland2.webp')}
 				>
 					<img
-						src="/assets/Paradiseisland2.png"
+						src="/assets/Paradiseisland2.webp"
 						alt="Wonderful Papua screenshot 2"
 						class="w-full rounded-lg shadow-lg"
 					/>
@@ -120,10 +120,10 @@
 					type="button"
 					aria-label="Open full-size Paradiseisland3 screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/Paradiseisland3.png')}
+					on:click={() => openModal('/assets/Paradiseisland3.webp')}
 				>
 					<img
-						src="/assets/Paradiseisland3.png"
+						src="/assets/Paradiseisland3.webp"
 						alt="Wonderful Papua screenshot 3"
 						class="w-full rounded-lg shadow-lg"
 					/>

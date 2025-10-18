@@ -28,11 +28,11 @@
 	<meta property="og:description" content="Fatebound is a 2d fighting game developed in Unity." />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://arpthef.com/projects/fatebound" />
-	<meta property="og:image" content="https://arpthef.com/assets/fatebound.png" />
+	<meta property="og:image" content="https://arpthef.com/assets/fatebound.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Fatebound - arp" />
 	<meta name="twitter:description" content="Fatebound is a 2d fighting game developed in Unity." />
-	<meta name="twitter:image" content="https://arpthef.com/assets/fatebound.png" />
+	<meta name="twitter:image" content="https://arpthef.com/assets/fatebound.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
@@ -45,7 +45,7 @@
 			<div class="mt-5 flex flex-row items-center gap-2">
 				<img src="https://cdn.simpleicons.org/unity/ffffff" alt="Unity" class="h-8 w-8" />
 				<img
-					src="https://img.icons8.com/?size=100&id=111972&format=png&color=ffffff"
+					src="https://img.icons8.com/?size=100&id=111972&format.webp&color=ffffff"
 					alt="C#"
 					class="h-8 w-8"
 				/>
@@ -80,10 +80,10 @@
 					type="button"
 					aria-label="Open full-size Pymailer screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/fatebound.png')}
+					on:click={() => openModal('/assets/fatebound.webp')}
 				>
 					<img
-						src="/assets/fatebound.png"
+						src="/assets/fatebound.webp"
 						alt="Fatebound screenshot"
 						class="w-full rounded-lg shadow-lg"
 					/>
@@ -93,10 +93,10 @@
 					type="button"
 					aria-label="Open full-size Pymailer2 screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/fatebound2.png')}
+					on:click={() => openModal('/assets/fatebound2.webp')}
 				>
 					<img
-						src="/assets/fatebound2.png"
+						src="/assets/fatebound2.webp"
 						alt="Fatebound screenshot 2"
 						class="w-full rounded-lg shadow-lg"
 					/>

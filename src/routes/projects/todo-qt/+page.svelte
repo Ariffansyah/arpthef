@@ -34,14 +34,14 @@
 	/>
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://arpthef.com/projects/todo-qt" />
-	<meta property="og:image" content="https://arpthef.com/assets/todo-qt.png" />
+	<meta property="og:image" content="https://arpthef.com/assets/todo-qt.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="TODO QT - arp" />
 	<meta
 		name="twitter:description"
 		content="A simple cross-platform desktop application for managing your tasks."
 	/>
-	<meta name="twitter:image" content="https://arpthef.com/assets/todo-qt.png" />
+	<meta name="twitter:image" content="https://arpthef.com/assets/todo-qt.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
@@ -87,10 +87,10 @@
 					type="button"
 					aria-label="Open full-size TODO QT screenshot"
 					class="w-full cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/todo-qt.png')}
+					on:click={() => openModal('/assets/todo-qt.webp')}
 				>
 					<img
-						src="/assets/todo-qt.png"
+						src="/assets/todo-qt.webp"
 						alt="TODO QT screenshot"
 						class="w-full rounded-lg shadow-lg"
 					/>

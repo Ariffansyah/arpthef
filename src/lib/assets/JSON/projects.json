@@ -12,7 +12,7 @@
 			}
 		],
 		"projectDescription": "GenRe Papua is a website that provides information about the GenRe Papua community, including news, events, and resources.",
-		"projectImage": "/assets/genrepapua.png",
+		"projectImage": "/assets/genrepapua.webp",
 		"projectLink": "/projects/genrepapua"
 	},
 	{
@@ -24,7 +24,7 @@
 			},
 			{
 				"name": "C#",
-				"icon": "https://img.icons8.com/?size=100&id=111972&format=png&color=ffffff"
+				"icon": "https://img.icons8.com/?size=100&id=111972&format.webp&color=ffffff"
 			},
 			{
 				"name": "Itch.io",
@@ -32,7 +32,7 @@
 			}
 		],
 		"projectDescription": "Fatebound is a 2d fighting game developed in Unity.",
-		"projectImage": "/assets/fatebound.png",
+		"projectImage": "/assets/fatebound.webp",
 		"projectLink": "/projects/fatebound"
 	},
 	{
@@ -48,7 +48,7 @@
 			}
 		],
 		"projectDescription": "A simple email sender application using Mailtrap.",
-		"projectImage": "/assets/pymailer.png",
+		"projectImage": "/assets/pymailer.webp",
 		"projectLink": "/projects/pymailer"
 	},
 	{
@@ -72,7 +72,7 @@
 			}
 		],
 		"projectDescription": "This is my personal website where I showcase my projects and skills.",
-		"projectImage": "/assets/arpthef.png",
+		"projectImage": "/assets/arpthef.webp",
 		"projectLink": "/"
 	},
 	{
@@ -88,7 +88,7 @@
 			}
 		],
 		"projectDescription": "Orb OS is a Linux-based operating system designed with developers in mind.",
-		"projectImage": "/assets/Orb.png",
+		"projectImage": "/assets/Orb.webp",
 		"projectLink": "/projects/orb-os"
 	},
 	{
@@ -104,7 +104,7 @@
 			}
 		],
 		"projectDescription": "OOP collage project for a pet shop management system using Kotlin and SQLite.",
-		"projectImage": "/assets/petshop.png",
+		"projectImage": "/assets/petshop.webp",
 		"projectLink": "/projects/petshop-oop"
 	},
 	{
@@ -124,7 +124,7 @@
 			}
 		],
 		"projectDescription": "A simple To-Do application built with C++, Qt and SQLite.",
-		"projectImage": "/assets/todo-qt.png",
+		"projectImage": "/assets/todo-qt.webp",
 		"projectLink": "/projects/todo-qt"
 	},
 	{
@@ -144,7 +144,7 @@
 			}
 		],
 		"projectDescription": "Lucy is a Discord bot designed to enhance user experience with Join To Create feature.",
-		"projectImage": "/assets/SourceCode.png",
+		"projectImage": "/assets/SourceCode.webp",
 		"projectLink": "/projects/lucy-discord-bot"
 	},
 	{
@@ -168,7 +168,7 @@
 			}
 		],
 		"projectDescription": "Website for my home island, Wonderful Papua, showcasing its beauty and culture.",
-		"projectImage": "/assets/Paradiseisland.png",
+		"projectImage": "/assets/Paradiseisland.webp",
 		"projectLink": "/projects/wonderful-papua"
 	}
 ]

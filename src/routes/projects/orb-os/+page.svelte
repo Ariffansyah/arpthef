@@ -38,14 +38,14 @@
 	/>
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://arpthef.com/projects/orb-os" />
-	<meta property="og:image" content="https://arpthef.com/assets/Orb.png" />
+	<meta property="og:image" content="https://arpthef.com/assets/Orb.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Orb OS - arp" />
 	<meta
 		name="twitter:description"
 		content="Orb OS is a Linux-based operating system designed with developers in mind."
 	/>
-	<meta name="twitter:image" content="https://arpthef.com/assets/Orb.png" />
+	<meta name="twitter:image" content="https://arpthef.com/assets/Orb.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
@@ -93,9 +93,9 @@
 				type="button"
 				aria-label="Open full-size Orb OS screenshot"
 				class="cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-				on:click={() => openModal('/assets/Orb.png')}
+				on:click={() => openModal('/assets/Orb.webp')}
 			>
-				<img src="/assets/Orb.png" alt="Orb OS screenshot" class="rounded-lg shadow-lg" />
+				<img src="/assets/Orb.webp" alt="Orb OS screenshot" class="rounded-lg shadow-lg" />
 			</button>
 		</div>
 	</div>

@@ -14,7 +14,7 @@
 	/>
 	<meta name="author" content="Mohammad Ariffansyah" />
 	<meta property="og:title" content="Projects - arp" />
-	<meta property="og:image" content="https://arpthef.com/favicon.png" />
+	<meta property="og:image" content="https://arpthef.com/Logo.webp" />
 	<meta property="og:description" content="Explore some of my projects and works." />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://arpthef.com/projects" />

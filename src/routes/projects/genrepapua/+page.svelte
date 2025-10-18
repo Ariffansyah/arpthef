@@ -28,11 +28,11 @@
 	<meta property="og:description" content="GenRe Papua Official Website." />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://arpthef.com/projects/genrepapua" />
-	<meta property="og:image" content="https://arpthef.com/assets/genrepapua.png" />
+	<meta property="og:image" content="https://arpthef.com/assets/genrepapua.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="GenRe Papua - arp" />
 	<meta name="twitter:description" content="GenRe Papua Official Website." />
-	<meta name="twitter:image" content="https://arpthef.com/assets/genrepapua.png" />
+	<meta name="twitter:image" content="https://arpthef.com/assets/genrepapua.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
@@ -81,10 +81,10 @@
 			<button
 				type="button"
 				class="w-full py-2 text-gray-400 transition duration-300 hover:text-white hover:underline"
-				on:click={() => openModal('/assets/genrepapua.png')}
+				on:click={() => openModal('/assets/genrepapua.webp')}
 			>
 				<img
-					src="/assets/genrepapua.png"
+					src="/assets/genrepapua.webp"
 					alt="genrepapua screenshot"
 					class="h-[300px] w-full rounded-lg object-cover object-top shadow-lg"
 				/>
@@ -95,10 +95,10 @@
 					type="button"
 					aria-label="Open full-size Pymailer screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/genrepapua2.png')}
+					on:click={() => openModal('/assets/genrepapua2.webp')}
 				>
 					<img
-						src="/assets/genrepapua2.png"
+						src="/assets/genrepapua2.webp"
 						alt="genrepapua screenshot 2"
 						class="object-center-top h-[500px] w-full rounded-lg object-cover shadow-lg"
 					/>
@@ -108,10 +108,10 @@
 					type="button"
 					aria-label="Open full-size Pymailer2 screenshot"
 					class="w-1/2 cursor-pointer rounded-lg border-none bg-transparent p-0 shadow-lg"
-					on:click={() => openModal('/assets/genrepapua3.png')}
+					on:click={() => openModal('/assets/genrepapua3.webp')}
 				>
 					<img
-						src="/assets/genrepapua3.png"
+						src="/assets/genrepapua3.webp"
 						alt="genrepapua screenshot 3"
 						class="object-center-top h-[500px] w-full rounded-lg object-cover shadow-lg"
 					/>
