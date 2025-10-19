@@ -17,9 +17,9 @@ This repository contains the source code for [arpthef](https://github.com/Ariffa
 - Contact information
 
 ## Screenshots
-| ![Screenshot 1](./static/assets/SS1.png) | ![Screenshot 2](./static/assets/SS2.png) | ![Screenshot 3](./static/assets/SS3.png) |
+| ![Screenshot 1](./static/assets/SS1.webp) | ![Screenshot 2](./static/assets/SS2.webp) | ![Screenshot 3](./static/assets/SS3.webp) |
 |------------------------------------------|------------------------------------------|------------------------------------------|
-| ![Screenshot 4](./static/assets/SS4.png) | ![Screenshot 5](./static/assets/SS5.png) |                                          |
+| ![Screenshot 4](./static/assets/SS4.webp) | ![Screenshot 5](./static/assets/SS5.webp) |                                          |
 ## Getting Started (with Bun)
 
 To run this project locally using Bun:
