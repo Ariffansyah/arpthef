@@ -37,15 +37,15 @@
 		content="Website for my home island, Wonderful Papua, showcasing its beauty and culture."
 	/>
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/projects/wonderful-papua" />
-	<meta property="og:image" content="https://arpthef.com/assets/Paradiseisland.webp" />
+	<meta property="og:url" content="https://arpthef.my.id/projects/wonderful-papua" />
+	<meta property="og:image" content="https://arpthef.my.id/assets/Paradiseisland.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Wonderful Papua - arp" />
 	<meta
 		name="twitter:description"
 		content="Website for my home island, Wonderful Papua, showcasing its beauty and culture."
 	/>
-	<meta name="twitter:image" content="https://arpthef.com/assets/Paradiseisland.webp" />
+	<meta name="twitter:image" content="https://arpthef.my.id/assets/Paradiseisland.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">

@@ -27,12 +27,12 @@
 	<meta property="og:title" content="Fatebound - arp" />
 	<meta property="og:description" content="Fatebound is a 2d fighting game developed in Unity." />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/projects/fatebound" />
-	<meta property="og:image" content="https://arpthef.com/assets/fatebound.webp" />
+	<meta property="og:url" content="https://arpthef.my.id/projects/fatebound" />
+	<meta property="og:image" content="https://arpthef.my.id/assets/fatebound.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Fatebound - arp" />
 	<meta name="twitter:description" content="Fatebound is a 2d fighting game developed in Unity." />
-	<meta name="twitter:image" content="https://arpthef.com/assets/fatebound.webp" />
+	<meta name="twitter:image" content="https://arpthef.my.id/assets/fatebound.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">

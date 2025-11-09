@@ -36,15 +36,15 @@
 		content="A desktop email sender built with Python and CustomTkinter, supporting both Mailtrap sandbox and transactional SMTP for sending plain text or HTML emails."
 	/>
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/projects/pymailer" />
-	<meta property="og:image" content="https://arpthef.com/assets/pymailer.webp" />
+	<meta property="og:url" content="https://arpthef.my.id/projects/pymailer" />
+	<meta property="og:image" content="https://arpthef.my.id/assets/pymailer.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="PyMailer - arp" />
 	<meta
 		name="twitter:description"
 		content="A desktop email sender built with Python and CustomTkinter, supporting both Mailtrap sandbox and transactional SMTP for sending plain text or HTML emails."
 	/>
-	<meta name="twitter:image" content="https://arpthef.com/assets/pymailer.webp" />
+	<meta name="twitter:image" content="https://arpthef.my.id/assets/pymailer.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">

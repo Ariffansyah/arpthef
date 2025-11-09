@@ -19,15 +19,15 @@
 		content="Lucy is a Discord bot designed to enchance your Discord server experience with Join To Create feature."
 	/>
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/projects/lucy" />
-	<meta property="og:image" content="https://arpthef.com/assets/lucy.webp" />
+	<meta property="og:url" content="https://arpthef.my.id/projects/lucy" />
+	<meta property="og:image" content="https://arpthef.my.id/assets/lucy.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Lucy - arp" />
 	<meta
 		name="twitter:description"
 		content="Lucy is a Discord bot designed to enchance your Discord server experience with Join To Create feature."
 	/>
-	<meta name="twitter:image" content="https://arpthef.com/assets/lucy.webp" />
+	<meta name="twitter:image" content="https://arpthef.my.id/assets/lucy.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">

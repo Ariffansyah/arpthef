@@ -27,12 +27,12 @@
 	<meta property="og:title" content="GenRe Papua - arp" />
 	<meta property="og:description" content="GenRe Papua Official Website." />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/projects/genrepapua" />
-	<meta property="og:image" content="https://arpthef.com/assets/genrepapua.webp" />
+	<meta property="og:url" content="https://arpthef.my.id/projects/genrepapua" />
+	<meta property="og:image" content="https://arpthef.my.id/assets/genrepapua.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="GenRe Papua - arp" />
 	<meta name="twitter:description" content="GenRe Papua Official Website." />
-	<meta name="twitter:image" content="https://arpthef.com/assets/genrepapua.webp" />
+	<meta name="twitter:image" content="https://arpthef.my.id/assets/genrepapua.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">

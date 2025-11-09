@@ -37,15 +37,15 @@
 		content="Orb OS is a Linux-based operating system designed with developers in mind."
 	/>
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/projects/orb-os" />
-	<meta property="og:image" content="https://arpthef.com/assets/Orb.webp" />
+	<meta property="og:url" content="https://arpthef.my.id/projects/orb-os" />
+	<meta property="og:image" content="https://arpthef.my.id/assets/Orb.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Orb OS - arp" />
 	<meta
 		name="twitter:description"
 		content="Orb OS is a Linux-based operating system designed with developers in mind."
 	/>
-	<meta name="twitter:image" content="https://arpthef.com/assets/Orb.webp" />
+	<meta name="twitter:image" content="https://arpthef.my.id/assets/Orb.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">

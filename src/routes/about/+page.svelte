@@ -118,14 +118,14 @@
 	/>
 	<meta name="author" content="Mohammad Ariffansyah" />
 	<meta property="og:title" content="About me - arp" />
-	<meta property="og:image" content="https://arpthef.com/Logo.webp" />
+	<meta property="og:image" content="https://arpthef.my.id/Logo.webp" />
 	<meta property="og:description" content="Learn more about Mohammad Ariffansyah." />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/about" />
+	<meta property="og:url" content="https://arpthef.my.id/about" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="About me - arp" />
 	<meta name="twitter:description" content="Learn more about Mohammad Ariffansyah." />
-	<link rel="canonical" href="https://arpthef.com/about" />
+	<link rel="canonical" href="https://arpthef.my.id/about" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">

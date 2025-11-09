@@ -11,14 +11,14 @@
 	/>
 	<meta name="author" content="Mohammad Ariffansyah" />
 	<meta property="og:title" content="Contact - arp" />
-	<meta property="og:image" content="https://arpthef.com/Logo.webp" />
+	<meta property="og:image" content="https://arpthef.my.id/Logo.webp" />
 	<meta property="og:description" content="Mohammad Ariffansyah Contact." />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/about" />
+	<meta property="og:url" content="https://arpthef.my.id/about" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Contact - arp" />
 	<meta name="twitter:description" content="Mohammad Ariffansyah Contact." />
-	<link rel="canonical" href="https://arpthef.com/contact" />
+	<link rel="canonical" href="https://arpthef.my.id/contact" />
 </svelte:head>
 
 <section class="flex min-h-[calc(100vh-126px)] flex-col items-center justify-center px-4">

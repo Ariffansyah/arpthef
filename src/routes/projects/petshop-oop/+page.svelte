@@ -34,15 +34,15 @@
 		content="OOP collage project for a pet shop management system using Kotlin and SQLite."
 	/>
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/projects/petshop" />
-	<meta property="og:image" content="https://arpthef.com/assets/petshop.webp" />
+	<meta property="og:url" content="https://arpthef.my.id/projects/petshop" />
+	<meta property="og:image" content="https://arpthef.my.id/assets/petshop.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Petshop - arp" />
 	<meta
 		name="twitter:description"
 		content="OOP collage project for a pet shop management system using Kotlin and SQLite."
 	/>
-	<meta name="twitter:image" content="https://arpthef.com/assets/petshop.webp" />
+	<meta name="twitter:image" content="https://arpthef.my.id/assets/petshop.webp" />
 </svelte:head>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
