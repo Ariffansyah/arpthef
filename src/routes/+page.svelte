@@ -95,19 +95,14 @@
 	function openTiktaktoe() {
 		tiktaktoeVisible = true;
 	}
-
 	function closeTiktaktoe() {
 		tiktaktoeVisible = false;
 	}
-
 	function resetTiktaktoe() {
 		board = Array(9).fill(null);
 	}
-
 	function handleTiktaktoeKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
-			closeTiktaktoe();
-		}
+		if (event.key === 'Escape') closeTiktaktoe();
 	}
 
 	let tiktaktoeVisible = false;
@@ -119,23 +114,19 @@
 			board[index] = currentPlayer;
 			const row = Math.floor(index / 3);
 			const col = index % 3;
-
 			const rowWin =
 				board[row * 3] === currentPlayer &&
 				board[row * 3 + 1] === currentPlayer &&
 				board[row * 3 + 2] === currentPlayer;
-
 			const colWin =
 				board[col] === currentPlayer &&
 				board[col + 3] === currentPlayer &&
 				board[col + 6] === currentPlayer;
-
 			const diag1Win =
 				index % 4 === 0 &&
 				board[0] === currentPlayer &&
 				board[4] === currentPlayer &&
 				board[8] === currentPlayer;
-
 			const diag2Win =
 				index % 2 === 0 &&
 				index !== 0 &&
@@ -143,7 +134,6 @@
 				board[2] === currentPlayer &&
 				board[4] === currentPlayer &&
 				board[6] === currentPlayer;
-
 			const isDraw = board.every((cell) => cell !== null);
 
 			if (rowWin || colWin || diag1Win || diag2Win) {
@@ -151,13 +141,11 @@
 				resetTiktaktoe();
 				return;
 			}
-
 			if (isDraw) {
 				customAlert('Draw!');
 				resetTiktaktoe();
 				return;
 			}
-
 			currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
 		}
 	}
@@ -188,7 +176,6 @@
 			}
 		});
 		currentSectionIndex = closestSection;
-
 		showScrollTop =
 			currentSectionIndex > 0 &&
 			!isSectionInView(document.getElementById(sectionIds[currentSectionIndex - 1]));
@@ -212,6 +199,39 @@
 	onMount(() => {
 		updateSectionIndexAndVisibility();
 	});
+
+	let showHeartModal = false;
+
+	interface HeartParticle {
+		id: number;
+		left: string;
+		animationDuration: string;
+		fontSize: string;
+		delay: string;
+	}
+
+	let particles: HeartParticle[] = [];
+
+	function createParticles() {
+		const count = 50;
+		const newParticles: HeartParticle[] = [];
+		for (let i = 0; i < count; i++) {
+			newParticles.push({
+				id: i,
+				left: Math.random() * 100 + '%',
+				animationDuration: Math.random() * 3 + 3 + 's',
+				fontSize: Math.random() * 1.5 + 0.5 + 'rem',
+				delay: Math.random() * 5 + 's'
+			});
+		}
+		particles = newParticles;
+	}
+
+	$: if (showHeartModal) {
+		createParticles();
+	} else {
+		particles = [];
+	}
 </script>
 
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
@@ -262,13 +282,12 @@
 					download="arpthef-cv-en.pdf"
 					aria-label="Download CV"
 					target="_blank"
-					rel="noopener noreferrer"
+					rel="noopener noreferrer">Download CV</a
 				>
-					Download CV
-				</a>
 			</div>
 		</div>
 	</div>
+
 	<div
 		id="technologies"
 		class="animate-fade-in mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-4 md:w-1/3"
@@ -289,6 +308,7 @@
 			{/each}
 		</div>
 	</div>
+
 	<div
 		id="experiences"
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
@@ -374,7 +394,6 @@
 							{org.experienceName}
 						</p>
 						<h3 class="text-lg font-bold">{org.title}</h3>
-
 						<p class="text-sm text-gray-400">{org.date}</p>
 						<p class="mt-1 text-justify text-gray-300">{org.description}</p>
 					</div>
@@ -416,6 +435,7 @@
 			{/if}
 		{/if}
 	</div>
+
 	<div
 		id="projects"
 		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
@@ -425,7 +445,6 @@
 			<h1 class="mb-2 text-3xl font-bold text-white">Recent projects</h1>
 			<a href="/projects" class="text-sm text-gray-400 hover:text-white"> See all</a>
 		</div>
-
 		<div class="h-full w-full pr-2">
 			{#each projects.slice(0, 3) as project}
 				<div
@@ -433,7 +452,9 @@
 				>
 					<div class="relative w-full">
 						<img
-							src={project.projectImage}
+							src={project.projectImages && project.projectImages[0]
+								? project.projectImages[0]
+								: ''}
 							alt={project.projectName}
 							class=" h-64 w-full rounded-lg object-cover opacity-70 shadow-lg"
 						/>
@@ -475,6 +496,12 @@
 		on:click={openTiktaktoe}
 	>
 		Tiktaktoe
+	</button>
+	<button
+		class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
+		on:click={() => (showHeartModal = true)}
+	>
+		19-7
 	</button>
 </section>
 
@@ -518,9 +545,7 @@
 			</button>
 			<table class="h-full w-full">
 				<thead>
-					<tr>
-						<th colspan="3" class="text-center text-lg font-bold text-white">Tiktaktoe</th>
-					</tr>
+					<tr><th colspan="3" class="text-center text-lg font-bold text-white">Tiktaktoe</th></tr>
 				</thead>
 				<tbody>
 					{#each [0, 1, 2] as row}
@@ -550,20 +575,76 @@
 	</div>
 {/if}
 
+{#if showHeartModal}
+	<div
+		role="dialog"
+		aria-modal="true"
+		tabindex="0"
+		class="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black/90"
+		on:click={() => (showHeartModal = false)}
+		on:keydown={(e) => e.key === 'Escape' && (showHeartModal = false)}
+	>
+		<div class="pointer-events-none absolute inset-0 select-none">
+			{#each particles as particle (particle.id)}
+				<div
+					class="falling-heart absolute -top-10 text-red-500/60"
+					style="left: {particle.left}; font-size: {particle.fontSize}; animation-duration: {particle.animationDuration}; animation-delay: {particle.delay};"
+				>
+					❤️
+				</div>
+			{/each}
+		</div>
+
+		<div class="pointer-events-none relative z-10 flex items-center justify-center select-none">
+			<div class="animate-heartbeat text-[150px] text-red-600">❤️</div>
+			<span class="animate-heartbeat absolute text-6xl font-bold text-white">N</span>
+		</div>
+	</div>
+{/if}
+
 <style>
 	.bg-darkgray {
 		background-color: #222222;
 	}
-	.max-h-\[500px\]::-webkit-scrollbar {
+	.custom-scroll::-webkit-scrollbar {
 		height: 8px;
 		width: 8px;
 	}
-	.max-h-\[500px\]::-webkit-scrollbar-thumb {
+	.custom-scroll::-webkit-scrollbar-thumb {
 		background: #444;
 		border-radius: 4px;
 	}
-	.max-h-\[500px\]::-webkit-scrollbar-track {
+	.custom-scroll::-webkit-scrollbar-track {
 		background: #222;
 		border-radius: 4px;
+	}
+
+	@keyframes heartbeat {
+		0%,
+		100% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.1);
+		}
+	}
+	.animate-heartbeat {
+		animation: heartbeat 1s infinite;
+	}
+
+	@keyframes fall {
+		0% {
+			transform: translateY(-10vh) rotate(0deg);
+			opacity: 1;
+		}
+		100% {
+			transform: translateY(110vh) rotate(360deg);
+			opacity: 0;
+		}
+	}
+	.falling-heart {
+		animation-name: fall;
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
 	}
 </style>

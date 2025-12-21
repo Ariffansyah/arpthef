@@ -21,6 +21,13 @@
 		"description": "Talk to databases, easy."
 	},
 	{
+		"name": "Docker",
+		"icon": "https://cdn.simpleicons.org/docker/ffffff",
+		"alt": "Docker",
+		"category": "Tool",
+		"description": "Containerize all the things."
+	},
+	{
 		"name": "HTML",
 		"icon": "https://cdn.simpleicons.org/html5/ffffff",
 		"alt": "HTML",

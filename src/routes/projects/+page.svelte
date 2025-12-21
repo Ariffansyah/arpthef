@@ -1,8 +1,8 @@
 <script lang="ts">
-	import ProjectsData from '$lib/assets/JSON/projects.json';
+	import projectsdata from '$lib/assets/JSON/projects.json';
 	import { intersect } from '$lib/actions/intersect';
 
-	const projects = ProjectsData;
+	const projects = projectsdata;
 </script>
 
 <svelte:head>
@@ -12,15 +12,15 @@
 		name="keywords"
 		content="projects, works, portfolio, arp, arpthef, mohammad, ariffansyah, developer, programmer, backend, frontend, fullstack"
 	/>
-	<meta name="author" content="Mohammad Ariffansyah" />
-	<meta property="og:title" content="Projects - arp" />
-	<meta property="og:image" content="https://arpthef.com/Logo.webp" />
-	<meta property="og:description" content="Explore some of my projects and works." />
+	<meta name="author" content="mohammad ariffansyah" />
+	<meta property="og:title" content="projects - arp" />
+	<meta property="og:image" content="https://arpthef.com/logo.webp" />
+	<meta property="og:description" content="explore some of my projects and works." />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://arpthef.com/projects" />
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Projects - arp" />
-	<meta name="twitter:description" content="Explore some of my projects and works." />
+	<meta name="twitter:title" content="projects - arp" />
+	<meta name="twitter:description" content="explore some of my projects and works." />
 	<link rel="canonical" href="https://arpthef.com/projects" />
 </svelte:head>
 
@@ -33,40 +33,53 @@
 			class="animate-fade-in flex w-full flex-row items-center justify-center text-white"
 			use:intersect={{ threshold: 0.3, once: true }}
 		>
-			<div class="flex flex-col">
+			<div class="flex flex-col items-center text-center">
 				<h1 class="text-3xl font-bold">Projects</h1>
 				<p class="text-sm text-gray-400">Some of my works</p>
 			</div>
 		</div>
+
 		<div class="w-full">
 			<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
 				{#each projects as project}
 					<div
-						class="animate-fade-in flex min-h-[430px] flex-col items-start justify-center gap-4 rounded-2xl bg-white/5 p-6 shadow-xl transition duration-300 hover:scale-105"
+						class="animate-fade-in group relative flex h-[400px] flex-col items-start justify-center gap-4 overflow-hidden rounded-2xl bg-white/5 shadow-xl transition duration-300 hover:scale-[1.02]"
 						use:intersect={{ threshold: 0.3, once: true }}
 					>
-						<div class="relative w-full">
-							<img
-								src={project.projectImage}
-								alt={project.projectName}
-								class="h-80 w-full rounded-lg object-cover opacity-80 shadow-lg"
-							/>
-							<a href={project.projectLink} rel="noopener noreferrer">
-								<div
-									class="absolute bottom-0 left-0 h-full w-full rounded-b-lg bg-gradient-to-t from-black/100 via-black/70 to-transparent transition duration-300 hover:bg-gradient-to-t hover:from-black/80 hover:via-black/30 hover:to-transparent"
-								>
-									<div class="absolute bottom-4 left-4 m-3 flex flex-col gap-2">
-										<h2 class="text-2xl font-bold text-white">{project.projectName}</h2>
-										<div class="flex flex-row items-center gap-2">
-											{#each project.technologies as tech}
-												<img src={tech.icon} alt={tech.name} class="h-8 w-8" />
-											{/each}
-										</div>
-										<p class="text-base text-gray-200">{project.projectDescription}</p>
-									</div>
+						<img
+							src={project.projectImages && project.projectImages.length > 0
+								? project.projectImages[0]
+								: '/assets/placeholder.webp'}
+							alt={project.projectName}
+							loading="lazy"
+							class="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-500 group-hover:scale-110"
+						/>
+
+						<a
+							href={project.projectLink}
+							class="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black via-black/60 to-transparent p-6 transition duration-300 hover:from-black/90"
+						>
+							<div class="flex flex-col gap-2">
+								<h2 class="text-2xl font-bold text-white shadow-black drop-shadow-md">
+									{project.projectName}
+								</h2>
+
+								<div class="flex flex-row items-center gap-2">
+									{#each project.technologies as tech}
+										<img
+											src={tech.icon}
+											alt={tech.name}
+											title={tech.name}
+											class="h-6 w-6 drop-shadow-md"
+										/>
+									{/each}
 								</div>
-							</a>
-						</div>
+
+								<p class="line-clamp-3 text-sm text-gray-200 shadow-black drop-shadow-md">
+									{project.projectDescription}
+								</p>
+							</div>
+						</a>
 					</div>
 				{/each}
 			</div>
