@@ -234,6 +234,33 @@
 	}
 </script>
 
+<svelte:head>
+	<title>arp - Home</title>
+	<link rel="icon" href="%sveltekit.assets%/Logo.webp" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<meta property="og:title" content="arpthef" />
+	<meta property="og:description" content="Welcome to arpthef portofolio." />
+	<meta property="og:image" content="%sveltekit.assets%/Logo.webp" />
+	<meta property="og:url" content="https://arpthef.my.id/" />
+	<meta property="og:type" content="website" />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="arpthef" />
+	<meta name="twitter:description" content="Welcome to arpthef portofolio" />
+	<meta name="twitter:image" content="%sveltekit.assets%/Logo.webp" />
+
+	%sveltekit.head%
+	<title>arpthef</title>
+	<meta name="description" content="Arpthef personal website." />
+	<meta
+		name="keywords"
+		content="arpthef, portfolio, personal website, web developer, programmer, Ariffansyah, Mohammad, Mohammad Ariffansyah"
+	/>
+	<meta name="author" content="Mohammad Ariffansyah" />
+	<link rel="canonical" href="https://arpthef.my.id/" />
+</svelte:head>
+
 <section class="mx-3 flex flex-col justify-center md:mx-auto">
 	<div
 		id="arpthef"
