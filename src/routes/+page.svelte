@@ -249,9 +249,6 @@
 	<meta name="twitter:title" content="arpthef" />
 	<meta name="twitter:description" content="Welcome to arpthef portofolio" />
 	<meta name="twitter:image" content="%sveltekit.assets%/Logo.webp" />
-
-	%sveltekit.head%
-	<title>arpthef</title>
 	<meta name="description" content="Arpthef personal website." />
 	<meta
 		name="keywords"
