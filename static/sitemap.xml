@@ -4,69 +4,79 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
 <url>
   <loc>https://www.arpthef.my.id/</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/about</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/projects</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/contact</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/assets/cv/cv-en.pdf</loc>
-  <lastmod>2025-08-22T15:45:46+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:23+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.arpthef.my.id/projects/univtalk</loc>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/projects/genrepapua</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/projects/fatebound</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/projects/pymailer</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
-  <priority>0.80</priority>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/projects/orb-os</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/projects/petshop-oop</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/projects/todo-qt</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/projects/lucy-discord-bot</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.arpthef.my.id/projects/wonderful-papua</loc>
-  <lastmod>2025-08-22T15:48:12+00:00</lastmod>
+  <lastmod>2026-01-01T02:47:24+00:00</lastmod>
   <priority>0.64</priority>
 </url>
+
+
 </urlset>
