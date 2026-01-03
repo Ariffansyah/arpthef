@@ -292,7 +292,9 @@
 		</div>
 		<div class="mt-4 flex flex-col items-start justify-center gap-2">
 			<p class="text-justify text-gray-300">
-				I enjoy building full-stack web applications and exploring new technologies.
+				I am a informatics engineering student at one of universities in Indonesia. I like
+				full-stack web development, focus on back-end development, and i like to explore new
+				technologies.
 			</p>
 			<div class="flex w-full flex-row items-center justify-between gap-2">
 				<a
@@ -521,12 +523,15 @@
 	>
 		Tiktaktoe
 	</button>
-	<button
-		class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
-		on:click={() => (showHeartModal = true)}
-	>
-		19-7
-	</button>
+
+	<div class="group flex w-full justify-center">
+		<button
+			class="mt-2 rounded py-2 text-gray-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus:opacity-100"
+			on:click={() => (showHeartModal = true)}
+		>
+			19-7
+		</button>
+	</div>
 </section>
 
 {#if showScrollTop}
