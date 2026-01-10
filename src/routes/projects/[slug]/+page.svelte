@@ -50,7 +50,7 @@
 		<div class="flex w-full flex-col items-start text-white">
 			<h1 class="text-3xl font-bold">{project.projectName}</h1>
 			<div class="mt-5 flex flex-row items-center gap-2">
-				{#each project.technologies as tech}
+				{#each project.technologies as tech (tech.name)}
 					<img src={tech.icon} alt={tech.name} class="h-8 w-8" title={tech.name} />
 				{/each}
 			</div>
@@ -94,7 +94,7 @@
 					? 'grid-cols-1'
 					: 'grid-cols-1 md:grid-cols-2'}"
 			>
-				{#each galleryImages as imgUrl}
+				{#each galleryImages as imgUrl (imgUrl)}
 					<button
 						type="button"
 						class="w-full focus:outline-none"

@@ -1,7 +1,11 @@
 import { error } from '@sveltejs/kit';
 import projects from '$lib/assets/JSON/projects.json';
 
-export const load = ({ params }: any) => {
+interface PageParams {
+	slug: string;
+}
+
+export const load = ({ params }: { params: PageParams }) => {
 	const slug = params.slug;
 
 	const project = projects.find((p) => {

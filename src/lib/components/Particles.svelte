@@ -14,7 +14,18 @@
 	let canvasRef: HTMLCanvasElement;
 	let canvasContainerRef: HTMLDivElement;
 	let context: CanvasRenderingContext2D | null = null;
-	let circles: any[] = [];
+	let circles: Array<{
+		x: number;
+		y: number;
+		translateX: number;
+		translateY: number;
+		size: number;
+		alpha: number;
+		targetAlpha: number;
+		dx: number;
+		dy: number;
+		magnetism: number;
+	}> = [];
 	let mouse = { x: 0, y: 0 };
 	let canvasSize = { w: 0, h: 0 };
 	const dpr = typeof window !== 'undefined' ? window.devicePixelRatio : 1;
@@ -85,7 +96,21 @@
 		}
 	}
 
-	function drawCircle(circle: any, update = false) {
+	function drawCircle(
+		circle: {
+			x: number;
+			y: number;
+			translateX: number;
+			translateY: number;
+			size: number;
+			alpha: number;
+			targetAlpha: number;
+			dx: number;
+			dy: number;
+			magnetism: number;
+		},
+		update = false
+	) {
 		if (context) {
 			const { x, y, translateX, translateY, size, alpha } = circle;
 			context.translate(translateX, translateY);
@@ -110,7 +135,13 @@
 		}
 	}
 
-	function remapValue(value: any, start1: any, end1: any, start2: any, end2: any) {
+	function remapValue(
+		value: number,
+		start1: number,
+		end1: number,
+		start2: number,
+		end2: number
+	): number {
 		let remapped = ((value - start1) * (end2 - start2)) / (end1 - start1) + start2;
 		return remapped > 0 ? remapped : 0;
 	}

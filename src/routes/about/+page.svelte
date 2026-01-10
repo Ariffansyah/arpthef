@@ -205,7 +205,7 @@
 		<div
 			class="mb-4 flex w-full scroll-pr-4 scroll-pl-4 flex-row items-center justify-start space-x-4 overflow-x-auto md:justify-between"
 		>
-			{#each tabs as tab}
+			{#each tabs as tab (tab.value)}
 				<button
 					class="rounded-lg px-4 py-2 font-semibold whitespace-nowrap text-white transition-shadow duration-200 focus:outline-none md:rounded-t-lg {activeTab ===
 					tab.value
@@ -220,7 +220,7 @@
 
 		{#if activeTab === 'work'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each showWorkExperiences as exp, i}
+				{#each showWorkExperiences as exp, i (exp.experienceName + exp.date)}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -246,7 +246,7 @@
 			{/if}
 		{:else if activeTab === 'education'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each showEducationExperiences as edu, i}
+				{#each showEducationExperiences as edu, i (edu.experienceName + edu.date)}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -271,7 +271,7 @@
 			{/if}
 		{:else if activeTab === 'organization'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each showOrganizationExperiences as org, i}
+				{#each showOrganizationExperiences as org, i (org.experienceName + org.date)}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -298,7 +298,7 @@
 			{/if}
 		{:else if activeTab === 'achievement'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each showAchievements as ach, i}
+				{#each showAchievements as ach, i (ach.achievementName + ach.date)}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[

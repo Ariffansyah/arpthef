@@ -41,7 +41,7 @@
 
 		<div class="w-full">
 			<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
-				{#each projects as project}
+				{#each projects as project (project.projectName)}
 					<div
 						class="animate-fade-in group relative flex h-[400px] flex-col items-start justify-center gap-4 overflow-hidden rounded-2xl bg-white/5 shadow-xl transition duration-300 hover:scale-[1.02]"
 						use:intersect={{ threshold: 0.3, once: true }}
@@ -65,7 +65,7 @@
 								</h2>
 
 								<div class="flex flex-row items-center gap-2">
-									{#each project.technologies as tech}
+									{#each project.technologies as tech (tech.name)}
 										<img
 											src={tech.icon}
 											alt={tech.name}

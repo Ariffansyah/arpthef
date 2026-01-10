@@ -109,7 +109,7 @@
 	let board = Array(9).fill(null);
 	let currentPlayer = 'x';
 
-	function handleTiktaktoeClick(index: any) {
+	function handleTiktaktoeClick(index: number) {
 		if (!board[index]) {
 			board[index] = currentPlayer;
 			const row = Math.floor(index / 3);
@@ -321,7 +321,7 @@
 	>
 		<h1 class="mb-2 text-2xl font-bold text-white md:text-3xl">Most use technologies</h1>
 		<div class="grid w-full grid-cols-2 gap-2 sm:grid-cols-3">
-			{#each technologies as tech}
+			{#each technologies as tech (tech.name)}
 				<div
 					class="bg-darkgray flex w-full flex-col items-start gap-2 rounded px-2 py-1 transition duration-200 hover:scale-105 md:px-3 md:py-2"
 				>
@@ -343,7 +343,7 @@
 		<div
 			class="mb-4 flex w-full scroll-pr-4 scroll-pl-4 flex-row items-center justify-start space-x-4 overflow-x-auto md:justify-between"
 		>
-			{#each tabs as tab}
+			{#each tabs as tab (tab.value)}
 				<button
 					class="rounded-lg px-4 py-2 font-semibold whitespace-nowrap text-white transition-shadow duration-200 focus:outline-none md:rounded-t-lg {activeTab ===
 					tab.value
@@ -358,7 +358,7 @@
 
 		{#if activeTab === 'work'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each showWorkExperiences as exp, i}
+				{#each showWorkExperiences as exp, i (exp.experienceName + exp.date)}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -384,7 +384,7 @@
 			{/if}
 		{:else if activeTab === 'education'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each showEducationExperiences as edu, i}
+				{#each showEducationExperiences as edu, i (edu.experienceName + edu.date)}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -409,7 +409,7 @@
 			{/if}
 		{:else if activeTab === 'organization'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each showOrganizationExperiences as org, i}
+				{#each showOrganizationExperiences as org, i (org.experienceName + org.date)}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -435,7 +435,7 @@
 			{/if}
 		{:else if activeTab === 'achievement'}
 			<div class="relative ml-6 border-l border-gray-700">
-				{#each showAchievements as ach, i}
+				{#each showAchievements as ach, i (ach.achievementName + ach.date)}
 					<div class="relative pb-10 pl-6">
 						<div
 							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
@@ -472,7 +472,7 @@
 			<a href="/projects" class="text-sm text-gray-400 hover:text-white"> See all</a>
 		</div>
 		<div class="h-full w-full pr-2">
-			{#each projects.slice(0, 3) as project}
+			{#each projects.slice(0, 3) as project (project.projectName)}
 				<div
 					class="mb-4 flex w-full flex-col items-start justify-center gap-2 transition duration-300 hover:scale-105"
 				>
@@ -491,7 +491,7 @@
 								<div class="absolute bottom-2 left-2 m-3 flex flex-col gap-2">
 									<h2 class="text-xl font-bold text-white">{project.projectName}</h2>
 									<div class="flex flex-row items-center gap-2">
-										{#each project.technologies as tech}
+										{#each project.technologies as tech (tech.name)}
 											<img src={tech.icon} alt={tech.name} class="h-8 w-8" />
 										{/each}
 									</div>
@@ -577,9 +577,9 @@
 					<tr><th colspan="3" class="text-center text-lg font-bold text-white">Tiktaktoe</th></tr>
 				</thead>
 				<tbody>
-					{#each [0, 1, 2] as row}
+					{#each [0, 1, 2] as row (row)}
 						<tr>
-							{#each [0, 1, 2] as col}
+							{#each [0, 1, 2] as col (col)}
 								<td class="w-1/3 items-center justify-center">
 									<button
 										class="h-28 w-28 border border-white text-3xl"
