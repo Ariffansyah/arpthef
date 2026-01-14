@@ -91,7 +91,7 @@
 	</main>
 
 	<footer class="p-4 text-center text-gray-500">
-		<p>&copy; 2025 arpthef. All rights reserved.</p>
+		<p>&copy; {new Date().getFullYear()} arpthef. All rights reserved.</p>
 	</footer>
 </div>
 
