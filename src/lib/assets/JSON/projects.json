@@ -1,5 +1,20 @@
 [
 	{
+		"projectName": "Syntesa Discord Bot",
+		"visitLink": "https://discord.gg/F7Wx88yZFy",
+		"projectImages": ["/assets/SourceCode.webp"],
+		"technologies": [
+			{
+				"name": "Go",
+				"icon": "https://cdn.simpleicons.org/go/ffffff"
+			},
+			{
+				"name": "SQLite",
+				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
+			}
+		]
+	},
+	{
 		"projectName": "UnivTalk",
 		"visitLink": "https://github.com/Ariffansyah/Univtalk",
 		"projectImages": ["/assets/univtalk.webp", "/assets/univtalk2.webp"],
@@ -179,10 +194,6 @@
 			{
 				"name": "Go",
 				"icon": "https://cdn.simpleicons.org/go/ffffff"
-			},
-			{
-				"name": "Discord.js",
-				"icon": "https://cdn.simpleicons.org/discord/ffffff"
 			},
 			{
 				"name": "sqlite",
