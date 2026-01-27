@@ -12,7 +12,10 @@
 				"name": "SQLite",
 				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
 			}
-		]
+		],
+		"projectDescription": "Syntesa is a multifunctional Discord bot written in Go, designed to enhance server management and user engagement.",
+		"ProjectDetails": "Syntesa is a multifunctional Discord bot written in Go, designed to enhance server management and user engagement. It features a variety of commands and functionalities, including moderation tools, music playback, and interactive games. The bot utilizes SQLite for efficient data storage and retrieval, ensuring smooth performance even in large servers. Syntesa aims to provide an enjoyable and seamless experience for Discord communities, making it easier for administrators to manage their servers while offering fun features for members.",
+		"projectLink": "/projects/syntesa-discord-bot"
 	},
 	{
 		"projectName": "UnivTalk",
