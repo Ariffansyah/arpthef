@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.arpthef.my.id/sitemap.xml
+Sitemap: https://arpthef.my.id/sitemap.xml
