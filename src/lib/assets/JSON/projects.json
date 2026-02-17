@@ -1,6 +1,54 @@
 [
 	{
-		"projectName": "Syntesa Discord Bot",
+		"projectName": "Syntesa - AI Laboratory Management System",
+		"visitLink": "/",
+		"projectImages": [
+			"/assets/syntesa-lab.webp",
+			"/assets/syntesa-lab2.webp",
+			"/assets/syntesa-lab3.webp"
+		],
+		"technologies": [
+			{
+				"name": "SvelteKit",
+				"icon": "https://cdn.simpleicons.org/svelte/ffffff"
+			},
+			{
+				"name": "TypeScript",
+				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
+			},
+			{
+				"name": "Python",
+				"icon": "https://cdn.simpleicons.org/python/ffffff"
+			},
+			{
+				"name": "SQLite",
+				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
+			}
+		],
+		"projectDescription": "A comprehensive management and attendance system designed to streamline day-to-day operations and guest tracking for the Syntesa Software Engineering Lab.",
+		"projectDetails": "Developed the frontend using SvelteKit and TypeScript, focusing on creating a fast and responsive administrative interface. I collaborated with a backend developer to integrate the UI with a Python-based API and SQLite database, ensuring efficient data handling. My role includes ongoing maintenance and feature updates to improve lab workflow and data accuracy.",
+		"projectLink": "syntesa-lab-management-system"
+	},
+	{
+		"projectName": "Syntesa - Website",
+		"visitLink": "https://syntesa.net",
+		"projectImages": ["/assets/syntesa.webp", "/assets/syntesa2.webp", "/assets/syntesa3.webp"],
+		"technologies": [
+			{
+				"name": "React",
+				"icon": "https://cdn.simpleicons.org/react/ffffff"
+			},
+			{
+				"name": "TypeScript",
+				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
+			}
+		],
+		"projectDescription": "The official web presence of the Syntesa Software Engineering Lab, serving as a central hub for information, member activities, and lab resources.",
+		"projectDetails": "Contributed to the ongoing maintenance and evolution of the platform. My work involved implementing UI enhancements, updating core content modules, and ensuring the codebase remained stable. Focused on refining the user experience using React and TypeScript to align with the lab's growing requirements.",
+		"projectLink": "syntesa-website"
+	},
+	{
+		"projectName": "Syntesa - Discord Bot",
 		"visitLink": "https://discord.gg/F7Wx88yZFy",
 		"projectImages": ["/assets/SourceCode.webp"],
 		"technologies": [
@@ -13,9 +61,9 @@
 				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
 			}
 		],
-		"projectDescription": "Syntesa is a multifunctional Discord bot written in Go, designed to enhance server management and user engagement.",
-		"ProjectDetails": "Syntesa is a multifunctional Discord bot written in Go, designed to enhance server management and user engagement. It features a variety of commands and functionalities, including moderation tools, music playback, and interactive games. The bot utilizes SQLite for efficient data storage and retrieval, ensuring smooth performance even in large servers. Syntesa aims to provide an enjoyable and seamless experience for Discord communities, making it easier for administrators to manage their servers while offering fun features for members.",
-		"projectLink": "/projects/syntesa-discord-bot"
+		"projectDescription": "Syntesa Bot is a multifunctional Discord bot written in Go, designed to enhance server management and user engagement.",
+		"ProjectDetails": "Syntesa Bot is a multifunctional Discord bot written in Go, designed to enhance server management and user engagement. It features a variety of commands and functionalities, including moderation tools, music playback, and interactive games. The bot utilizes SQLite for efficient data storage and retrieval, ensuring smooth performance even in large servers. Syntesa aims to provide an enjoyable and seamless experience for Discord communities, making it easier for administrators to manage their servers while offering fun features for members.",
+		"projectLink": "syntesa-discord-bot"
 	},
 	{
 		"projectName": "UnivTalk",
@@ -41,7 +89,7 @@
 		],
 		"projectDescription": "UnivTalk is a social media platform for university students to connect and share ideas.",
 		"projectDetails": "UnivTalk is a social media platform designed specifically for university students to connect, and share ideas. Built with React, TypeScript, Go, and PostgreSQL, the platform offers a user-friendly interface and robust backend functionality. Features include user profiles, forums, posts, and comments. The project showcase my skills in full-stack development and my ability to create engaging web applications tailored to specific communities. This project is a collage assignment aimed at enhancing my understanding of web development and teamwork. I collaborated with fellow students to design and implement the platform, focusing on creating a seamless user experience and efficient data management.",
-		"projectLink": "/projects/univtalk"
+		"projectLink": "univtalk"
 	},
 	{
 		"projectName": "GenRe Papua",
@@ -63,7 +111,7 @@
 		],
 		"projectDescription": "GenRe Papua is a website that provides information about the GenRe Papua community, including news, events, and resources.",
 		"projectDetails": "As a member of the organization, I collaborated on the GenRe Papua official website project to support youth empowerment and health education initiatives in Papua. My responsibilities included developing user interfaces using Svelte, optimizing the website for accessibility and performance, and ensuring seamless content management for organizational stakeholders. This project showcases my ability to work in a team environment, deliver impactful digital solutions, and contribute to the mission of a non-profit organization serving the Papua community.",
-		"projectLink": "/projects/genrepapua"
+		"projectLink": "genrepapua"
 	},
 	{
 		"projectName": "Fatebound",
@@ -85,7 +133,7 @@
 		],
 		"projectDescription": "Fatebound is a 2d fighting game developed in Unity.",
 		"projectDetails": "I made this game as a personal project to learn more about Unity and C#. It features a combat system with a boss battle.",
-		"projectLink": "/projects/fatebound"
+		"projectLink": "fatebound"
 	},
 	{
 		"projectName": "PyMailer - Mailtrap Email Sender",
@@ -103,33 +151,7 @@
 		],
 		"projectDescription": "A simple email sender application using Mailtrap.",
 		"projectDetails": "PyMailer is a modern desktop application designed for sending emails conveniently from your computer. Built using Python and CustomTkinter, it provides a stylish, user-friendly interface for composing and sending both plain text and HTML emails. The application integrates with Mailtrap’s SMTP services, supporting both sandbox (testing) and transactional (real delivery) modes. With PyMailer, users can send emails to one or multiple recipients, save their email and SMTP credentials securely, and enjoy an enhanced composition experience with a resizable window and keyboard shortcuts.",
-		"projectLink": "/projects/pymailer"
-	},
-	{
-		"projectName": "Personal Website",
-		"visitLink": "https://arpthef.my.id",
-		"projectImages": ["/assets/arpthef.webp"],
-		"technologies": [
-			{
-				"name": "Svelte",
-				"icon": "https://cdn.simpleicons.org/svelte/ffffff"
-			},
-			{
-				"name": "TypeScript",
-				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
-			},
-			{
-				"name": "Tailwind CSS",
-				"icon": "https://cdn.simpleicons.org/tailwindcss/ffffff"
-			},
-			{
-				"name": "Vite",
-				"icon": "https://cdn.simpleicons.org/vite/ffffff"
-			}
-		],
-		"projectDescription": "This is my personal website where I showcase my projects and skills.",
-		"projectDetails": "I built this personal website using Svelte, TypeScript, Tailwind CSS, and Vite to showcase my projects and skills. The website features a clean and modern design, responsive layout, and smooth animations. It includes sections for my portfolio, about me, and contact information. I focused on performance optimization and accessibility to ensure a great user experience across all devices.",
-		"projectLink": "/"
+		"projectLink": "pymailer"
 	},
 	{
 		"projectName": "Orb-OS",
@@ -147,7 +169,7 @@
 		],
 		"projectDescription": "Orb OS is a Linux-based operating system designed with developers in mind.",
 		"projectDetails": "Orb OS is a Linux-based operating system based on Fedora, using uBlue Image as its base. It is designed to be a developer-friendly environment, providing a robust and flexible platform for software development.Started as a college project, it has evolved into a personal project that I am actively developingand maintaining. The goal of Orb OS is to create a lightweight, customizable, and efficient operating system that caters to the needs of developers and tech enthusiasts.",
-		"projectLink": "/projects/orb-os"
+		"projectLink": "orb-os"
 	},
 	{
 		"projectName": "Petshop",
@@ -165,7 +187,7 @@
 		],
 		"projectDescription": "OOP collage project for a pet shop management system using Kotlin and SQLite.",
 		"projectDetails": "This project is a simple pet shop management system that allows users to manage pets, customers, and transactions. It features a user-friendly interface and utilizes SQLite for data storage. The project demonstrates object-oriented programming principles and is designed to be easily extensible for future enhancements.",
-		"projectLink": "/projects/petshop-oop"
+		"projectLink": "petshop-oop"
 	},
 	{
 		"projectName": "TODO QT",
@@ -187,7 +209,7 @@
 		],
 		"projectDescription": "A simple To-Do application built with C++, Qt and SQLite.",
 		"projectDetails": "TODO QT is a desktop application designed to help users manage their tasks efficiently. Built using C++ and the Qt framework, it offers a sleek and intuitive user interface. The application allows users to create, edit, and delete tasks, as well as mark them as completed. It utilizes SQLite for data storage, ensuring that all tasks are saved locally on the user's device. With features like task categorization and due date reminders, TODO QT aims to enhance productivity and organization for its users.",
-		"projectLink": "/projects/todo-qt"
+		"projectLink": "todo-qt"
 	},
 	{
 		"projectName": "Lucy - Discord Bot",
@@ -205,7 +227,7 @@
 		],
 		"projectDescription": "Lucy is a Discord bot designed to enhance user experience with Join To Create feature.",
 		"projectDetails": "Lucy is a Discord bot written in Go, primarily designed to facilitate the join to create feature—allowing users to automatically generate their own temporary voice channels when they join a designated channel. Built for performance and reliability, Lucy makes server management easier and enhances the user experience with seamless, automated voice channel creation.",
-		"projectLink": "/projects/lucy-discord-bot"
+		"projectLink": "lucy-discord-bot"
 	},
 	{
 		"projectName": "Wonderful Papua",
@@ -235,6 +257,6 @@
 		],
 		"projectDescription": "Website for my home island, Wonderful Papua, showcasing its beauty and culture.",
 		"projectDetails": "Wonderful Papua is a website I created to showcase the beauty and culture of my home island, Papua. The site features stunning images, informative articles, and travel guides to help visitors explore the region. Built with React, TypeScript, Vite, and Bootstrap, the website offers a responsive and user-friendly experience across all devices. This project reflects my passion for web development and my desire to promote tourism in Papua.",
-		"projectLink": "/projects/wonderful-papua"
+		"projectLink": "wonderful-papua"
 	}
 ]
