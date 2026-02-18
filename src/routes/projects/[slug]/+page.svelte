@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { intersect } from '$lib/actions/intersect';
+  import { asset } from '$app/paths';
 
 	export let data;
 	$: project = data.project;
@@ -61,7 +62,7 @@
 			</p>
 
 			{#if project.visitLink}
-				<a href={project.visitLink} target="_blank" rel="noopener noreferrer">
+				<a href={asset(project.visitLink)} target="_blank" rel="noopener noreferrer">
 					<button
 						type="button"
 						class="py-2 text-gray-400 transition duration-300 hover:text-white hover:underline"

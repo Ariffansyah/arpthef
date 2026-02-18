@@ -3,8 +3,9 @@
 	import ExperiencesData from '$lib/assets/JSON/experiences.json';
 	import { intersect } from '$lib/actions/intersect';
 	import { cubicOut } from 'svelte/easing';
+	import { resolve } from '$app/paths';
 
-	function bioAnimation(node: HTMLElement, { duration }: { duration: number }) {
+	function bioAnimation(_node: HTMLElement, { duration }: { duration: number }) {
 		return {
 			duration,
 			css: (t: number) => {
@@ -141,7 +142,7 @@
 			backend development, building and maintaining the systems that operate behind the scenes,
 			while also contributing to frontend development to enhance user experience.
 		</p>
-		<a href="/contact">
+		<a href={resolve("/contact")}>
 			<button
 				type="button"
 				class="mt-4 py-2 text-gray-400 transition duration-300 hover:text-white hover:underline"

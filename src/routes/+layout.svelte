@@ -31,6 +31,7 @@
 	}
 
 	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
 	onMount(() => {
 		animate();
 	});
@@ -48,7 +49,7 @@
 	<nav class="relative z-50 px-4 py-6">
 		<div class="mx-auto flex max-w-7xl flex-col md:max-w-2/5 md:flex-row md:items-center">
 			<div class="flex w-full items-center justify-between">
-				<a class="text-xl font-bold" href="/">arpthef</a>
+				<a class="text-xl font-bold" href={resolve("/")}>arpthef</a>
 
 				<button
 					class="relative flex h-6 w-8 flex-col justify-between md:hidden"
@@ -79,9 +80,9 @@
 					isOpen ? 'flex' : 'hidden'
 				} md:flex`}
 			>
-				<li><a href="/about">About</a></li>
-				<li><a href="/projects">Projects</a></li>
-				<li><a href="/contact">Contact</a></li>
+				<li><a href={resolve("/about")}>About</a></li>
+				<li><a href={resolve("/projects")}>Projects</a></li>
+				<li><a href={resolve("/contact")}>Contact</a></li>
 			</ul>
 		</div>
 	</nav>

@@ -7,6 +7,7 @@
 	import { customAlert } from '$lib/components/customAlerts';
 	import { handleHistory } from '$lib/components/handleHistory';
 	import { onMount } from 'svelte';
+	import { asset, resolve } from '$app/paths';
 
 	const textColors = [
 		'text-cyan-400',
@@ -185,12 +186,15 @@
 	}
 
 	function scrollToSection(index: number) {
-		const section = document.getElementById(sectionIds[index]);
-		if (section) {
-			(e: any) => handleHistory(e, `#${sectionIds[index]}`);
-			section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		}
-	}
+    const section = document.getElementById(sectionIds[index]);
+    if (section) {
+        const hash = `#${sectionIds[index]}`;
+        
+        handleHistory(new Event('scroll'), hash); 
+        
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
 
 	if (typeof window !== 'undefined') {
 		window.addEventListener('scroll', updateSectionIndexAndVisibility);
@@ -298,13 +302,13 @@
 			</p>
 			<div class="flex w-full flex-row items-center justify-between gap-2">
 				<a
-					href="/about"
+					href={resolve("/about")}
 					class="rounded py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
 					>Learn more about me</a
 				>
 				<a
 					class="rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
-					href="/assets/cv/cv-en.pdf"
+					href={asset("/assets/cv/cv-en.pdf")}
 					download="arpthef-cv-en.pdf"
 					aria-label="Download CV"
 					target="_blank"
@@ -469,7 +473,7 @@
 	>
 		<div class="flex w-full flex-row items-center justify-between">
 			<h1 class="mb-2 text-3xl font-bold text-white">Recent projects</h1>
-			<a href="/projects" class="text-sm text-gray-400 hover:text-white"> See all</a>
+			<a href={resolve("/projects")} class="text-sm text-gray-400 hover:text-white"> See all</a>
 		</div>
 		<div class="h-full w-full pr-2">
 			{#each projects.slice(0, 3) as project (project.projectName)}
@@ -484,7 +488,7 @@
 							alt={project.projectName}
 							class=" h-64 w-full rounded-lg object-cover opacity-70 shadow-lg"
 						/>
-						<a href={project.projectLink} rel="noopener noreferrer">
+						<a href={resolve("/projects/[slug]", {slug: project.projectLink})} rel="noopener noreferrer">
 							<div
 								class="absolute bottom-0 left-0 h-full w-full rounded-b-lg bg-gradient-to-t from-black/100 via-black/70 to-transparent transition duration-300 hover:bg-gradient-to-t hover:from-black/80 hover:via-black/30 hover:to-transparent"
 							>
@@ -506,7 +510,7 @@
 	</div>
 
 	<a
-		href="/contact"
+		href={resolve("/contact")}
 		class="animate-fade-in mx-auto mb-6 w-full max-w-md"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>

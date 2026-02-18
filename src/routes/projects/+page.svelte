@@ -1,6 +1,7 @@
 <script lang="ts">
 	import projectsdata from '$lib/assets/JSON/projects.json';
 	import { intersect } from '$lib/actions/intersect';
+	import { resolve } from '$app/paths';
 
 	const projects = projectsdata;
 </script>
@@ -56,7 +57,7 @@
 						/>
 
 						<a
-							href={project.projectLink}
+							href={resolve('/projects/[slug]', { slug: project.projectLink })}
 							class="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black via-black/60 to-transparent p-6 transition duration-300 hover:from-black/90"
 						>
 							<div class="flex flex-col gap-2">
