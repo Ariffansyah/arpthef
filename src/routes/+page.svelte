@@ -4,45 +4,18 @@
 	import ProjectsData from '$lib/assets/JSON/projects.json';
 	import ExperiencesData from '$lib/assets/JSON/experiences.json';
 	import { intersect } from '$lib/actions/intersect';
-	import { customAlert } from '$lib/components/customAlerts';
 	import { handleHistory } from '$lib/components/handleHistory';
 	import { onMount } from 'svelte';
 	import { asset, resolve } from '$app/paths';
 
 	const textColors = [
-		'text-cyan-400',
-		'text-pink-400',
-		'text-lime-400',
-		'text-yellow-400',
-		'text-purple-400',
-		'text-green-400',
-		'text-red-400',
-		'text-blue-400',
-		'text-orange-400',
-		'text-indigo-400',
-		'text-emerald-400',
-		'text-fuchsia-400',
-		'text-sky-400',
-		'text-amber-400',
-		'text-violet-400'
+		'text-pink-600',
+		'text-rose-600',
+		'text-fuchsia-600',
+		'text-pink-700',
+		'text-rose-700'
 	];
-	const bgColors = [
-		'bg-cyan-400',
-		'bg-pink-400',
-		'bg-lime-400',
-		'bg-yellow-400',
-		'bg-purple-400',
-		'bg-green-400',
-		'bg-red-400',
-		'bg-blue-400',
-		'bg-orange-400',
-		'bg-indigo-400',
-		'bg-emerald-400',
-		'bg-fuchsia-400',
-		'bg-sky-400',
-		'bg-amber-400',
-		'bg-violet-400'
-	];
+	const bgColors = ['bg-pink-500', 'bg-rose-500', 'bg-fuchsia-500', 'bg-pink-600', 'bg-rose-600'];
 
 	const technologies = TechnologiesData;
 	const achievements = AchievementsData;
@@ -70,6 +43,7 @@
 		isShowMoreWork = !isShowMoreWork;
 		showWorkExperiences = isShowMoreWork ? workExperiences : workExperiences.slice(0, 3);
 	}
+
 	let isShowMoreEdu = false;
 	let showEducationExperiences = educationExperiences.slice(0, 3);
 	function toggleShowMoreEdu() {
@@ -78,6 +52,7 @@
 			? educationExperiences
 			: educationExperiences.slice(0, 3);
 	}
+
 	let isShowMoreOrg = false;
 	let showOrganizationExperiences = organizationExperiences.slice(0, 3);
 	function toggleShowMoreOrg() {
@@ -86,6 +61,7 @@
 			? organizationExperiences
 			: organizationExperiences.slice(0, 3);
 	}
+
 	let isShowMoreAch = false;
 	let showAchievements = achievementItems.slice(0, 3);
 	function toggleShowMoreAch() {
@@ -93,74 +69,10 @@
 		showAchievements = isShowMoreAch ? achievementItems : achievementItems.slice(0, 3);
 	}
 
-	function openTiktaktoe() {
-		tiktaktoeVisible = true;
-	}
-	function closeTiktaktoe() {
-		tiktaktoeVisible = false;
-	}
-	function resetTiktaktoe() {
-		board = Array(9).fill(null);
-	}
-	function handleTiktaktoeKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') closeTiktaktoe();
-	}
-
-	let tiktaktoeVisible = false;
-	let board = Array(9).fill(null);
-	let currentPlayer = 'x';
-
-	function handleTiktaktoeClick(index: number) {
-		if (!board[index]) {
-			board[index] = currentPlayer;
-			const row = Math.floor(index / 3);
-			const col = index % 3;
-			const rowWin =
-				board[row * 3] === currentPlayer &&
-				board[row * 3 + 1] === currentPlayer &&
-				board[row * 3 + 2] === currentPlayer;
-			const colWin =
-				board[col] === currentPlayer &&
-				board[col + 3] === currentPlayer &&
-				board[col + 6] === currentPlayer;
-			const diag1Win =
-				index % 4 === 0 &&
-				board[0] === currentPlayer &&
-				board[4] === currentPlayer &&
-				board[8] === currentPlayer;
-			const diag2Win =
-				index % 2 === 0 &&
-				index !== 0 &&
-				index !== 8 &&
-				board[2] === currentPlayer &&
-				board[4] === currentPlayer &&
-				board[6] === currentPlayer;
-			const isDraw = board.every((cell) => cell !== null);
-
-			if (rowWin || colWin || diag1Win || diag2Win) {
-				customAlert(`${currentPlayer} wins!`);
-				resetTiktaktoe();
-				return;
-			}
-			if (isDraw) {
-				customAlert('Draw!');
-				resetTiktaktoe();
-				return;
-			}
-			currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
-		}
-	}
-
 	const sectionIds = ['arpthef', 'technologies', 'experiences', 'projects'];
 	let currentSectionIndex = 0;
 	let showScrollTop = false;
 	let showScrollBottom = false;
-
-	function isSectionInView(el: HTMLElement | null): boolean {
-		if (!el) return false;
-		const rect = el.getBoundingClientRect();
-		return Math.abs(rect.top) < 5;
-	}
 
 	function updateSectionIndexAndVisibility() {
 		let closestSection = 0;
@@ -177,24 +89,17 @@
 			}
 		});
 		currentSectionIndex = closestSection;
-		showScrollTop =
-			currentSectionIndex > 0 &&
-			!isSectionInView(document.getElementById(sectionIds[currentSectionIndex - 1]));
-		showScrollBottom =
-			currentSectionIndex < sectionIds.length - 1 &&
-			!isSectionInView(document.getElementById(sectionIds[currentSectionIndex + 1]));
+		showScrollTop = currentSectionIndex > 0;
+		showScrollBottom = currentSectionIndex < sectionIds.length - 1;
 	}
 
 	function scrollToSection(index: number) {
-    const section = document.getElementById(sectionIds[index]);
-    if (section) {
-        const hash = `#${sectionIds[index]}`;
-        
-        handleHistory(new Event('scroll'), hash); 
-        
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-}
+		const section = document.getElementById(sectionIds[index]);
+		if (section) {
+			handleHistory(new Event('scroll'), `#${sectionIds[index]}`);
+			section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
+	}
 
 	if (typeof window !== 'undefined') {
 		window.addEventListener('scroll', updateSectionIndexAndVisibility);
@@ -203,116 +108,75 @@
 	onMount(() => {
 		updateSectionIndexAndVisibility();
 	});
-
-	let showHeartModal = false;
-
-	interface HeartParticle {
-		id: number;
-		left: string;
-		animationDuration: string;
-		fontSize: string;
-		delay: string;
-	}
-
-	let particles: HeartParticle[] = [];
-
-	function createParticles() {
-		const count = 50;
-		const newParticles: HeartParticle[] = [];
-		for (let i = 0; i < count; i++) {
-			newParticles.push({
-				id: i,
-				left: Math.random() * 100 + '%',
-				animationDuration: Math.random() * 3 + 3 + 's',
-				fontSize: Math.random() * 1.5 + 0.5 + 'rem',
-				delay: Math.random() * 5 + 's'
-			});
-		}
-		particles = newParticles;
-	}
-
-	$: if (showHeartModal) {
-		createParticles();
-	} else {
-		particles = [];
-	}
 </script>
 
 <svelte:head>
 	<title>arp - Home</title>
 	<link rel="icon" href="%sveltekit.assets%/Logo.webp" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-
 	<meta property="og:title" content="arpthef" />
-	<meta property="og:description" content="Welcome to arpthef portofolio." />
+	<meta property="og:description" content="Welcome to arpthef portfolio." />
 	<meta property="og:image" content="%sveltekit.assets%/Logo.webp" />
 	<meta property="og:url" content="https://arpthef.my.id/" />
 	<meta property="og:type" content="website" />
-
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="arpthef" />
-	<meta name="twitter:description" content="Welcome to arpthef portofolio" />
-	<meta name="twitter:image" content="%sveltekit.assets%/Logo.webp" />
 	<meta name="description" content="Arpthef personal website." />
 	<meta
 		name="keywords"
-		content="arpthef, portfolio, personal website, web developer, programmer, Ariffansyah, Mohammad, Mohammad Ariffansyah"
+		content="arpthef, portfolio, personal website, web developer, programmer, Ariffansyah, Mohammad Ariffansyah"
 	/>
 	<meta name="author" content="Mohammad Ariffansyah" />
 	<link rel="canonical" href="https://arpthef.my.id/" />
 </svelte:head>
 
-<section class="mx-3 flex flex-col justify-center md:mx-auto">
+<section class="relative z-10 mx-3 flex flex-col justify-center md:mx-auto">
 	<div
 		id="arpthef"
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+		class="animate-fade-in my-10 flex w-full flex-col items-start justify-center gap-4 rounded-sm border border-pink-200 bg-white/60 p-8 shadow-[0_20px_60px_rgba(255,182,193,0.5)] transition duration-300 hover:scale-[1.01] md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
-		<div class="flex w-full flex-row items-start justify-between text-white">
+		<div class="flex w-full flex-row items-start justify-between">
 			<div class="flex flex-col">
-				<h1 class="text-3xl font-bold">Mohammad "arp" Ariffansyah</h1>
-				<p class="text-sm text-gray-400">Surabaya, Indonesia</p>
+				<h1 class="text-3xl font-bold tracking-tight text-gray-900">Mohammad "arp" Ariffansyah</h1>
+				<p class="mt-1 text-sm font-bold tracking-widest text-pink-600 uppercase">
+					Surabaya, Indonesia
+				</p>
 			</div>
-			<div class="flex items-center">
+			<div class="flex items-center gap-4">
 				<a
 					href="https://github.com/Ariffansyah"
-					aria-label="GitHub Profile"
 					target="_blank"
-					rel="noopener noreferrer"
-					class="text-gray-400 hover:text-white"
+					class="text-gray-700 transition-colors hover:text-pink-600"
+					aria-label="GitHub Profile"
 				>
 					<i class="fa-brands fa-github fa-xl"></i>
 				</a>
 				<a
 					href="https://www.linkedin.com/in/arpthef/"
-					aria-label="LinkedIn Profile"
 					target="_blank"
-					rel="noopener noreferrer"
-					class="ml-4 text-gray-400 hover:text-white"
+					class="text-gray-700 transition-colors hover:text-pink-600"
+					aria-label="LinkedIn Profile"
 				>
 					<i class="fa-brands fa-linkedin fa-xl"></i>
 				</a>
 			</div>
 		</div>
-		<div class="mt-4 flex flex-col items-start justify-center gap-2">
-			<p class="text-justify text-gray-300">
+		<div class="mt-4 flex flex-col items-start gap-3">
+			<p class="text-justify leading-relaxed font-medium text-gray-800">
 				I am a informatics engineering student at one of universities in Indonesia. I like
 				full-stack web development, focus on back-end development, and i like to explore new
 				technologies.
 			</p>
-			<div class="flex w-full flex-row items-center justify-between gap-2">
+			<div class="mt-4 flex w-full flex-row items-center justify-between">
 				<a
-					href={resolve("/about")}
-					class="rounded py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
-					>Learn more about me</a
+					href={resolve('/about')}
+					class="text-sm font-black tracking-tighter text-pink-700 underline decoration-pink-300 decoration-2 underline-offset-4 transition-colors hover:text-pink-500"
+					>LEARN MORE</a
 				>
 				<a
-					class="rounded px-4 py-2 text-sm font-semibold text-gray-400 transition duration-200 hover:text-white hover:underline"
-					href={asset("/assets/cv/cv-en.pdf")}
+					href={asset('/assets/cv/cv-en.pdf')}
 					download="arpthef-cv-en.pdf"
-					aria-label="Download CV"
-					target="_blank"
-					rel="noopener noreferrer">Download CV</a
+					class="rounded-sm bg-pink-500 px-6 py-2.5 text-xs font-black tracking-tighter text-white uppercase shadow-[0_10px_20px_rgba(236,72,153,0.4)] transition-all hover:bg-pink-600"
+					>Download CV</a
 				>
 			</div>
 		</div>
@@ -323,17 +187,21 @@
 		class="animate-fade-in mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-4 md:w-1/3"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
-		<h1 class="mb-2 text-2xl font-bold text-white md:text-3xl">Most use technologies</h1>
-		<div class="grid w-full grid-cols-2 gap-2 sm:grid-cols-3">
+		<h1
+			class="mb-2 border-l-8 border-pink-500 pl-4 text-2xl font-black tracking-tighter text-gray-900 uppercase"
+		>
+			Technologies
+		</h1>
+		<div class="grid w-full grid-cols-2 gap-4 sm:grid-cols-3">
 			{#each technologies as tech (tech.name)}
 				<div
-					class="bg-darkgray flex w-full flex-col items-start gap-2 rounded px-2 py-1 transition duration-200 hover:scale-105 md:px-3 md:py-2"
+					class="flex flex-col items-start gap-2 rounded-sm border-r-4 border-b-4 border-pink-200 bg-white/80 p-4 shadow-xl transition duration-200 hover:translate-x-1 hover:translate-y-1 hover:bg-white hover:shadow-none"
 				>
 					<div class="flex flex-row items-center gap-2">
-						<img src={tech.icon} alt={tech.alt} class="h-5 w-5 md:h-6 md:w-6" />
-						<span class="text-sm text-gray-200">{tech.name}</span>
+						<img src={tech.icon} alt={tech.alt} class="h-6 w-6" />
+						<span class="text-sm font-black text-gray-900">{tech.name}</span>
 					</div>
-					<p class="text-xs text-gray-400 md:text-sm">{tech.description}</p>
+					<p class="text-xs font-medium text-gray-600">{tech.description}</p>
 				</div>
 			{/each}
 		</div>
@@ -341,18 +209,16 @@
 
 	<div
 		id="experiences"
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+		class="animate-fade-in my-10 flex w-full flex-col items-start justify-center gap-4 rounded-sm border border-r-4 border-b-4 border-pink-50 border-pink-200 bg-white/70 p-8 shadow-[0_20px_50px_rgba(255,182,193,0.2)] transition duration-300 md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
-		<div
-			class="mb-4 flex w-full scroll-pr-4 scroll-pl-4 flex-row items-center justify-start space-x-4 overflow-x-auto md:justify-between"
-		>
+		<div class="no-scrollbar mb-6 flex w-full gap-1 overflow-x-auto py-1">
 			{#each tabs as tab (tab.value)}
 				<button
-					class="rounded-lg px-4 py-2 font-semibold whitespace-nowrap text-white transition-shadow duration-200 focus:outline-none md:rounded-t-lg {activeTab ===
+					class=" rounded-md px-6 py-2 text-xs font-black tracking-widest uppercase transition-all duration-300 {activeTab ===
 					tab.value
-						? 'shadow-[0_4px_16px_rgba(255,255,255,0.2)]'
-						: 'opacity-60'}"
+						? 'bg-pink-500 text-white shadow-[0_10px_25px_rgba(236,72,153,0.4)]'
+						: 'border border-pink-100 bg-white text-pink-300 hover:bg-pink-50'}"
 					on:click={() => (activeTab = tab.value)}
 				>
 					{tab.label}
@@ -360,324 +226,207 @@
 			{/each}
 		</div>
 
-		{#if activeTab === 'work'}
-			<div class="relative ml-6 border-l border-gray-700">
+		<div class="relative ml-4 w-full border-l-4 border-pink-100 pr-4">
+			{#if activeTab === 'work'}
 				{#each showWorkExperiences as exp, i (exp.experienceName + exp.date)}
-					<div class="relative pb-10 pl-6">
+					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
+							class="absolute top-1.5 -left-[14px] h-6 w-6 rounded-full border-4 border-white {bgColors[
 								i % bgColors.length
-							]}"
+							]} shadow-md"
 						></div>
-						<p class="text-sm font-medium {textColors[i % textColors.length]}">
+						<p
+							class="text-xs font-black tracking-tighter uppercase {textColors[
+								i % textColors.length
+							]}"
+						>
 							{exp.experienceName}
 						</p>
-						<h3 class="text-lg font-bold">{exp.title}</h3>
-						<p class="text-sm text-gray-400">{exp.date}</p>
-						<p class="mt-1 text-justify text-gray-300">{exp.description}</p>
+						<h3 class="text-xl leading-tight font-black text-gray-900">{exp.title}</h3>
+						<p class="mb-3 text-xs font-bold text-gray-400">{exp.date}</p>
+						<p class="text-justify text-sm font-medium text-gray-700">{exp.description}</p>
 					</div>
 				{/each}
-			</div>
-			{#if workExperiences.length > 3}
-				<button
-					class="mt-2 ml-6 rounded py-2 text-gray-400 transition duration-200 hover:text-white hover:underline"
-					on:click={toggleShowMoreWork}
-				>
-					{#if isShowMoreWork}Show Less{:else}Show More{/if}
-				</button>
-			{/if}
-		{:else if activeTab === 'education'}
-			<div class="relative ml-6 border-l border-gray-700">
+				{#if workExperiences.length > 3}
+					<button
+						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:text-pink-400 hover:underline"
+						on:click={toggleShowMoreWork}
+					>
+						{isShowMoreWork ? 'Show Less' : 'Show More'}
+					</button>
+				{/if}
+			{:else if activeTab === 'education'}
 				{#each showEducationExperiences as edu, i (edu.experienceName + edu.date)}
-					<div class="relative pb-10 pl-6">
+					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
+							class="absolute top-1.5 -left-[14px] h-6 w-6 rounded-full border-4 border-white {bgColors[
 								i % bgColors.length
-							]}"
+							]} shadow-md"
 						></div>
-						<p class="text-lg font-bold {textColors[i % textColors.length]}">
-							{edu.experienceName}
-						</p>
-						<p class="text-sm text-gray-400">{edu.date}</p>
-						<p class="mt-1 text-justify text-gray-300">{edu.description}</p>
+						<p class="text-xl leading-tight font-black text-gray-900">{edu.experienceName}</p>
+						<p class="mb-3 text-xs font-bold text-gray-400">{edu.date}</p>
+						<p class="text-justify text-sm font-medium text-gray-700">{edu.description}</p>
 					</div>
 				{/each}
-			</div>
-			{#if educationExperiences.length > 3}
-				<button
-					class="mt-2 ml-6 rounded py-2 text-gray-400 transition duration-200 hover:text-white hover:underline"
-					on:click={toggleShowMoreEdu}
-				>
-					{#if isShowMoreEdu}Show Less{:else}Show More{/if}
-				</button>
-			{/if}
-		{:else if activeTab === 'organization'}
-			<div class="relative ml-6 border-l border-gray-700">
+				{#if educationExperiences.length > 3}
+					<button
+						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:text-pink-400 hover:underline"
+						on:click={toggleShowMoreEdu}
+					>
+						{isShowMoreEdu ? 'Show Less' : 'Show More'}
+					</button>
+				{/if}
+			{:else if activeTab === 'organization'}
 				{#each showOrganizationExperiences as org, i (org.experienceName + org.date)}
-					<div class="relative pb-10 pl-6">
+					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
+							class="absolute top-1.5 -left-[14px] h-6 w-6 rounded-full border-4 border-white {bgColors[
 								i % bgColors.length
-							]}"
+							]} shadow-md"
 						></div>
-						<p class="text-sm font-medium {textColors[i % textColors.length]}">
+						<p
+							class="text-xs font-black tracking-tighter uppercase {textColors[
+								i % textColors.length
+							]}"
+						>
 							{org.experienceName}
 						</p>
-						<h3 class="text-lg font-bold">{org.title}</h3>
-						<p class="text-sm text-gray-400">{org.date}</p>
-						<p class="mt-1 text-justify text-gray-300">{org.description}</p>
+						<h3 class="text-xl leading-tight font-black text-gray-900">{org.title}</h3>
+						<p class="mb-3 text-xs font-bold text-gray-400">{org.date}</p>
+						<p class="text-justify text-sm font-medium text-gray-700">{org.description}</p>
 					</div>
 				{/each}
-			</div>
-			{#if organizationExperiences.length > 3}
-				<button
-					class="mt-2 ml-6 rounded py-2 text-gray-400 transition duration-200 hover:text-white hover:underline"
-					on:click={toggleShowMoreOrg}
-				>
-					{#if isShowMoreOrg}Show Less{:else}Show More{/if}
-				</button>
-			{/if}
-		{:else if activeTab === 'achievement'}
-			<div class="relative ml-6 border-l border-gray-700">
+				{#if organizationExperiences.length > 3}
+					<button
+						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:text-pink-400 hover:underline"
+						on:click={toggleShowMoreOrg}
+					>
+						{isShowMoreOrg ? 'Show Less' : 'Show More'}
+					</button>
+				{/if}
+			{:else if activeTab === 'achievement'}
 				{#each showAchievements as ach, i (ach.achievementName + ach.date)}
-					<div class="relative pb-10 pl-6">
+					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-1.5 h-3 w-3 rounded-full {bgColors[
+							class="absolute top-1.5 -left-[14px] h-6 w-6 rounded-full border-4 border-white {bgColors[
 								i % bgColors.length
-							]}"
+							]} shadow-md"
 						></div>
-						<p class="text-sm font-medium {textColors[i % textColors.length]}">
+						<p
+							class="text-xs font-black tracking-tighter uppercase {textColors[
+								i % textColors.length
+							]}"
+						>
 							{ach.achievementName}
 						</p>
-						<p class="text-lg font-bold">{ach.title}</p>
-						<p class="text-sm text-gray-400">{ach.date}</p>
-						<p class="mt-1 text-justify text-gray-300">{ach.description}</p>
+						<h3 class="text-xl leading-tight font-black text-gray-900">{ach.title}</h3>
+						<p class="mb-3 text-xs font-bold text-gray-400">{ach.date}</p>
+						<p class="text-justify text-sm font-medium text-gray-700">{ach.description}</p>
 					</div>
 				{/each}
-			</div>
-			{#if achievementItems.length > 3}
-				<button
-					class="mt-2 ml-6 rounded py-2 text-gray-400 transition duration-200 hover:text-white hover:underline"
-					on:click={toggleShowMoreAch}
-				>
-					{#if isShowMoreAch}Show Less{:else}Show More{/if}
-				</button>
+				{#if achievementItems.length > 3}
+					<button
+						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:text-pink-400 hover:underline"
+						on:click={toggleShowMoreAch}
+					>
+						{isShowMoreAch ? 'Show Less' : 'Show More'}
+					</button>
+				{/if}
 			{/if}
-		{/if}
+		</div>
 	</div>
 
 	<div
 		id="projects"
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-8 p-6 md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
 		<div class="flex w-full flex-row items-center justify-between">
-			<h1 class="mb-2 text-3xl font-bold text-white">Recent projects</h1>
-			<a href={resolve("/projects")} class="text-sm text-gray-400 hover:text-white"> See all</a>
+			<h1 class="border-l-8 border-pink-500 pl-4 text-3xl font-black text-gray-900 uppercase">
+				Projects
+			</h1>
+			<a
+				href={resolve('/projects')}
+				class="text-sm font-black tracking-tighter text-pink-600 uppercase hover:text-pink-400 hover:underline"
+				>View All</a
+			>
 		</div>
-		<div class="h-full w-full pr-2">
+		<div class="grid w-full grid-cols-1 gap-10">
 			{#each projects.slice(0, 3) as project (project.projectName)}
 				<div
-					class="mb-4 flex w-full flex-col items-start justify-center gap-2 transition duration-300 hover:scale-105"
+					class="group relative overflow-hidden rounded-sm border border-pink-50 bg-white shadow-[0_30px_60px_rgba(255,182,193,0.3)] transition-all duration-500"
 				>
-					<div class="relative w-full">
-						<img
-							src={project.projectImages && project.projectImages[0]
-								? project.projectImages[0]
-								: ''}
-							alt={project.projectName}
-							class=" h-64 w-full rounded-lg object-cover opacity-70 shadow-lg"
-						/>
-						<a href={resolve("/projects/[slug]", {slug: project.projectLink})} rel="noopener noreferrer">
-							<div
-								class="absolute bottom-0 left-0 h-full w-full rounded-b-lg bg-gradient-to-t from-black/100 via-black/70 to-transparent transition duration-300 hover:bg-gradient-to-t hover:from-black/80 hover:via-black/30 hover:to-transparent"
-							>
-								<div class="absolute bottom-2 left-2 m-3 flex flex-col gap-2">
-									<h2 class="text-xl font-bold text-white">{project.projectName}</h2>
-									<div class="flex flex-row items-center gap-2">
-										{#each project.technologies as tech (tech.name)}
-											<img src={tech.icon} alt={tech.name} class="h-8 w-8" />
-										{/each}
-									</div>
-									<p class="text-sm text-gray-300">{project.projectDescription}</p>
-								</div>
-							</div>
-						</a>
+					<img
+						src={project.projectImages?.[0] || ''}
+						alt={project.projectName}
+						class="h-72 w-full object-cover opacity-80 grayscale transition-all duration-700 group-hover:opacity-100 group-hover:grayscale-0"
+					/>
+					<div
+						class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-pink-900/90 via-pink-800/40 to-transparent p-8"
+					>
+						<div class="mb-4 flex flex-wrap gap-2">
+							{#each project.technologies as tech (tech.name)}
+								<img
+									src={tech.icon}
+									alt={tech.name}
+									class="h-6 w-6 brightness-0 invert"
+									title={tech.name}
+								/>
+							{/each}
+						</div>
+						<h2 class="mb-1 text-2xl font-black tracking-tighter text-white uppercase">
+							{project.projectName}
+						</h2>
+						<p class="mb-6 line-clamp-2 text-sm font-medium text-pink-50">
+							{project.projectDescription}
+						</p>
+						<a
+							href={resolve('/projects/[slug]', { slug: project.projectLink })}
+							class="inline-block w-max bg-white px-8 py-3 text-xs font-black tracking-widest text-pink-600 uppercase shadow-xl transition-all hover:bg-pink-50"
+							>Details</a
+						>
 					</div>
 				</div>
 			{/each}
 		</div>
 	</div>
 
-	<a
-		href={resolve("/contact")}
-		class="animate-fade-in mx-auto mb-6 w-full max-w-md"
-		use:intersect={{ threshold: 0.3, once: true }}
-	>
-		<button
-			class="w-full px-4 py-2 font-bold text-gray-400 transition duration-200 hover:text-white hover:underline"
+	<div class="mt-16 mb-24 flex flex-col items-center gap-6">
+		<a
+			href={resolve('/contact')}
+			class="rounded-sm bg-pink-500 px-12 py-4 text-sm font-black tracking-[0.2em] text-white uppercase shadow-[0_15px_30px_rgba(236,72,153,0.4)] transition-all hover:bg-pink-600"
 		>
 			Contact me
-		</button>
-	</a>
-
-	<button
-		class="mt-2 rounded py-2 text-gray-300 transition duration-200 hover:underline"
-		on:click={openTiktaktoe}
-	>
-		Tiktaktoe
-	</button>
-
-	<div class="group flex w-full justify-center">
-		<button
-			class="mt-2 rounded py-2 text-gray-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus:opacity-100"
-			on:click={() => (showHeartModal = true)}
-		>
-			19-7
-		</button>
+		</a>
 	</div>
 </section>
 
 {#if showScrollTop}
 	<button
-		class="text-gray-white fixed top-4 left-1/2 z-50 min-w-[120px] -translate-x-1/2 rounded-lg px-4 py-2 text-base shadow transition md:top-8 md:text-lg md:text-gray-400 md:hover:text-white"
+		class="fixed top-8 left-1/2 z-50 -translate-x-1/2 p-2 text-pink-400 drop-shadow-md transition-all hover:text-pink-600"
 		on:click={() => scrollToSection(currentSectionIndex - 1)}
-		aria-label="Scroll Top"
+		aria-label="Scroll to previous section"
 	>
-		<i class="fa-solid fa-chevron-up"></i>
+		<i class="fa-solid fa-chevron-up fa-2xl"></i>
 	</button>
 {/if}
 
 {#if showScrollBottom}
 	<button
-		class="fixed bottom-4 left-1/2 z-50 min-w-[120px] -translate-x-1/2 rounded-lg px-4 py-2 text-base text-white shadow transition md:bottom-8 md:text-lg md:text-gray-400 md:hover:text-white"
+		class="fixed bottom-8 left-1/2 z-50 -translate-x-1/2 p-2 text-pink-400 drop-shadow-md transition-all hover:text-pink-600"
 		on:click={() => scrollToSection(currentSectionIndex + 1)}
-		aria-label="Scroll Bottom"
+		aria-label="Scroll to next section"
 	>
-		<i class="fa-solid fa-chevron-down"></i>
+		<i class="fa-solid fa-chevron-down fa-2xl"></i>
 	</button>
 {/if}
 
-{#if tiktaktoeVisible}
-	<div
-		role="dialog"
-		aria-modal="true"
-		tabindex="0"
-		class="bg-opacity-80 fixed inset-0 z-50 flex items-center justify-center bg-black"
-		on:keydown={handleTiktaktoeKeydown}
-	>
-		<div
-			class="bg-darkgray relative flex h-[500px] w-[500px] flex-col items-center justify-center rounded-lg p-5 shadow-lg"
-		>
-			<button
-				class="absolute top-2 right-2 text-gray-400 hover:text-white"
-				on:click={closeTiktaktoe}
-				aria-label="Close Tiktaktoe"
-			>
-				<i class="fa-solid fa-xmark fa-lg"></i>
-			</button>
-			<table class="h-full w-full">
-				<thead>
-					<tr><th colspan="3" class="text-center text-lg font-bold text-white">Tiktaktoe</th></tr>
-				</thead>
-				<tbody>
-					{#each [0, 1, 2] as row (row)}
-						<tr>
-							{#each [0, 1, 2] as col (col)}
-								<td class="w-1/3 items-center justify-center">
-									<button
-										class="h-28 w-28 border border-white text-3xl"
-										on:click={() => handleTiktaktoeClick(row * 3 + col)}
-									>
-										{board[row * 3 + col] ?? ' '}
-									</button>
-								</td>
-							{/each}
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-			<button
-				class="mt-x absolute right-2 bottom-2 text-gray-400 hover:text-white"
-				on:click={resetTiktaktoe}
-				aria-label="Reset Tiktaktoe"
-			>
-				<i class="fa-solid fa-rotate-right"></i>
-			</button>
-		</div>
-	</div>
-{/if}
-
-{#if showHeartModal}
-	<div
-		role="dialog"
-		aria-modal="true"
-		tabindex="0"
-		class="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black/90"
-		on:click={() => (showHeartModal = false)}
-		on:keydown={(e) => e.key === 'Escape' && (showHeartModal = false)}
-	>
-		<div class="pointer-events-none absolute inset-0 select-none">
-			{#each particles as particle (particle.id)}
-				<div
-					class="falling-heart absolute -top-10 text-red-500/60"
-					style="left: {particle.left}; font-size: {particle.fontSize}; animation-duration: {particle.animationDuration}; animation-delay: {particle.delay};"
-				>
-					❤️
-				</div>
-			{/each}
-		</div>
-
-		<div class="pointer-events-none relative z-10 flex items-center justify-center select-none">
-			<div class="animate-heartbeat text-[150px] text-red-600">❤️</div>
-			<span class="animate-heartbeat absolute text-6xl font-bold text-white">N</span>
-		</div>
-	</div>
-{/if}
-
 <style>
-	.bg-darkgray {
-		background-color: #222222;
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
 	}
-	.custom-scroll::-webkit-scrollbar {
-		height: 8px;
-		width: 8px;
-	}
-	.custom-scroll::-webkit-scrollbar-thumb {
-		background: #444;
-		border-radius: 4px;
-	}
-	.custom-scroll::-webkit-scrollbar-track {
-		background: #222;
-		border-radius: 4px;
-	}
-
-	@keyframes heartbeat {
-		0%,
-		100% {
-			transform: scale(1);
-		}
-		50% {
-			transform: scale(1.1);
-		}
-	}
-	.animate-heartbeat {
-		animation: heartbeat 1s infinite;
-	}
-
-	@keyframes fall {
-		0% {
-			transform: translateY(-10vh) rotate(0deg);
-			opacity: 1;
-		}
-		100% {
-			transform: translateY(110vh) rotate(360deg);
-			opacity: 0;
-		}
-	}
-	.falling-heart {
-		animation-name: fall;
-		animation-timing-function: linear;
-		animation-iteration-count: infinite;
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
 	}
 </style>
