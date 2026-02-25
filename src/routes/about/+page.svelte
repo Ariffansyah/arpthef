@@ -227,7 +227,7 @@
 				{#each showEducationExperiences as edu, i (edu.experienceName + edu.date)}
 					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-sm border-4 border-white {bgColors[
+							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
 								i % bgColors.length
 							]} shadow-md"
 						></div>
@@ -248,7 +248,7 @@
 				{#each showOrganizationExperiences as org, i (org.experienceName + org.date)}
 					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-sm border-4 border-white {bgColors[
+							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
 								i % bgColors.length
 							]} shadow-md"
 						></div>
@@ -276,7 +276,7 @@
 				{#each showAchievements as ach, i (ach.achievementName + ach.date)}
 					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-sm border-4 border-white {bgColors[
+							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
 								i % bgColors.length
 							]} shadow-md"
 						></div>
