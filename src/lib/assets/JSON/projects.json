@@ -1,7 +1,7 @@
 [
 	{
 		"projectName": "Syntesa - AI Laboratory Management System",
-		"visitLink": "/",
+		"visitLink": "",
 		"projectImages": [
 			"/assets/syntesa-lab.webp",
 			"/assets/syntesa-lab2.webp",
@@ -10,19 +10,19 @@
 		"technologies": [
 			{
 				"name": "SvelteKit",
-				"icon": "https://cdn.simpleicons.org/svelte/ffffff"
+				"icon": "https://cdn.simpleicons.org/svelte/ec4899"
 			},
 			{
 				"name": "TypeScript",
-				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
+				"icon": "https://cdn.simpleicons.org/typescript/ec4899"
 			},
 			{
 				"name": "Python",
-				"icon": "https://cdn.simpleicons.org/python/ffffff"
+				"icon": "https://cdn.simpleicons.org/python/ec4899"
 			},
 			{
 				"name": "SQLite",
-				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
+				"icon": "https://cdn.simpleicons.org/sqlite/ec4899"
 			}
 		],
 		"projectDescription": "A comprehensive management and attendance system designed to streamline day-to-day operations and guest tracking for the Syntesa Software Engineering Lab.",
@@ -36,11 +36,11 @@
 		"technologies": [
 			{
 				"name": "React",
-				"icon": "https://cdn.simpleicons.org/react/ffffff"
+				"icon": "https://cdn.simpleicons.org/react/ec4899"
 			},
 			{
 				"name": "TypeScript",
-				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
+				"icon": "https://cdn.simpleicons.org/typescript/ec4899"
 			}
 		],
 		"projectDescription": "The official web presence of the Syntesa Software Engineering Lab, serving as a central hub for information, member activities, and lab resources.",
@@ -50,15 +50,15 @@
 	{
 		"projectName": "Syntesa - Discord Bot",
 		"visitLink": "https://discord.gg/F7Wx88yZFy",
-		"projectImages": ["/assets/SourceCode.webp"],
+		"projectImages": ["/assets/SourceCode.svg"],
 		"technologies": [
 			{
 				"name": "Go",
-				"icon": "https://cdn.simpleicons.org/go/ffffff"
+				"icon": "https://cdn.simpleicons.org/go/ec4899"
 			},
 			{
 				"name": "SQLite",
-				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
+				"icon": "https://cdn.simpleicons.org/sqlite/ec4899"
 			}
 		],
 		"projectDescription": "Syntesa Bot is a multifunctional Discord bot written in Go, designed to enhance server management and user engagement.",
@@ -72,19 +72,19 @@
 		"technologies": [
 			{
 				"name": "React",
-				"icon": "https://cdn.simpleicons.org/react/ffffff"
+				"icon": "https://cdn.simpleicons.org/react/ec4899"
 			},
 			{
 				"name": "TypeScript",
-				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
+				"icon": "https://cdn.simpleicons.org/typescript/ec4899"
 			},
 			{
 				"name": "Go",
-				"icon": "https://cdn.simpleicons.org/go/ffffff"
+				"icon": "https://cdn.simpleicons.org/go/ec4899"
 			},
 			{
 				"name": "PostgreSQL",
-				"icon": "https://cdn.simpleicons.org/postgresql/ffffff"
+				"icon": "https://cdn.simpleicons.org/postgresql/ec4899"
 			}
 		],
 		"projectDescription": "UnivTalk is a social media platform for university students to connect and share ideas.",
@@ -102,11 +102,11 @@
 		"technologies": [
 			{
 				"name": "SvelteKit",
-				"icon": "https://cdn.simpleicons.org/svelte/ffffff"
+				"icon": "https://cdn.simpleicons.org/svelte/ec4899"
 			},
 			{
 				"name": "TypeScript",
-				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
+				"icon": "https://cdn.simpleicons.org/typescript/ec4899"
 			}
 		],
 		"projectDescription": "GenRe Papua is a website that provides information about the GenRe Papua community, including news, events, and resources.",
@@ -120,15 +120,15 @@
 		"technologies": [
 			{
 				"name": "Unity",
-				"icon": "https://cdn.simpleicons.org/unity/ffffff"
+				"icon": "https://cdn.simpleicons.org/unity/ec4899"
 			},
 			{
 				"name": "C#",
-				"icon": "https://img.icons8.com/?size=100&id=111972&format.webp&color=ffffff"
+				"icon": "https://img.icons8.com/?size=100&id=111972&format=webp&color=ec4899"
 			},
 			{
 				"name": "Itch.io",
-				"icon": "https://cdn.simpleicons.org/itch.io/ffffff"
+				"icon": "https://cdn.simpleicons.org/itch.io/ec4899"
 			}
 		],
 		"projectDescription": "Fatebound is a 2d fighting game developed in Unity.",
@@ -142,11 +142,11 @@
 		"technologies": [
 			{
 				"name": "Python",
-				"icon": "https://cdn.simpleicons.org/python/ffffff"
+				"icon": "https://cdn.simpleicons.org/python/ec4899"
 			},
 			{
 				"name": "Mailtrap",
-				"icon": "https://cdn.simpleicons.org/mailtrap/ffffff"
+				"icon": "https://cdn.simpleicons.org/mailtrap/ec4899"
 			}
 		],
 		"projectDescription": "A simple email sender application using Mailtrap.",
@@ -160,11 +160,11 @@
 		"technologies": [
 			{
 				"name": "Docker",
-				"icon": "https://cdn.simpleicons.org/docker/ffffff"
+				"icon": "https://cdn.simpleicons.org/docker/ec4899"
 			},
 			{
 				"name": "Shell",
-				"icon": "https://cdn.simpleicons.org/gnubash/ffffff"
+				"icon": "https://cdn.simpleicons.org/gnubash/ec4899"
 			}
 		],
 		"projectDescription": "Orb OS is a Linux-based operating system designed with developers in mind.",
@@ -178,11 +178,11 @@
 		"technologies": [
 			{
 				"name": "Kotlin",
-				"icon": "https://cdn.simpleicons.org/kotlin/ffffff"
+				"icon": "https://cdn.simpleicons.org/kotlin/ec4899"
 			},
 			{
 				"name": "Sqlite",
-				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
+				"icon": "https://cdn.simpleicons.org/sqlite/ec4899"
 			}
 		],
 		"projectDescription": "OOP collage project for a pet shop management system using Kotlin and SQLite.",
@@ -196,15 +196,15 @@
 		"technologies": [
 			{
 				"name": "C++",
-				"icon": "https://cdn.simpleicons.org/cplusplus/ffffff"
+				"icon": "https://cdn.simpleicons.org/cplusplus/ec4899"
 			},
 			{
 				"name": "Qt",
-				"icon": "https://cdn.simpleicons.org/qt/ffffff"
+				"icon": "https://cdn.simpleicons.org/qt/ec4899"
 			},
 			{
 				"name": "SQLite",
-				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
+				"icon": "https://cdn.simpleicons.org/sqlite/ec4899"
 			}
 		],
 		"projectDescription": "A simple To-Do application built with C++, Qt and SQLite.",
@@ -218,11 +218,11 @@
 		"technologies": [
 			{
 				"name": "Go",
-				"icon": "https://cdn.simpleicons.org/go/ffffff"
+				"icon": "https://cdn.simpleicons.org/go/ec4899"
 			},
 			{
 				"name": "sqlite",
-				"icon": "https://cdn.simpleicons.org/sqlite/ffffff"
+				"icon": "https://cdn.simpleicons.org/sqlite/ec4899"
 			}
 		],
 		"projectDescription": "Lucy is a Discord bot designed to enhance user experience with Join To Create feature.",
@@ -240,19 +240,19 @@
 		"technologies": [
 			{
 				"name": "React",
-				"icon": "https://cdn.simpleicons.org/react/ffffff"
+				"icon": "https://cdn.simpleicons.org/react/ec4899"
 			},
 			{
 				"name": "TypeScript",
-				"icon": "https://cdn.simpleicons.org/typescript/ffffff"
+				"icon": "https://cdn.simpleicons.org/typescript/ec4899"
 			},
 			{
 				"name": "Vite",
-				"icon": "https://cdn.simpleicons.org/vite/ffffff"
+				"icon": "https://cdn.simpleicons.org/vite/ec4899"
 			},
 			{
 				"name": "Bootstrap",
-				"icon": "https://cdn.simpleicons.org/bootstrap/ffffff"
+				"icon": "https://cdn.simpleicons.org/bootstrap/ec4899"
 			}
 		],
 		"projectDescription": "Website for my home island, Wonderful Papua, showcasing its beauty and culture.",
