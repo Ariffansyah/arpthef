@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { intersect } from '$lib/actions/intersect';
-  import { asset } from '$app/paths';
+	import { asset } from '$app/paths';
 
 	export let data;
 	$: project = data.project;
@@ -9,7 +9,7 @@
 		project.projectImages && project.projectImages.length > 0 ? project.projectImages[0] : null;
 
 	$: galleryImages = project.projectImages
-		? project.projectImages.filter((img) => !img.includes('SourceCode.webp'))
+		? project.projectImages.filter((img: string) => !img.toLowerCase().includes('sourcecode'))
 		: [];
 
 	let selectedImage: string | null = null;
@@ -43,29 +43,43 @@
 	<meta name="twitter:description" content={project.projectDescription} />
 </svelte:head>
 
-<section class="mx-3 flex flex-col justify-center md:mx-auto">
+<section class="relative z-10 mx-3 flex flex-col justify-center md:mx-auto">
 	<div
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-sm border border-pink-200 bg-white/60 p-8 shadow-[0_20px_60px_rgba(255,182,193,0.4)] transition duration-300 hover:scale-[1.01] md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
-		<div class="flex w-full flex-col items-start text-white">
-			<h1 class="text-3xl font-bold">{project.projectName}</h1>
-			<div class="mt-5 flex flex-row items-center gap-2">
+		<div class="flex w-full flex-col items-start">
+			<h1
+				class="border-b-4 border-pink-500 pb-1 text-3xl font-black tracking-tighter text-gray-900 uppercase"
+			>
+				{project.projectName}
+			</h1>
+			<div class="mt-5 flex flex-row items-center gap-3">
 				{#each project.technologies as tech (tech.name)}
-					<img src={tech.icon} alt={tech.name} class="h-8 w-8" title={tech.name} />
+					<img
+						src={tech.icon}
+						alt={tech.name}
+						class="h-8 w-8 drop-shadow-sm filter"
+						title={tech.name}
+					/>
 				{/each}
 			</div>
 		</div>
-		<div class="mt-4 flex flex-col items-start justify-center gap-2 text-gray-300">
-			<p class="text-justify text-gray-300">
+		<div class="mt-4 flex flex-col items-start justify-center gap-4">
+			<p class="text-justify leading-relaxed font-medium text-gray-800">
 				{project.projectDescription}
 			</p>
 
 			{#if project.visitLink}
-				<a href={asset(project.visitLink)} target="_blank" rel="noopener noreferrer">
+				<a
+					href={asset(project.visitLink)}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="w-full md:w-auto"
+				>
 					<button
 						type="button"
-						class="py-2 text-gray-400 transition duration-300 hover:text-white hover:underline"
+						class="w-full rounded-sm bg-pink-500 px-8 py-3 text-sm font-black tracking-widest text-white uppercase shadow-xl transition-all hover:bg-pink-600 active:scale-95"
 					>
 						View Project
 					</button>
@@ -74,21 +88,27 @@
 		</div>
 	</div>
 
-	<div
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 p-6 md:mx-auto md:w-1/3"
-		use:intersect={{ threshold: 0.3, once: true }}
-	>
-		<p class="text-justify text-gray-300">
-			{project.projectDetails}
-		</p>
-	</div>
+	{#if project.projectDetails}
+		<div
+			class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-sm border border-pink-50 bg-white/70 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.05)] md:mx-auto md:w-1/3"
+			use:intersect={{ threshold: 0.3, once: true }}
+		>
+			<p class="text-justify leading-relaxed font-medium text-gray-700">
+				{project.projectDetails}
+			</p>
+		</div>
+	{/if}
 
 	{#if galleryImages.length > 0}
 		<div
-			class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-lg p-6 shadow-[0_0_10px_rgba(255,255,255,0.15)] transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] md:mx-auto md:w-1/3"
+			class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-6 rounded-sm border border-pink-100 bg-white/60 p-8 shadow-[0_20px_50px_rgba(255,182,193,0.3)] md:mx-auto md:w-1/3"
 			use:intersect={{ threshold: 0.3, once: true }}
 		>
-			<h2 class="text-xl font-bold text-white">Gallery</h2>
+			<h2
+				class="border-l-4 border-pink-500 pl-3 text-xl font-black tracking-tighter text-gray-900 uppercase"
+			>
+				Gallery
+			</h2>
 
 			<div
 				class="grid w-full gap-4 {galleryImages.length === 1
@@ -98,44 +118,47 @@
 				{#each galleryImages as imgUrl (imgUrl)}
 					<button
 						type="button"
-						class="w-full focus:outline-none"
+						class="group w-full focus:outline-none"
 						on:click={() => openImage(imgUrl)}
+						aria-label="View screenshot"
 					>
 						<img
 							src={imgUrl}
 							alt="{project.projectName} screenshot"
-							class="aspect-video w-full cursor-pointer rounded-lg object-cover shadow-sm transition-opacity hover:opacity-80"
+							class="aspect-video w-full cursor-pointer rounded-sm border border-pink-50 object-cover shadow-md transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-pink-200/50"
 						/>
 					</button>
 				{/each}
 			</div>
-			<p class="text-xs text-gray-400 italic">Click image to enlarge</p>
+			<p class="text-[10px] font-black tracking-widest text-pink-400 uppercase">
+				Click image to enlarge
+			</p>
 		</div>
 	{/if}
 </section>
 
 {#if selectedImage}
 	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm transition-all"
+		class="fixed inset-0 z-[100] flex items-center justify-center bg-pink-950/40 p-4 backdrop-blur-md transition-all"
 		on:click={closeImage}
 		on:keydown={(e) => e.key === 'Escape' && closeImage()}
 		role="button"
 		tabindex="0"
 	>
-		<div class="relative max-h-screen max-w-full">
+		<div class="relative max-h-screen max-w-full p-2">
 			<img
 				src={selectedImage}
 				alt="Enlarged view"
-				class="max-h-[90vh] max-w-[90vw] rounded-lg object-contain shadow-2xl"
+				class="max-h-[85vh] max-w-[90vw] rounded-sm border-2 border-white object-contain shadow-[0_0_80px_rgba(0,0,0,0.5)]"
 			/>
 			<button
 				on:click={closeImage}
-				class="absolute -top-10 right-0 text-white hover:text-gray-300 focus:outline-none"
+				class="absolute -top-12 right-2 text-white transition-colors hover:text-pink-300 focus:outline-none"
 				aria-label="Close image"
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					class="h-8 w-8"
+					class="h-10 w-10"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
