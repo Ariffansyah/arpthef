@@ -139,7 +139,7 @@
 
 {#if selectedImage}
 	<div
-		class="fixed inset-0 z-[100] flex items-center justify-center bg-pink-950/40 p-4 backdrop-blur-md transition-all"
+		class="fixed inset-0 z-100 flex items-center justify-center bg-pink-950/40 p-4 backdrop-blur-md transition-all"
 		on:click={closeImage}
 		on:keydown={(e) => e.key === 'Escape' && closeImage()}
 		role="button"

@@ -50,7 +50,7 @@
 			<div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-2">
 				{#each projects as project (project.projectName)}
 					<div
-						class="animate-fade-in group relative flex h-[450px] flex-col items-start justify-center gap-4 overflow-hidden rounded-sm border border-pink-100 bg-white shadow-[0_30px_60px_rgba(255,182,193,0.3)] transition duration-500 hover:scale-[1.01]"
+						class="animate-fade-in group relative flex h-112.5 flex-col items-start justify-center gap-4 overflow-hidden rounded-sm border border-pink-100 bg-white shadow-[0_30px_60px_rgba(255,182,193,0.3)] transition duration-500 hover:scale-[1.01]"
 						use:intersect={{ threshold: 0.3, once: true }}
 					>
 						<img
@@ -64,7 +64,7 @@
 
 						<a
 							href={resolve('/projects/[slug]', { slug: project.projectLink })}
-							class="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-pink-900/90 via-pink-800/40 to-transparent p-8 transition duration-300 group-hover:from-pink-900/95"
+							class="absolute inset-0 z-10 flex flex-col justify-end bg-linear-to-t from-pink-900/90 via-pink-800/40 to-transparent p-8 transition duration-300 group-hover:from-pink-900/95"
 						>
 							<div class="flex flex-col gap-3">
 								<div class="flex flex-row items-center gap-3">

@@ -177,7 +177,7 @@
 	</div>
 
 	<div
-		class="animate-fade-in my-10 flex w-full flex-col items-start justify-center gap-6 rounded-sm border border-r-4 border-b-4 border-pink-100 border-pink-200 bg-white/60 p-8 shadow-[0_20px_50px_rgba(255,182,193,0.3)] transition duration-300 md:mx-auto md:w-1/3"
+		class="animate-fade-in my-10 flex w-full flex-col items-start justify-center gap-6 rounded-sm border border-r-4 border-b-4 border-pink-100 bg-white/60 p-8 shadow-[0_20px_50px_rgba(255,182,193,0.3)] transition duration-300 md:mx-auto md:w-1/3"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
 		<div class="no-scrollbar mb-4 flex w-full gap-1 overflow-x-auto py-1">
@@ -199,7 +199,7 @@
 				{#each showWorkExperiences as exp, i (exp.experienceName + exp.date)}
 					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-[14px] h-6 w-6 rounded-full border-4 border-white {bgColors[
+							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
 								i % bgColors.length
 							]} shadow-md"
 						></div>
@@ -227,7 +227,7 @@
 				{#each showEducationExperiences as edu, i (edu.experienceName + edu.date)}
 					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-[14px] h-6 w-6 rounded-sm border-4 border-white {bgColors[
+							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-sm border-4 border-white {bgColors[
 								i % bgColors.length
 							]} shadow-md"
 						></div>
@@ -248,7 +248,7 @@
 				{#each showOrganizationExperiences as org, i (org.experienceName + org.date)}
 					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-[14px] h-6 w-6 rounded-sm border-4 border-white {bgColors[
+							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-sm border-4 border-white {bgColors[
 								i % bgColors.length
 							]} shadow-md"
 						></div>
@@ -276,7 +276,7 @@
 				{#each showAchievements as ach, i (ach.achievementName + ach.date)}
 					<div class="relative pb-10 pl-8">
 						<div
-							class="absolute top-1.5 -left-[14px] h-6 w-6 rounded-sm border-4 border-white {bgColors[
+							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-sm border-4 border-white {bgColors[
 								i % bgColors.length
 							]} shadow-md"
 						></div>
