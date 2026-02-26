@@ -214,7 +214,7 @@
 	{
 		"projectName": "Lucy - Discord Bot",
 		"visitLink": "https://github.com/Ariffansyah/Lucy",
-		"projectImages": ["/assets/SourceCode.webp"],
+		"projectImages": ["/assets/SourceCode.svg"],
 		"technologies": [
 			{
 				"name": "Go",
