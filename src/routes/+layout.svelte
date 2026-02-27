@@ -26,21 +26,28 @@
 					aria-label="Toggle navigation menu"
 				>
 					<span
-						class="block h-0.5 w-full bg-gray-800 transition-all"
-						style:transform={isOpen ? 'rotate(45deg) translateY(7px)' : 'none'}
+						class="block h-0.5 w-full bg-gray-800 transition-all duration-300"
+						style:transform={isOpen ? 'translateY(11px) rotate(45deg)' : 'none'}
 					></span>
+
 					<span
-						class="block h-0.5 w-full bg-gray-800 transition-all"
+						class="block h-0.5 w-full bg-gray-800 transition-all duration-300"
 						style:opacity={isOpen ? '0' : '1'}
 					></span>
+
 					<span
-						class="block h-0.5 w-full bg-gray-800 transition-all"
-						style:transform={isOpen ? 'rotate(-45deg) translateY(-7px)' : 'none'}
+						class="block h-0.5 w-full bg-gray-800 transition-all duration-300"
+						style:transform={isOpen ? 'translateY(-11px) rotate(-45deg)' : 'none'}
 					></span>
 				</button>
 			</div>
 
-			<ul id="nav-menu" class="flex-col gap-8 md:flex md:flex-row {isOpen ? 'flex' : 'hidden'}">
+			<ul
+				id="nav-menu"
+				class="flex-col gap-8 md:flex md:flex-row {isOpen
+					? 'mt-3 flex border-b-4 border-pink-200 pb-3'
+					: 'hidden'}"
+			>
 				<li><a class="text-gray-700 hover:text-pink-500" href={resolve('/about')}>About</a></li>
 				<li>
 					<a class="text-gray-700 hover:text-pink-500" href={resolve('/projects')}>Projects</a>
