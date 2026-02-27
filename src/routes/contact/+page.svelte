@@ -50,10 +50,10 @@
 			<div class="rounded-sm border-l-4 border-pink-500 bg-white/40 p-4 shadow-sm">
 				<p class="mb-1 text-xs font-black tracking-widest text-pink-600 uppercase">Email Me</p>
 				<a
-					href="mailto:me@arpthef.my.id"
+					href="mailto:arppthef@outlook.co.id"
 					class="text-lg font-bold text-gray-900 transition-colors hover:text-pink-600"
 				>
-					me@arpthef.my.id
+					arppthef@outlook.co.id
 				</a>
 			</div>
 
