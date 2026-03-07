@@ -131,8 +131,8 @@
 	</main>
 </div>
 
-<div class="pointer-events-none fixed inset-0 z-0 overflow-hidden opacity-30 saturate-50">
-	<Sakura quantity={30} size={10} vx={0.3} vy={0.8} />
+<div class="pointer-events-none fixed inset-0 z-0 overflow-hidden opacity-60">
+	<Sakura quantity={30} size={12} vx={0.4} vy={1.0} />
 </div>
 
 <style>
