@@ -141,8 +141,12 @@
 			<p class="text-xl leading-relaxed font-medium text-gray-600 md:text-2xl">
 				Specializing in <span class="text-gray-900 underline decoration-pink-200 decoration-4"
 					>full-stack web development</span
-				> and backend architecture. Just a dev who likes shipping features, messing around with new frameworks,
-				and figuring out why the backend is acting up.
+				>
+				and backend architecture. Just a dev who likes shipping features, messing around with new frameworks,
+				and making sure
+				<span class="text-gray-900 underline decoration-pink-200 decoration-4"
+					>production stays up</span
+				>.
 			</p>
 			<div class="flex items-center gap-10">
 				<a
