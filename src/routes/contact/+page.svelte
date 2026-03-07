@@ -25,78 +25,78 @@
 </svelte:head>
 
 <section
-	class="relative z-10 flex min-h-[calc(100vh-126px)] flex-col items-center justify-center px-4"
+	class="relative z-10 flex min-h-[calc(100vh-126px)] w-full flex-col justify-center px-6 py-12 lg:px-20 lg:py-24"
 >
-	<div
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-6 rounded-sm border border-pink-200 bg-white/60 p-10 shadow-[0_20px_60px_rgba(255,182,193,0.5)] transition duration-300 hover:scale-[1.02] md:mx-auto md:w-1/3"
-		use:intersect={{ threshold: 0.3, once: true }}
-	>
-		<div class="flex w-full flex-row items-center justify-between">
-			<div class="flex flex-col">
-				<h1
-					class="border-b-4 border-pink-500 pb-2 text-5xl font-black tracking-tighter text-gray-900 uppercase"
-				>
-					Contact
-				</h1>
-			</div>
-		</div>
+	<div class="mb-20 flex flex-col gap-4" use:intersect={{ threshold: 0.3, once: true }}>
+		<h1 class="text-5xl font-black tracking-tighter text-gray-900 lg:text-9xl">
+			Get in<br /><span class="text-pink-500">Touch</span>
+		</h1>
+		<p class="text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">
+			Collaborations & Inquiries
+		</p>
+	</div>
 
-		<div class="mt-2 space-y-4">
-			<p class="text-justify leading-relaxed font-medium text-gray-800">
-				Feel free to reach out to me for any inquiries, collaborations, or just to say hello! I am
-				always open to new opportunities and discussions.
+	<div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
+		<div class="flex flex-col gap-8">
+			<p class="text-xl leading-relaxed font-medium text-gray-600 md:text-2xl lg:max-w-xl">
+				Feel free to reach out for inquiries, collaborations, or just to say hello. I am always open
+				to <span class="text-gray-900 underline decoration-pink-200 decoration-4"
+					>new opportunities</span
+				> and discussions.
 			</p>
 
-			<div class="rounded-sm border-l-4 border-pink-500 bg-white/40 p-4 shadow-sm">
-				<p class="mb-1 text-xs font-black tracking-widest text-pink-600 uppercase">Email Me</p>
+			<div class="group flex flex-col gap-2">
+				<p class="text-[10px] font-black tracking-widest text-pink-500 uppercase">Email Me</p>
 				<a
 					href="mailto:arppthef@outlook.co.id"
-					class="text-lg font-bold text-gray-900 transition-colors hover:text-pink-600"
+					class="text-2xl font-black tracking-tighter text-gray-900 transition-colors hover:text-pink-600 md:text-4xl"
 				>
 					arppthef@outlook.co.id
 				</a>
 			</div>
+		</div>
 
-			<div class="pt-4">
-				<p class="mb-4 text-xs font-black tracking-widest text-gray-400 uppercase">Social Media</p>
-				<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-					<a
-						href="https://github.com/Ariffansyah"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="flex items-center gap-3 rounded-sm border border-pink-100 bg-white px-4 py-3 text-sm font-bold text-gray-700 shadow-md transition-all hover:bg-pink-500 hover:text-white"
-						aria-label="Visit my GitHub profile"
-					>
-						<i class="fa-brands fa-github text-lg"></i> GitHub
-					</a>
-					<a
-						href="https://www.linkedin.com/in/arpthef/"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="flex items-center gap-3 rounded-sm border border-pink-100 bg-white px-4 py-3 text-sm font-bold text-gray-700 shadow-md transition-all hover:bg-pink-500 hover:text-white"
-						aria-label="Visit my LinkedIn profile"
-					>
-						<i class="fa-brands fa-linkedin text-lg"></i> LinkedIn
-					</a>
-					<a
-						href="https://x.com/nishimiyaa12"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="flex items-center gap-3 rounded-sm border border-pink-100 bg-white px-4 py-3 text-sm font-bold text-gray-700 shadow-md transition-all hover:bg-pink-500 hover:text-white"
-						aria-label="Visit my X profile"
-					>
-						<i class="fa-brands fa-x-twitter text-lg"></i> X
-					</a>
-					<a
-						href="https://www.instagram.com/arppthef/"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="flex items-center gap-3 rounded-sm border border-pink-100 bg-white px-4 py-3 text-sm font-bold text-gray-700 shadow-md transition-all hover:bg-pink-500 hover:text-white"
-						aria-label="Visit my Instagram profile"
-					>
-						<i class="fa-brands fa-instagram text-lg"></i> Instagram
-					</a>
-				</div>
+		<div class="flex flex-col gap-8 lg:items-end lg:justify-end">
+			<p class="text-[10px] font-black tracking-widest text-gray-400 uppercase lg:text-right">
+				Social Media
+			</p>
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:w-full lg:max-w-md">
+				<a
+					href="https://github.com/Ariffansyah"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="flex items-center justify-between border-b border-gray-100 py-4 text-xs font-black tracking-widest text-gray-700 uppercase transition-all hover:border-pink-500 hover:text-pink-500"
+					aria-label="Visit my GitHub profile"
+				>
+					<span>GitHub</span> <i class="fa-brands fa-github text-lg"></i>
+				</a>
+				<a
+					href="https://www.linkedin.com/in/arpthef/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="flex items-center justify-between border-b border-gray-100 py-4 text-xs font-black tracking-widest text-gray-700 uppercase transition-all hover:border-pink-500 hover:text-pink-500"
+					aria-label="Visit my LinkedIn profile"
+				>
+					<span>LinkedIn</span> <i class="fa-brands fa-linkedin text-lg"></i>
+				</a>
+				<a
+					href="https://x.com/nishimiyaa12"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="flex items-center justify-between border-b border-gray-100 py-4 text-xs font-black tracking-widest text-gray-700 uppercase transition-all hover:border-pink-500 hover:text-pink-500"
+					aria-label="Visit my X profile"
+				>
+					<span>X (Twitter)</span> <i class="fa-brands fa-x-twitter text-lg"></i>
+				</a>
+				<a
+					href="https://www.instagram.com/arppthef/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="flex items-center justify-between border-b border-gray-100 py-4 text-xs font-black tracking-widest text-gray-700 uppercase transition-all hover:border-pink-500 hover:text-pink-500"
+					aria-label="Visit my Instagram profile"
+				>
+					<span>Instagram</span> <i class="fa-brands fa-instagram text-lg"></i>
+				</a>
 			</div>
 		</div>
 	</div>

@@ -6,16 +6,15 @@
 	import { intersect } from '$lib/actions/intersect';
 	import { handleHistory } from '$lib/components/handleHistory';
 	import { onMount } from 'svelte';
-	import { asset, resolve } from '$app/paths';
+	import { resolve } from '$app/paths';
 
 	const textColors = [
 		'text-pink-600',
 		'text-rose-600',
 		'text-fuchsia-600',
-		'text-pink-700',
-		'text-rose-700'
+		'text-pink-500',
+		'text-rose-500'
 	];
-	const bgColors = ['bg-pink-500', 'bg-rose-500', 'bg-fuchsia-500', 'bg-pink-600', 'bg-rose-600'];
 
 	const technologies = TechnologiesData;
 	const achievements = AchievementsData;
@@ -38,35 +37,31 @@
 	const achievementItems = achievements;
 
 	let isShowMoreWork = false;
-	let showWorkExperiences = workExperiences.slice(0, 3);
+	$: showWorkExperiences = isShowMoreWork ? workExperiences : workExperiences.slice(0, 3);
 	function toggleShowMoreWork() {
 		isShowMoreWork = !isShowMoreWork;
-		showWorkExperiences = isShowMoreWork ? workExperiences : workExperiences.slice(0, 3);
 	}
 
 	let isShowMoreEdu = false;
-	let showEducationExperiences = educationExperiences.slice(0, 3);
+	$: showEducationExperiences = isShowMoreEdu
+		? educationExperiences
+		: educationExperiences.slice(0, 3);
 	function toggleShowMoreEdu() {
 		isShowMoreEdu = !isShowMoreEdu;
-		showEducationExperiences = isShowMoreEdu
-			? educationExperiences
-			: educationExperiences.slice(0, 3);
 	}
 
 	let isShowMoreOrg = false;
-	let showOrganizationExperiences = organizationExperiences.slice(0, 3);
+	$: showOrganizationExperiences = isShowMoreOrg
+		? organizationExperiences
+		: organizationExperiences.slice(0, 3);
 	function toggleShowMoreOrg() {
 		isShowMoreOrg = !isShowMoreOrg;
-		showOrganizationExperiences = isShowMoreOrg
-			? organizationExperiences
-			: organizationExperiences.slice(0, 3);
 	}
 
 	let isShowMoreAch = false;
-	let showAchievements = achievementItems.slice(0, 3);
+	$: showAchievements = isShowMoreAch ? achievementItems : achievementItems.slice(0, 3);
 	function toggleShowMoreAch() {
 		isShowMoreAch = !isShowMoreAch;
-		showAchievements = isShowMoreAch ? achievementItems : achievementItems.slice(0, 3);
 	}
 
 	const sectionIds = ['arpthef', 'technologies', 'experiences', 'projects'];
@@ -128,80 +123,63 @@
 	<link rel="canonical" href="https://arpthef.my.id/" />
 </svelte:head>
 
-<section class="relative z-10 mx-3 flex flex-col justify-center md:mx-auto">
+<section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
 	<div
 		id="arpthef"
-		class="animate-fade-in my-10 flex w-full flex-col items-start justify-center gap-4 rounded-sm border border-pink-200 bg-white/60 p-8 shadow-[0_20px_60px_rgba(255,182,193,0.5)] transition duration-300 hover:scale-[1.01] md:mx-auto md:w-1/3"
+		class="mb-32 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
-		<div class="flex w-full flex-row items-start justify-between">
-			<div class="flex flex-col">
-				<h1 class="text-3xl font-bold tracking-tight text-gray-900">Mohammad "arp" Ariffansyah</h1>
-				<p class="mt-1 text-sm font-bold tracking-widest text-pink-600 uppercase">
-					Surabaya, Indonesia
-				</p>
-			</div>
-			<div class="flex items-center gap-4">
-				<a
-					href="https://github.com/Ariffansyah"
-					target="_blank"
-					class="text-gray-700 transition-colors hover:text-pink-600"
-					aria-label="GitHub Profile"
-				>
-					<i class="fa-brands fa-github fa-xl"></i>
-				</a>
-				<a
-					href="https://www.linkedin.com/in/arpthef/"
-					target="_blank"
-					class="text-gray-700 transition-colors hover:text-pink-600"
-					aria-label="LinkedIn Profile"
-				>
-					<i class="fa-brands fa-linkedin fa-xl"></i>
-				</a>
-			</div>
-		</div>
-		<div class="mt-4 flex flex-col items-start gap-3">
-			<p class="text-justify leading-relaxed font-medium text-gray-800">
-				I am a informatics engineering student at one of universities in Indonesia. I like
-				full-stack web development, focus on back-end development, and i like to explore new
-				technologies.
+		<div class="flex flex-col gap-4">
+			<h1 class="text-5xl font-black tracking-tighter text-gray-900 lg:text-8xl">
+				Mohammad<br /><span class="text-pink-500">Ariffansyah</span>
+			</h1>
+			<p class="text-xs font-black tracking-[0.5em] text-gray-400 uppercase">
+				Software Engineering • Surabaya, ID
 			</p>
-			<div class="mt-4 flex w-full flex-row items-center justify-between">
+		</div>
+		<div class="flex flex-col gap-8 lg:max-w-xl lg:justify-self-end">
+			<p class="text-xl leading-relaxed font-medium text-gray-600 md:text-2xl">
+				Specializing in <span class="text-gray-900 underline decoration-pink-200 decoration-4"
+					>full-stack web development</span
+				> and backend architecture. I build clean, efficient digital solutions.
+			</p>
+			<div class="flex items-center gap-10">
 				<a
 					href={resolve('/about')}
-					class="text-sm font-black tracking-tighter text-pink-700 underline decoration-pink-300 decoration-2 underline-offset-4 transition-colors hover:text-pink-500"
-					>LEARN MORE</a
+					class="text-xs font-black tracking-widest text-gray-900 uppercase underline decoration-pink-300 decoration-2 underline-offset-8 transition-all hover:text-pink-600 hover:decoration-pink-500"
+					>Learn More</a
 				>
-				<a
-					href={asset('/assets/cv/cv-en.pdf')}
-					download="arpthef-cv-en.pdf"
-					class="rounded-sm bg-pink-500 px-6 py-2.5 text-xs font-black tracking-tighter text-white uppercase shadow-[0_10px_20px_rgba(236,72,153,0.4)] transition-all hover:bg-pink-600"
-					>Download CV</a
-				>
+				<div class="flex gap-6">
+					<a
+						href="https://github.com/Ariffansyah"
+						target="_blank"
+						class="text-gray-300 transition-colors hover:text-gray-900"
+						aria-label="github"><i class="fa-brands fa-github fa-xl"></i></a
+					>
+					<a
+						href="https://linkedin.com/in/arpthef/"
+						target="_blank"
+						class="text-gray-300 transition-colors hover:text-gray-900"
+						aria-label="linkedin"><i class="fa-brands fa-linkedin fa-xl"></i></a
+					>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<div
-		id="technologies"
-		class="animate-fade-in mx-auto my-6 flex w-full flex-col items-start justify-center gap-4 p-4 md:w-1/3"
-		use:intersect={{ threshold: 0.3, once: true }}
-	>
-		<h1
-			class="mb-2 border-l-8 border-pink-500 pl-4 text-2xl font-black tracking-tighter text-gray-900 uppercase"
-		>
-			Technologies
-		</h1>
-		<div class="grid w-full grid-cols-2 gap-4 sm:grid-cols-3">
+	<div id="technologies" class="mb-32" use:intersect={{ threshold: 0.3, once: true }}>
+		<h2 class="mb-12 text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">
+			Stack / Tools
+		</h2>
+		<div class="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6">
 			{#each technologies as tech (tech.name)}
 				<div
-					class="flex flex-col items-start gap-2 rounded-sm border-r-4 border-b-4 border-pink-200 bg-white/80 p-4 shadow-xl transition duration-200 hover:translate-x-1 hover:translate-y-1 hover:bg-white hover:shadow-none"
+					class="group flex flex-col items-center justify-center gap-4 border border-gray-50 p-8 opacity-40 grayscale transition-all hover:border-pink-50 hover:opacity-100 hover:grayscale-0"
 				>
-					<div class="flex flex-row items-center gap-2">
-						<img src={tech.icon} alt={tech.alt} class="h-6 w-6" />
-						<span class="text-sm font-black text-gray-900">{tech.name}</span>
-					</div>
-					<p class="text-xs font-medium text-gray-600">{tech.description}</p>
+					<img src={tech.icon} alt="" class="h-8 w-8" />
+					<span class="text-[10px] font-bold tracking-widest text-gray-800 uppercase"
+						>{tech.name}</span
+					>
 				</div>
 			{/each}
 		</div>
@@ -209,215 +187,192 @@
 
 	<div
 		id="experiences"
-		class="animate-fade-in my-10 flex w-full flex-col items-start justify-center gap-4 rounded-sm border border-r-4 border-b-4 border-pink-200 bg-white/70 p-8 shadow-[0_20px_50px_rgba(255,182,193,0.2)] transition duration-300 md:mx-auto md:w-1/3"
+		class="mb-32 grid grid-cols-1 gap-16 lg:grid-cols-3"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
-		<div class="no-scrollbar mb-6 flex w-full gap-1 overflow-x-auto py-1">
-			{#each tabs as tab (tab.value)}
-				<button
-					class=" rounded-md px-6 py-2 text-xs font-black tracking-widest uppercase transition-all duration-300 {activeTab ===
-					tab.value
-						? 'bg-pink-500 text-white shadow-[0_10px_25px_rgba(236,72,153,0.4)]'
-						: 'border border-pink-100 bg-white text-pink-300 hover:bg-pink-50'}"
-					on:click={() => (activeTab = tab.value)}
-				>
-					{tab.label}
-				</button>
-			{/each}
+		<div class="lg:col-span-1">
+			<h2 class="mb-10 text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">
+				Background
+			</h2>
+			<div class="flex flex-col gap-4 border-l border-gray-100 pl-4">
+				{#each tabs as tab (tab.label)}
+					<button
+						class="text-left text-xs font-black tracking-widest uppercase transition-all {activeTab ===
+						tab.value
+							? 'text-pink-500'
+							: 'text-gray-300 hover:text-gray-600'}"
+						on:click={() => (activeTab = tab.value)}
+					>
+						{tab.label}
+					</button>
+				{/each}
+			</div>
 		</div>
 
-		<div class="relative ml-4 w-full border-l-4 border-pink-100 pr-4">
-			{#if activeTab === 'work'}
-				{#each showWorkExperiences as exp, i (exp.experienceName + exp.date)}
-					<div class="relative pb-10 pl-8">
-						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
-								i % bgColors.length
-							]} shadow-md"
-						></div>
-						<p
-							class="text-xs font-black tracking-tighter uppercase {textColors[
-								i % textColors.length
-							]}"
+		<div class="lg:col-span-2">
+			<div class="flex flex-col gap-12">
+				{#if activeTab === 'work'}
+					{#each showWorkExperiences as exp, i (i)}
+						<div class="flex flex-col gap-2">
+							<span
+								class="text-[10px] font-bold uppercase {textColors[
+									i % textColors.length
+								]} tracking-widest">{exp.date}</span
+							>
+							<h3 class="text-2xl font-black text-gray-900">{exp.title}</h3>
+							<p class="text-sm font-bold tracking-tight text-gray-400 uppercase">
+								{exp.experienceName}
+							</p>
+							<p class="mt-2 max-w-2xl leading-relaxed text-gray-600">{exp.description}</p>
+						</div>
+					{/each}
+					{#if workExperiences.length > 3}
+						<button
+							on:click={toggleShowMoreWork}
+							class="w-fit text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase hover:text-pink-500"
 						>
-							{exp.experienceName}
-						</p>
-						<h3 class="text-xl leading-tight font-black text-gray-900">{exp.title}</h3>
-						<p class="mb-3 text-xs font-bold text-gray-400">{exp.date}</p>
-						<p class="text-justify text-sm font-medium text-gray-700">{exp.description}</p>
-					</div>
-				{/each}
-				{#if workExperiences.length > 3}
-					<button
-						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:text-pink-400 hover:underline"
-						on:click={toggleShowMoreWork}
-					>
-						{isShowMoreWork ? 'Show Less' : 'Show More'}
-					</button>
-				{/if}
-			{:else if activeTab === 'education'}
-				{#each showEducationExperiences as edu, i (edu.experienceName + edu.date)}
-					<div class="relative pb-10 pl-8">
-						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
-								i % bgColors.length
-							]} shadow-md"
-						></div>
-						<p class="text-xl leading-tight font-black text-gray-900">{edu.experienceName}</p>
-						<p class="mb-3 text-xs font-bold text-gray-400">{edu.date}</p>
-						<p class="text-justify text-sm font-medium text-gray-700">{edu.description}</p>
-					</div>
-				{/each}
-				{#if educationExperiences.length > 3}
-					<button
-						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:text-pink-400 hover:underline"
-						on:click={toggleShowMoreEdu}
-					>
-						{isShowMoreEdu ? 'Show Less' : 'Show More'}
-					</button>
-				{/if}
-			{:else if activeTab === 'organization'}
-				{#each showOrganizationExperiences as org, i (org.experienceName + org.date)}
-					<div class="relative pb-10 pl-8">
-						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
-								i % bgColors.length
-							]} shadow-md"
-						></div>
-						<p
-							class="text-xs font-black tracking-tighter uppercase {textColors[
-								i % textColors.length
-							]}"
+							{isShowMoreWork ? '[-] Show Less' : '[+] Show More'}
+						</button>
+					{/if}
+				{:else if activeTab === 'education'}
+					{#each showEducationExperiences as edu, i (i)}
+						<div class="flex flex-col gap-2">
+							<span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase"
+								>{edu.date}</span
+							>
+							<h3 class="text-2xl font-black text-gray-900">{edu.experienceName}</h3>
+							<p class="mt-2 max-w-2xl leading-relaxed text-gray-600">{edu.description}</p>
+						</div>
+					{/each}
+					{#if educationExperiences.length > 3}
+						<button
+							on:click={toggleShowMoreEdu}
+							class="w-fit text-[10px] font-black tracking-widest text-gray-400 uppercase hover:text-pink-500"
 						>
-							{org.experienceName}
-						</p>
-						<h3 class="text-xl leading-tight font-black text-gray-900">{org.title}</h3>
-						<p class="mb-3 text-xs font-bold text-gray-400">{org.date}</p>
-						<p class="text-justify text-sm font-medium text-gray-700">{org.description}</p>
-					</div>
-				{/each}
-				{#if organizationExperiences.length > 3}
-					<button
-						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:text-pink-400 hover:underline"
-						on:click={toggleShowMoreOrg}
-					>
-						{isShowMoreOrg ? 'Show Less' : 'Show More'}
-					</button>
-				{/if}
-			{:else if activeTab === 'achievement'}
-				{#each showAchievements as ach, i (ach.achievementName + ach.date)}
-					<div class="relative pb-10 pl-8">
-						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
-								i % bgColors.length
-							]} shadow-md"
-						></div>
-						<p
-							class="text-xs font-black tracking-tighter uppercase {textColors[
-								i % textColors.length
-							]}"
+							{isShowMoreEdu ? '[-] Show Less' : '[+] Show More'}
+						</button>
+					{/if}
+				{:else if activeTab === 'organization'}
+					{#each showOrganizationExperiences as org, i (i)}
+						<div class="flex flex-col gap-2">
+							<span
+								class="text-[10px] font-bold uppercase {textColors[
+									i % textColors.length
+								]} tracking-widest">{org.date}</span
+							>
+							<h3 class="text-2xl font-black text-gray-900">{org.title}</h3>
+							<p class="text-sm font-bold tracking-tight text-gray-400 uppercase">
+								{org.experienceName}
+							</p>
+							<p class="mt-2 max-w-2xl leading-relaxed text-gray-600">{org.description}</p>
+						</div>
+					{/each}
+					{#if organizationExperiences.length > 3}
+						<button
+							on:click={toggleShowMoreOrg}
+							class="w-fit text-[10px] font-black tracking-widest text-gray-400 uppercase hover:text-pink-500"
 						>
-							{ach.achievementName}
-						</p>
-						<h3 class="text-xl leading-tight font-black text-gray-900">{ach.title}</h3>
-						<p class="mb-3 text-xs font-bold text-gray-400">{ach.date}</p>
-						<p class="text-justify text-sm font-medium text-gray-700">{ach.description}</p>
-					</div>
-				{/each}
-				{#if achievementItems.length > 3}
-					<button
-						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:text-pink-400 hover:underline"
-						on:click={toggleShowMoreAch}
-					>
-						{isShowMoreAch ? 'Show Less' : 'Show More'}
-					</button>
+							{isShowMoreOrg ? '[-] Show Less' : '[+] Show More'}
+						</button>
+					{/if}
+				{:else if activeTab === 'achievement'}
+					{#each showAchievements as ach, i (i)}
+						<div class="flex flex-col gap-2">
+							<span
+								class="text-[10px] font-bold uppercase {textColors[
+									i % textColors.length
+								]} tracking-widest">{ach.date}</span
+							>
+							<h3 class="text-2xl font-black text-gray-900">{ach.title}</h3>
+							<p class="text-sm font-bold tracking-widest text-pink-500 uppercase">
+								{ach.achievementName}
+							</p>
+						</div>
+					{/each}
+					{#if achievementItems.length > 3}
+						<button
+							on:click={toggleShowMoreAch}
+							class="w-fit text-[10px] font-black tracking-widest text-gray-400 uppercase hover:text-pink-500"
+						>
+							{isShowMoreAch ? '[-] Show Less' : '[+] Show More'}
+						</button>
+					{/if}
 				{/if}
-			{/if}
+			</div>
 		</div>
 	</div>
 
-	<div
-		id="projects"
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-8 p-6 md:mx-auto md:w-1/3"
-		use:intersect={{ threshold: 0.3, once: true }}
-	>
-		<div class="flex w-full flex-row items-center justify-between">
-			<h1 class="border-l-8 border-pink-500 pl-4 text-3xl font-black text-gray-900 uppercase">
-				Projects
-			</h1>
+	<div id="projects" class="mb-32" use:intersect={{ threshold: 0.3, once: true }}>
+		<div class="mb-12 flex items-baseline justify-between border-b border-gray-100 pb-8">
+			<h2 class="text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">
+				Latest Projects
+			</h2>
 			<a
 				href={resolve('/projects')}
-				class="text-sm font-black tracking-tighter text-pink-600 uppercase hover:text-pink-400 hover:underline"
+				class="text-[10px] font-black tracking-widest text-pink-500 uppercase hover:underline"
 				>View All</a
 			>
 		</div>
-		<div class="grid w-full grid-cols-1 gap-10">
+		<div class="grid grid-cols-1 gap-12 lg:grid-cols-3">
 			{#each projects.slice(0, 3) as project (project.projectName)}
-				<div
-					class="group relative overflow-hidden rounded-sm border border-pink-50 bg-white shadow-[0_30px_60px_rgba(255,182,193,0.3)] transition-all duration-500"
+				<a
+					href={resolve('/projects/[slug]', { slug: project.projectLink })}
+					class="group flex flex-col gap-6"
 				>
-					<img
-						src={project.projectImages?.[0] || ''}
-						alt={project.projectName}
-						class="h-72 w-full object-cover opacity-80 grayscale transition-all duration-700 group-hover:opacity-100 group-hover:grayscale-0"
-					/>
 					<div
-						class="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-pink-900/90 via-pink-800/40 to-transparent p-8"
+						class="aspect-video w-full overflow-hidden bg-gray-50 grayscale transition-all duration-700 group-hover:grayscale-0"
 					>
-						<div class="mb-4 flex flex-wrap gap-2">
-							{#each project.technologies as tech (tech.name)}
-								<img
-									src={tech.icon}
-									alt={tech.name}
-									class="h-6 w-6 brightness-0 invert"
-									title={tech.name}
-								/>
-							{/each}
-						</div>
-						<h2 class="mb-1 text-2xl font-black tracking-tighter text-white uppercase">
+						<img
+							src={project.projectImages?.[0]}
+							alt=""
+							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						/>
+					</div>
+					<div class="flex flex-col gap-2">
+						<h3
+							class="text-2xl font-black tracking-tighter text-gray-900 uppercase transition-colors group-hover:text-pink-500"
+						>
 							{project.projectName}
-						</h2>
-						<p class="mb-6 line-clamp-2 text-sm font-medium text-pink-50">
+						</h3>
+						<p class="line-clamp-2 text-sm leading-relaxed text-gray-500">
 							{project.projectDescription}
 						</p>
-						<a
-							href={resolve('/projects/[slug]', { slug: project.projectLink })}
-							class="inline-block w-max bg-white px-8 py-3 text-xs font-black tracking-widest text-pink-600 uppercase shadow-xl transition-all hover:bg-pink-50"
-							>Details</a
-						>
 					</div>
-				</div>
+				</a>
 			{/each}
 		</div>
 	</div>
 
-	<div class="mt-16 mb-24 flex flex-col items-center gap-6">
-		<a
-			href={resolve('/contact')}
-			class="rounded-sm bg-pink-500 px-12 py-4 text-sm font-black tracking-[0.2em] text-white uppercase shadow-[0_15px_30px_rgba(236,72,153,0.4)] transition-all hover:bg-pink-600"
-		>
-			Contact me
+	<div class="border-t border-gray-100 py-32 text-center">
+		<a href={resolve('/contact')} class="group inline-flex items-center gap-6">
+			<span
+				class="text-5xl font-black tracking-tighter text-gray-900 transition-all group-hover:text-pink-500 lg:text-7xl"
+				>Contact</span
+			>
+			<span
+				class="text-4xl text-gray-200 transition-transform group-hover:translate-x-6 lg:text-7xl"
+				>→</span
+			>
 		</a>
 	</div>
 </section>
 
 {#if showScrollTop}
 	<button
-		class="fixed top-8 left-1/2 z-50 -translate-x-1/2 p-2 text-pink-400 drop-shadow-md transition-all hover:text-pink-600"
+		class="fixed top-8 right-12 z-50 p-2 text-gray-200 transition-all hover:text-pink-500"
+		aria-label="scrollToSection"
 		on:click={() => scrollToSection(currentSectionIndex - 1)}
-		aria-label="Scroll to previous section"
 	>
-		<i class="fa-solid fa-chevron-up fa-2xl"></i>
+		<i class="fa-solid fa-arrow-up fa-xl"></i>
 	</button>
 {/if}
-
 {#if showScrollBottom}
 	<button
-		class="fixed bottom-8 left-1/2 z-50 -translate-x-1/2 p-2 text-pink-400 drop-shadow-md transition-all hover:text-pink-600"
+		class="fixed right-12 bottom-8 z-50 p-2 text-gray-200 transition-all hover:text-pink-500"
+		aria-label="scrollToSection"
 		on:click={() => scrollToSection(currentSectionIndex + 1)}
-		aria-label="Scroll to next section"
 	>
-		<i class="fa-solid fa-chevron-down fa-2xl"></i>
+		<i class="fa-solid fa-arrow-down fa-xl"></i>
 	</button>
 {/if}
 
@@ -428,5 +383,9 @@
 	.no-scrollbar {
 		-ms-overflow-style: none;
 		scrollbar-width: none;
+	}
+
+	:global(html) {
+		scroll-behavior: smooth;
 	}
 </style>

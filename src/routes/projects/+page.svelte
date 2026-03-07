@@ -25,33 +25,26 @@
 	<link rel="canonical" href="https://arpthef.com/projects" />
 </svelte:head>
 
-<section class="relative z-10 mx-3 flex flex-col justify-center md:mx-auto">
+<section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
 	<div
-		class="my-10 flex w-full flex-col items-start justify-center gap-8 p-6 md:mx-auto md:w-11/12"
-		id="projects"
+		class="mb-24 flex flex-col gap-4 border-b border-gray-100 pb-12"
+		use:intersect={{ threshold: 0.3, once: true }}
 	>
-		<div
-			class="animate-fade-in flex w-full flex-row items-center justify-center"
-			use:intersect={{ threshold: 0.3, once: true }}
-		>
-			<div class="flex flex-col items-center text-center">
-				<h1
-					class="border-b-4 border-pink-500 pb-2 text-4xl font-black tracking-tighter text-gray-900 uppercase"
-				>
-					Projects
-				</h1>
-				<p class="mt-2 text-xs font-bold tracking-widest text-pink-600 uppercase">
-					Portfolio and Works
-				</p>
-			</div>
-		</div>
+		<h1 class="text-6xl font-black tracking-tighter text-gray-900 lg:text-9xl">
+			My<br /><span class="text-pink-500">Works</span>
+		</h1>
+		<p class="text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">
+			Selected Projects {new Date().getFullYear()}
+		</p>
+	</div>
 
-		<div class="w-full">
-			<div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-2">
-				{#each projects as project (project.projectName)}
-					<div
-						class="animate-fade-in group relative flex h-112.5 flex-col items-start justify-center gap-4 overflow-hidden rounded-sm border border-pink-100 bg-white shadow-[0_30px_60px_rgba(255,182,193,0.3)] transition duration-500 hover:scale-[1.01]"
-						use:intersect={{ threshold: 0.3, once: true }}
+	<div class="w-full">
+		<div class="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-2 lg:grid-cols-3">
+			{#each projects as project (project.projectName)}
+				<div class="group flex flex-col gap-6" use:intersect={{ threshold: 0.1, once: true }}>
+					<a
+						href={resolve('/projects/[slug]', { slug: project.projectLink })}
+						class="relative aspect-square overflow-hidden border border-gray-100 bg-gray-50"
 					>
 						<img
 							src={project.projectImages && project.projectImages.length > 0
@@ -59,43 +52,65 @@
 								: '/assets/placeholder.webp'}
 							alt={project.projectName}
 							loading="lazy"
-							class="absolute inset-0 h-full w-full object-cover opacity-80 grayscale transition duration-700 group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0"
+							class="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
 						/>
+
+						<div
+							class="absolute top-4 left-4 flex gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+						>
+							{#each project.technologies as tech (tech.name)}
+								<div class="bg-white/90 p-1.5 shadow-sm backdrop-blur-sm">
+									<img src={tech.icon} alt={tech.name} class="h-4 w-4" title={tech.name} />
+								</div>
+							{/each}
+						</div>
+					</a>
+
+					<div class="flex flex-col gap-3">
+						<div class="flex items-center justify-between">
+							<h2
+								class="text-2xl font-black tracking-tighter text-gray-900 uppercase transition-colors group-hover:text-pink-500"
+							>
+								{project.projectName}
+							</h2>
+							<span class="text-[10px] font-bold tracking-widest text-gray-300 uppercase"
+								>/ Project</span
+							>
+						</div>
+
+						<p class="line-clamp-3 text-sm leading-relaxed text-gray-500">
+							{project.projectDescription}
+						</p>
 
 						<a
 							href={resolve('/projects/[slug]', { slug: project.projectLink })}
-							class="absolute inset-0 z-10 flex flex-col justify-end bg-linear-to-t from-pink-900/90 via-pink-800/40 to-transparent p-8 transition duration-300 group-hover:from-pink-900/95"
+							class="mt-2 w-fit border-b border-gray-900 pb-1 text-xs font-black tracking-widest uppercase transition-all hover:border-pink-500 hover:text-pink-500"
 						>
-							<div class="flex flex-col gap-3">
-								<div class="flex flex-row items-center gap-3">
-									{#each project.technologies as tech (tech.name)}
-										<img
-											src={tech.icon}
-											alt={tech.name}
-											title={tech.name}
-											class="h-6 w-6 brightness-0 drop-shadow-sm invert"
-										/>
-									{/each}
-								</div>
-
-								<h2 class="text-2xl font-black tracking-tighter text-white uppercase">
-									{project.projectName}
-								</h2>
-
-								<p class="line-clamp-2 text-sm leading-relaxed font-medium text-pink-50">
-									{project.projectDescription}
-								</p>
-
-								<span
-									class="mt-2 inline-block w-max bg-white px-6 py-2 text-xs font-black tracking-widest text-pink-600 uppercase shadow-xl transition-all hover:bg-pink-50"
-								>
-									Details
-								</span>
-							</div>
+							View Details
 						</a>
 					</div>
-				{/each}
-			</div>
+				</div>
+			{/each}
 		</div>
 	</div>
+
+	<div class="mt-32 border-t border-gray-100 py-32 text-center">
+		<a href={resolve('/contact')} class="group inline-flex items-center gap-6">
+			<span
+				class="text-4xl font-black tracking-tighter text-gray-900 transition-all group-hover:text-pink-500 lg:text-7xl"
+				>Have a project in mind?</span
+			>
+			<span
+				class="text-3xl text-gray-200 transition-transform group-hover:translate-x-4 lg:text-5xl"
+				>→</span
+			>
+		</a>
+	</div>
 </section>
+
+<style>
+	/* Ensures images maintain their containers without stretching weirdly */
+	img {
+		display: block;
+	}
+</style>

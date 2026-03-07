@@ -11,10 +11,10 @@
 			css: (t: number) => {
 				const eased = cubicOut(t);
 				return `
-                opacity: ${eased};
-                transform: translateX(${20 * (1 - eased)}px);
-                filter: blur(${8 * (1 - eased)}px);
-            `;
+					opacity: ${eased};
+					transform: translateX(${10 * (1 - eased)}px);
+					filter: blur(${4 * (1 - eased)}px);
+				`;
 			}
 		};
 	}
@@ -23,10 +23,9 @@
 		'text-pink-600',
 		'text-rose-600',
 		'text-fuchsia-600',
-		'text-pink-700',
-		'text-rose-700'
+		'text-pink-500',
+		'text-rose-500'
 	];
-	const bgColors = ['bg-pink-500', 'bg-rose-500', 'bg-fuchsia-500', 'bg-pink-600', 'bg-rose-600'];
 
 	const tabs = [
 		{ label: 'Work', value: 'work' },
@@ -47,35 +46,31 @@
 	const achievementItems = AchievementsData;
 
 	let isShowMoreWork = false;
-	let showWorkExperiences = workExperiences.slice(0, 3);
+	$: showWorkExperiences = isShowMoreWork ? workExperiences : workExperiences.slice(0, 3);
 	function toggleShowMoreWork() {
 		isShowMoreWork = !isShowMoreWork;
-		showWorkExperiences = isShowMoreWork ? workExperiences : workExperiences.slice(0, 3);
 	}
 
 	let isShowMoreEdu = false;
-	let showEducationExperiences = educationExperiences.slice(0, 3);
+	$: showEducationExperiences = isShowMoreEdu
+		? educationExperiences
+		: educationExperiences.slice(0, 3);
 	function toggleShowMoreEdu() {
 		isShowMoreEdu = !isShowMoreEdu;
-		showEducationExperiences = isShowMoreEdu
-			? educationExperiences
-			: educationExperiences.slice(0, 3);
 	}
 
 	let isShowMoreOrg = false;
-	let showOrganizationExperiences = organizationExperiences.slice(0, 3);
+	$: showOrganizationExperiences = isShowMoreOrg
+		? organizationExperiences
+		: organizationExperiences.slice(0, 3);
 	function toggleShowMoreOrg() {
 		isShowMoreOrg = !isShowMoreOrg;
-		showOrganizationExperiences = isShowMoreOrg
-			? organizationExperiences
-			: organizationExperiences.slice(0, 3);
 	}
 
 	let isShowMoreAch = false;
-	let showAchievements = achievementItems.slice(0, 3);
+	$: showAchievements = isShowMoreAch ? achievementItems : achievementItems.slice(0, 3);
 	function toggleShowMoreAch() {
 		isShowMoreAch = !isShowMoreAch;
-		showAchievements = isShowMoreAch ? achievementItems : achievementItems.slice(0, 3);
 	}
 
 	let isBioExpanded = false;
@@ -103,204 +98,173 @@
 	<link rel="canonical" href="https://arpthef.my.id/about" />
 </svelte:head>
 
-<section class="relative z-10 mx-3 flex flex-col justify-center md:mx-auto">
-	<div
-		class="animate-fade-in my-10 flex w-full flex-col items-start justify-center gap-4 rounded-sm border border-pink-200 bg-white/60 p-8 shadow-[0_20px_60px_rgba(255,182,193,0.5)] transition duration-300 hover:scale-[1.01] md:mx-auto md:w-1/3"
-		use:intersect={{ threshold: 0.3, once: true }}
-	>
-		<div class="flex w-full flex-col items-start">
-			<h1
-				class="border-b-4 border-pink-500 pb-1 text-3xl font-black tracking-tighter text-gray-900 uppercase"
-			>
-				About me
-			</h1>
-		</div>
-		<p class="text-justify leading-relaxed font-medium text-gray-800">
-			I am an undergraduate student passionate about software development. I primarily focus on
-			backend development, building and maintaining the systems that operate behind the scenes,
-			while also contributing to frontend development to enhance user experience.
-		</p>
-		<a href={resolve('/contact')}>
-			<button
-				type="button"
-				class="mt-4 rounded-sm bg-pink-500 px-8 py-3 text-sm font-black tracking-widest text-white uppercase shadow-xl transition-all hover:bg-pink-600"
-			>
-				Contact Me
-			</button>
-		</a>
+<section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
+	<div class="mb-24 flex flex-col gap-4">
+		<h1 class="text-5xl font-black tracking-tighter text-gray-900 lg:text-8xl">
+			About<br /><span class="text-pink-500">Me</span>
+		</h1>
+		<p class="text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">The story so far</p>
 	</div>
 
-	<div
-		class="animate-fade-in my-6 flex w-full flex-col items-start justify-center gap-4 rounded-sm border border-pink-50 bg-white/70 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.05)] md:mx-auto md:w-1/3"
-		use:intersect={{ threshold: 0.3, once: true }}
-	>
-		<p class="text-justify leading-relaxed font-medium text-gray-700">
-			My interest in computers began in elementary school, but it was during my final year of high
-			school that I started focusing on programming. My initial exposure to computers came from my
-			brother, who introduced me to basic usage. This sparked my journey into the online tech
-			community, where I connected with a lot of new friends who inspired me to deepen my
-			understanding of computing.
-			{#if isBioExpanded}
-				<span in:bioAnimation={{ duration: 500 }} out:bioAnimation={{ duration: 500 }}>
-					<br /><br />
-					In my second year of high school, I participated in the National Science Olympiad in the IT
-					Division. I progressed from the school-level selection to the district level and ultimately
-					reached the provincial level. Unfortunately, a technical issue prevented me from advancing further—the
-					computer provided lacked the necessary IDE to complete the case study, resulting in an eighth-place
-					finish and no advancement to the national stage. This experience underscored the importance
-					of adaptability and thorough preparation.
+	<div class="grid grid-cols-1 gap-20 lg:grid-cols-2">
+		<div class="flex flex-col gap-10">
+			<div class="flex flex-col gap-6" use:intersect={{ threshold: 0.1, once: true }}>
+				<p class="text-xl leading-relaxed font-medium text-gray-600 md:text-2xl">
+					I am an undergraduate student primarily focused on <span
+						class="text-gray-900 underline decoration-pink-200 decoration-4"
+						>backend development</span
+					>, building the invisible engines that power the web.
+				</p>
 
-					<br /><br />
-					Following the Olympiad, I continued to engage in various competitions and expand my programming
-					knowledge. One notable experience was participating in a team competition involving mathematics,
-					coding, and problem-solving, where my team achieved Runner-Up 1st place. This taught me valuable
-					lessons in teamwork, communication, and addressing multidisciplinary challenges. Over time,
-					I have developed proficiency in programming languages such as Go and TypeScript, and gained
-					hands-on experience with frameworks including React and Svelte.
+				<div class="flex flex-col gap-6 leading-relaxed text-gray-500">
+					<p>
+						My journey began in elementary school, but it wasn't until my final year of high school
+						that I realized programming was my calling. Inspired by my brother and the online tech
+						community, I dove deep into the world of computing.
+					</p>
 
-					<br /><br />
-					I particularly enjoy working on web development and game development projects, as they allow
-					me to combine creativity with technical skills.
+					{#if isBioExpanded}
+						<div
+							in:bioAnimation={{ duration: 400 }}
+							out:bioAnimation={{ duration: 400 }}
+							class="flex flex-col gap-6 border-l-2 border-pink-50 pl-6"
+						>
+							<p>
+								In high school, I reached the provincial level of the National Science Olympiad (IT
+								Division). A technical hurdle involving a missing IDE cost me a spot at Nationals,
+								but it taught me the most valuable lesson in software: <strong
+									>adaptability is everything.</strong
+								>
+							</p>
+							<p>
+								Since then, I've moved into languages like Go and TypeScript, working with React and
+								Svelte to bridge the gap between technical complexity and user-friendly design.
+							</p>
+						</div>
+					{/if}
 
-					<br /><br />
-					Looking forward, I aim to leverage my programming skills to address real-world challenges and
-					explore new opportunities within the technology sector.
-				</span>
-			{/if}
-		</p>
-		<button
-			on:click={toggleBio}
-			class="text-xs font-black tracking-widest text-pink-600 uppercase hover:text-pink-400 hover:underline"
-		>
-			{isBioExpanded ? 'Show Less' : 'Show More'}
-		</button>
-	</div>
+					<button
+						on:click={toggleBio}
+						class="w-fit text-xs font-black tracking-widest text-pink-600 uppercase transition-all hover:text-pink-400"
+					>
+						{isBioExpanded ? '[-] Read Less' : '[+] Read Full Story'}
+					</button>
+				</div>
+			</div>
 
-	<div
-		class="animate-fade-in my-10 flex w-full flex-col items-start justify-center gap-6 rounded-sm border border-r-4 border-b-4 border-pink-100 bg-white/60 p-8 shadow-[0_20px_50px_rgba(255,182,193,0.3)] transition duration-300 md:mx-auto md:w-1/3"
-		use:intersect={{ threshold: 0.3, once: true }}
-	>
-		<div class="no-scrollbar mb-4 flex w-full gap-1 overflow-x-auto py-1">
-			{#each tabs as tab (tab.value)}
-				<button
-					class="rounded-md px-6 py-2 text-xs font-black tracking-widest uppercase transition-all duration-300 {activeTab ===
-					tab.value
-						? 'bg-pink-500 text-white shadow-lg'
-						: 'border border-pink-100 bg-white text-pink-300 hover:bg-pink-50'}"
-					on:click={() => (activeTab = tab.value)}
-				>
-					{tab.label}
-				</button>
-			{/each}
+			<a
+				href={resolve('/contact')}
+				class="w-fit border-b-2 border-gray-900 pb-1 text-xs font-black tracking-widest uppercase transition-all hover:border-pink-500 hover:text-pink-500"
+			>
+				Get in touch
+			</a>
 		</div>
 
-		<div class="relative ml-4 w-full border-l-4 border-pink-100 pr-4">
-			{#if activeTab === 'work'}
-				{#each showWorkExperiences as exp, i (exp.experienceName + exp.date)}
-					<div class="relative pb-10 pl-8">
-						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
-								i % bgColors.length
-							]} shadow-md"
-						></div>
-						<p
-							class="text-xs font-black tracking-tighter uppercase {textColors[
-								i % textColors.length
-							]}"
+		<div class="flex flex-col gap-12" use:intersect={{ threshold: 0.1, once: true }}>
+			<div class="no-scrollbar flex w-full gap-8 overflow-x-auto border-b border-gray-100">
+				{#each tabs as tab (tab.label)}
+					<button
+						class="pb-4 text-[10px] font-black tracking-[0.2em] whitespace-nowrap uppercase transition-all {activeTab ===
+						tab.value
+							? 'border-b-2 border-pink-500 text-gray-900'
+							: 'text-gray-300 hover:text-gray-500'}"
+						on:click={() => (activeTab = tab.value)}
+					>
+						{tab.label}
+					</button>
+				{/each}
+			</div>
+
+			<div class="flex flex-col gap-10">
+				{#if activeTab === 'work'}
+					{#each showWorkExperiences as exp, i (i)}
+						<div class="flex flex-col gap-1">
+							<span
+								class="text-[10px] font-bold tracking-widest uppercase {textColors[
+									i % textColors.length
+								]}">{exp.date}</span
+							>
+							<h3 class="text-xl font-black text-gray-900">{exp.title}</h3>
+							<p class="text-sm font-bold tracking-tight text-gray-400 uppercase">
+								{exp.experienceName}
+							</p>
+							<p class="mt-2 text-sm leading-relaxed text-gray-500">{exp.description}</p>
+						</div>
+					{/each}
+					{#if workExperiences.length > 3}
+						<button
+							on:click={toggleShowMoreWork}
+							class="w-fit text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase hover:text-pink-500"
 						>
-							{exp.experienceName}
-						</p>
-						<h3 class="text-xl leading-tight font-black text-gray-900">{exp.title}</h3>
-						<p class="mb-3 text-xs font-bold text-gray-400">{exp.date}</p>
-						<p class="text-justify text-sm font-medium text-gray-700">{exp.description}</p>
-					</div>
-				{/each}
-				{#if workExperiences.length > 3}
-					<button
-						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:underline"
-						on:click={toggleShowMoreWork}
-					>
-						{isShowMoreWork ? 'Show Less' : 'Show More'}
-					</button>
-				{/if}
-			{:else if activeTab === 'education'}
-				{#each showEducationExperiences as edu, i (edu.experienceName + edu.date)}
-					<div class="relative pb-10 pl-8">
-						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
-								i % bgColors.length
-							]} shadow-md"
-						></div>
-						<p class="text-xl leading-tight font-black text-gray-900">{edu.experienceName}</p>
-						<p class="mb-3 text-xs font-bold text-gray-400">{edu.date}</p>
-						<p class="text-justify text-sm font-medium text-gray-700">{edu.description}</p>
-					</div>
-				{/each}
-				{#if educationExperiences.length > 3}
-					<button
-						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:underline"
-						on:click={toggleShowMoreEdu}
-					>
-						{isShowMoreEdu ? 'Show Less' : 'Show More'}
-					</button>
-				{/if}
-			{:else if activeTab === 'organization'}
-				{#each showOrganizationExperiences as org, i (org.experienceName + org.date)}
-					<div class="relative pb-10 pl-8">
-						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
-								i % bgColors.length
-							]} shadow-md"
-						></div>
-						<p
-							class="text-xs font-black tracking-tighter uppercase {textColors[
-								i % textColors.length
-							]}"
+							{isShowMoreWork ? '[-] Show Less' : '[+] Show More'}
+						</button>
+					{/if}
+				{:else if activeTab === 'education'}
+					{#each showEducationExperiences as edu, i (i)}
+						<div class="flex flex-col gap-1">
+							<span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase"
+								>{edu.date}</span
+							>
+							<h3 class="text-xl font-black text-gray-900">{edu.experienceName}</h3>
+							<p class="mt-2 text-sm leading-relaxed text-gray-500">{edu.description}</p>
+						</div>
+					{/each}
+					{#if educationExperiences.length > 3}
+						<button
+							on:click={toggleShowMoreEdu}
+							class="w-fit text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase hover:text-pink-500"
 						>
-							{org.experienceName}
-						</p>
-						<h3 class="text-xl leading-tight font-black text-gray-900">{org.title}</h3>
-						<p class="mb-3 text-xs font-bold text-gray-400">{org.date}</p>
-						<p class="text-justify text-sm font-medium text-gray-700">{org.description}</p>
-					</div>
-				{/each}
-				{#if organizationExperiences.length > 3}
-					<button
-						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:underline"
-						on:click={toggleShowMoreOrg}
-					>
-						{isShowMoreOrg ? 'Show Less' : 'Show More'}
-					</button>
-				{/if}
-			{:else if activeTab === 'achievement'}
-				{#each showAchievements as ach, i (ach.achievementName + ach.date)}
-					<div class="relative pb-10 pl-8">
-						<div
-							class="absolute top-1.5 -left-3.5 h-6 w-6 rounded-full border-4 border-white {bgColors[
-								i % bgColors.length
-							]} shadow-md"
-						></div>
-						<p
-							class="text-xs font-black tracking-tighter uppercase {textColors[
-								i % textColors.length
-							]}"
+							{isShowMoreEdu ? '[-] Show Less' : '[+] Show More'}
+						</button>
+					{/if}
+				{:else if activeTab === 'organization'}
+					{#each showOrganizationExperiences as org, i (i)}
+						<div class="flex flex-col gap-1">
+							<span
+								class="text-[10px] font-bold tracking-widest uppercase {textColors[
+									i % textColors.length
+								]}">{org.date}</span
+							>
+							<h3 class="text-xl font-black text-gray-900">{org.title}</h3>
+							<p class="text-sm font-bold tracking-tight text-gray-400 uppercase">
+								{org.experienceName}
+							</p>
+							<p class="mt-2 text-sm leading-relaxed text-gray-500">{org.description}</p>
+						</div>
+					{/each}
+					{#if organizationExperiences.length > 3}
+						<button
+							on:click={toggleShowMoreOrg}
+							class="w-fit text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase hover:text-pink-500"
 						>
-							{ach.achievementName}
-						</p>
-						<h3 class="text-xl leading-tight font-black text-gray-900">{ach.title}</h3>
-						<p class="mb-3 text-xs font-bold text-gray-400">{ach.date}</p>
-						<p class="text-justify text-sm font-medium text-gray-700">{ach.description}</p>
-					</div>
-				{/each}
-				{#if achievementItems.length > 3}
-					<button
-						class="mt-2 ml-8 text-xs font-black tracking-widest text-pink-600 uppercase hover:underline"
-						on:click={toggleShowMoreAch}
-					>
-						{isShowMoreAch ? 'Show Less' : 'Show More'}
-					</button>
+							{isShowMoreOrg ? '[-] Show Less' : '[+] Show More'}
+						</button>
+					{/if}
+				{:else if activeTab === 'achievement'}
+					{#each showAchievements as ach, i (i)}
+						<div class="flex flex-col gap-1">
+							<span
+								class="text-[10px] font-bold tracking-widest uppercase {textColors[
+									i % textColors.length
+								]}">{ach.date}</span
+							>
+							<h3 class="text-xl font-black text-gray-900">{ach.title}</h3>
+							<p class="text-sm font-bold tracking-widest text-pink-500 uppercase">
+								{ach.achievementName}
+							</p>
+							<p class="mt-2 text-sm leading-relaxed text-gray-500">{ach.description}</p>
+						</div>
+					{/each}
+					{#if achievementItems.length > 3}
+						<button
+							on:click={toggleShowMoreAch}
+							class="w-fit text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase hover:text-pink-500"
+						>
+							{isShowMoreAch ? '[-] Show Less' : '[+] Show More'}
+						</button>
+					{/if}
 				{/if}
-			{/if}
+			</div>
 		</div>
 	</div>
 </section>
