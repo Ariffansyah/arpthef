@@ -3,112 +3,108 @@
 		"name": "TypeScript",
 		"icon": "https://cdn.simpleicons.org/typescript/ec4899",
 		"alt": "TypeScript",
-		"category": "Language",
-		"description": "JavaScript but better."
+		"category": "Language"
 	},
 	{
 		"name": "Go",
 		"icon": "https://cdn.simpleicons.org/go/ec4899",
 		"alt": "Go",
-		"category": "Language",
-		"description": "Chill, fast, and typed."
+		"category": "Language"
 	},
 	{
-		"name": "SQL",
+		"name": "POSTGRESQL",
 		"icon": "https://cdn.simpleicons.org/postgresql/ec4899",
-		"alt": "SQL",
-		"category": "Language",
-		"description": "Talk to databases, easy."
+		"alt": "POSTGRESQL",
+		"category": "Language"
 	},
 	{
 		"name": "Docker",
 		"icon": "https://cdn.simpleicons.org/docker/ec4899",
 		"alt": "Docker",
-		"category": "Tool",
-		"description": "Containerize all the things."
+		"category": "Tool"
 	},
 	{
 		"name": "HTML",
 		"icon": "https://cdn.simpleicons.org/html5/ec4899",
 		"alt": "HTML",
-		"category": "Web",
-		"description": "Web stuff starter pack."
+		"category": "Web"
 	},
 	{
 		"name": "CSS",
 		"icon": "https://img.icons8.com/ios-filled/50/ec4899/css3.png",
-		"alt": "CSS3 (Icons8)",
-		"category": "Web",
-		"description": "Make it look pretty."
+		"alt": "CSS3",
+		"category": "Web"
 	},
 	{
 		"name": "React",
 		"icon": "https://cdn.simpleicons.org/react/ec4899",
 		"alt": "React",
-		"category": "Web",
-		"description": "UI vibes, reusable AF."
+		"category": "Web"
 	},
 	{
 		"name": "Svelte",
 		"icon": "https://cdn.simpleicons.org/svelte/ec4899",
 		"alt": "Svelte",
-		"category": "Web",
-		"description": "UI magic, no BS."
+		"category": "Web"
 	},
 	{
 		"name": "C#",
 		"icon": "https://img.icons8.com/?size=100&id=111972&format=png&color=ec4899",
 		"alt": "C#",
-		"category": "Language",
-		"description": "Game dev and more."
+		"category": "Language"
 	},
 	{
 		"name": "Unity",
 		"icon": "https://cdn.simpleicons.org/unity/ec4899",
 		"alt": "Unity",
-		"category": "Game Engine",
-		"description": "Game dev playground."
+		"category": "Game Engine"
 	},
 	{
 		"name": "C++",
 		"icon": "https://cdn.simpleicons.org/cplusplus/ec4899",
 		"alt": "C++",
-		"category": "Language",
-		"description": "Powerful, complex, fast."
+		"category": "Language"
 	},
 	{
 		"name": "Tailwind CSS",
 		"icon": "https://cdn.simpleicons.org/tailwindcss/ec4899",
 		"alt": "TailwindCSS",
-		"category": "Web",
-		"description": "Style speedrun mode."
+		"category": "Web"
 	},
 	{
 		"name": "Arch",
 		"icon": "https://cdn.simpleicons.org/archlinux/ec4899",
 		"alt": "Arch",
-		"category": "OS",
-		"description": "I use Arch, btw."
+		"category": "OS"
 	},
 	{
 		"name": "Fedora",
 		"icon": "https://cdn.simpleicons.org/fedora/ec4899",
 		"alt": "Fedora",
-		"category": "OS",
-		"description": "Cutting-edge but chill."
+		"category": "OS"
+	},
+	{
+		"name": "Ubuntu",
+		"icon": "https://cdn.simpleicons.org/ubuntu/ec4899",
+		"alt": "Ubuntu",
+		"category": "OS"
+	},
+	{
+		"name": "Debian",
+		"icon": "https://cdn.simpleicons.org/debian/ec4899",
+		"alt": "Debian",
+		"category": "OS"
 	},
 	{
 		"name": "Git",
 		"icon": "https://cdn.simpleicons.org/git/ec4899",
 		"alt": "Git",
-		"category": "Tool",
-		"description": "Code history unlocked."
+		"category": "Tool"
 	},
 	{
 		"name": "GitHub",
 		"icon": "https://cdn.simpleicons.org/github/ec4899",
 		"alt": "GitHub",
-		"category": "Tool",
-		"description": "Collab zone for code."
+		"category": "Tool"
 	}
 ]
