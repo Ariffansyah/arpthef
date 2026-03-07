@@ -287,6 +287,7 @@
 							<p class="text-sm font-bold tracking-widest text-pink-500 uppercase">
 								{ach.achievementName}
 							</p>
+							<p class="mt-2 max-w-2xl leading-relaxed text-gray-600">{ach.description}</p>
 						</div>
 					{/each}
 					{#if achievementItems.length > 3}
