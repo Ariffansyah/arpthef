@@ -31,10 +31,10 @@
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
 		<h1 class="text-6xl font-black tracking-tighter text-gray-900 lg:text-9xl">
-			My<br /><span class="text-pink-500">Works</span>
+			Code &<br /><span class="text-pink-500">Contributions</span>
 		</h1>
 		<p class="text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">
-			Selected Projects {new Date().getFullYear()}
+			Selected developments and open source works
 		</p>
 	</div>
 
@@ -44,7 +44,7 @@
 				<div class="group flex flex-col gap-6" use:intersect={{ threshold: 0.1, once: true }}>
 					<a
 						href={resolve('/projects/[slug]', { slug: project.projectLink })}
-						class="relative aspect-square overflow-hidden border border-gray-100 bg-gray-50"
+						class="relative aspect-4/5 overflow-hidden border border-gray-100 bg-gray-50"
 					>
 						<img
 							src={project.projectImages && project.projectImages.length > 0
