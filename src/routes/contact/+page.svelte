@@ -89,7 +89,7 @@
 					<span>X (Twitter)</span> <i class="fa-brands fa-x-twitter text-lg"></i>
 				</a>
 				<a
-					href="https://www.instagram.com/arppthef/"
+					href="https://www.instagram.com/_arpchive/"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="flex items-center justify-between border-b border-gray-100 py-4 text-xs font-black tracking-widest text-gray-700 uppercase transition-all hover:border-pink-500 hover:text-pink-500"
