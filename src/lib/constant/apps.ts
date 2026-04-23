@@ -110,6 +110,54 @@ export const experience = [
 
 export const projects = [
 	{
+		projectName: 'Naya - Knowledge Base and Documentation System',
+		visitLink: 'https://asta.syntesa.net/naya',
+		projectImages: ['/assets/naya.webp', '/assets/naya2.webp'],
+		technologies: [
+			{
+				name: 'Next.js',
+				icon: 'https://cdn.simpleicons.org/nextdotjs/ec4899'
+			},
+			{
+				name: 'TypeScript',
+				icon: 'https://cdn.simpleicons.org/typescript/ec4899'
+			},
+			{
+				name: 'Supabase',
+				icon: 'https://cdn.simpleicons.org/supabase/ec4899'
+			}
+		],
+		projectDescription:
+			'Naya is part of Asta ecosystem, a knowledge base and documentation system designed to facilitate information sharing and collaboration within the Syntesa Software Engineering Lab.',
+		projectDetails:
+			'I developed the frontend of Naya using Next.js and TypeScript, focusing on creating an intuitive interface for users to access and contribute to the lab’s knowledge base. The application is part of the Asta ecosystem, which serves as a central hub for all Syntesa Software Engineering Lab members. Naya integrates with Supabase for backend services, providing features such as authentication, database management, and real-time updates. My role involved building the frontend and integrating it with the backend, ensuring a seamless user experience. Naya is currently in active development, and I am responsible for maintaining and adding new features to enhance its functionality as a key component of the Asta ecosystem.',
+		projectLink: 'naya-knowledge-base'
+	},
+	{
+		projectName: 'Asta - Syntesa Internal Apps',
+		visitLink: 'https://asta.syntesa.net',
+		projectImages: ['/assets/asta.webp', '/assets/asta2.webp', '/assets/asta3.webp'],
+		technologies: [
+			{
+				name: 'Next.js',
+				icon: 'https://cdn.simpleicons.org/nextdotjs/ec4899'
+			},
+			{
+				name: 'TypeScript',
+				icon: 'https://cdn.simpleicons.org/typescript/ec4899'
+			},
+			{
+				name: 'Supabase',
+				icon: 'https://cdn.simpleicons.org/supabase/ec4899'
+			}
+		],
+		projectDescription:
+			'Asta is an internal application designed to be a ga for gateway for all Syntesa Software Engineering Lab members to access various lab resources and tools.',
+		projectDetails:
+			'I developed the frontend of Asta using Next.js and TypeScript, focusing on creating a user-friendly interface that serves as a central hub for lab members. The application integrates with Supabase for backend services, providing features such as authentication, database management, and real-time updates. My role invovled making the frontend and integrating it with the backend, ensuring a seamless user experience. Asta is currently in active development, and I am responsible for maintaining and adding new features to enhance its functionality as the primary gateway for all Syntesa Software Engineering Lab members.',
+		projectLink: 'asta-internal-apps'
+	},
+	{
 		projectName: 'Syntesa - AI Laboratory Management System',
 		visitLink: '',
 		projectImages: [
