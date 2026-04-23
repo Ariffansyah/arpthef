@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import projects from '$lib/assets/JSON/projects.json';
+import { projects } from '$lib/constant/apps';
 
 interface PageParams {
 	slug: string;

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import AchievementsData from '$lib/assets/JSON/achievements.json';
-	import ExperiencesData from '$lib/assets/JSON/experiences.json';
+	import { achievement, experience } from '$lib/constant/apps';
 	import { intersect } from '$lib/actions/intersect';
 	import { cubicOut } from 'svelte/easing';
 	import { resolve } from '$app/paths';
@@ -36,14 +35,14 @@
 
 	let activeTab = 'work';
 
-	const workExperiences = ExperiencesData.filter((e) => e.category?.toLowerCase() === 'work');
-	const educationExperiences = ExperiencesData.filter(
+	const workExperiences = experience.filter((e) => e.category?.toLowerCase() === 'work');
+	const educationExperiences = experience.filter(
 		(e) => e.category?.toLowerCase() === 'education'
 	);
-	const organizationExperiences = ExperiencesData.filter(
+	const organizationExperiences = experience.filter(
 		(e) => e.category?.toLowerCase() === 'organization'
 	);
-	const achievementItems = AchievementsData;
+	const achievementItems = achievement;
 
 	let isShowMoreWork = false;
 	$: showWorkExperiences = isShowMoreWork ? workExperiences : workExperiences.slice(0, 3);

@@ -1,8 +1,5 @@
 <script lang="ts">
-	import TechnologiesData from '$lib/assets/JSON/tehcnologies.json';
-	import AchievementsData from '$lib/assets/JSON/achievements.json';
-	import ProjectsData from '$lib/assets/JSON/projects.json';
-	import ExperiencesData from '$lib/assets/JSON/experiences.json';
+	import { technologies, achievement, projects, experience } from '$lib/constant/apps';
 	import { intersect } from '$lib/actions/intersect';
 	import { handleHistory } from '$lib/components/handleHistory';
 	import { onMount } from 'svelte';
@@ -16,10 +13,7 @@
 		'text-rose-500'
 	];
 
-	const technologies = TechnologiesData;
-	const achievements = AchievementsData;
-	const projects = ProjectsData;
-	const experiences = ExperiencesData;
+	const achievements = achievement;
 
 	let activeTab = 'work';
 	const tabs = [
@@ -29,9 +23,9 @@
 		{ label: 'Achievement', value: 'achievement' }
 	];
 
-	const workExperiences = experiences.filter((e) => e.category?.toLowerCase() === 'work');
-	const educationExperiences = experiences.filter((e) => e.category?.toLowerCase() === 'education');
-	const organizationExperiences = experiences.filter(
+	const workExperiences = experience.filter((e) => e.category?.toLowerCase() === 'work');
+	const educationExperiences = experience.filter((e) => e.category?.toLowerCase() === 'education');
+	const organizationExperiences = experience.filter(
 		(e) => e.category?.toLowerCase() === 'organization'
 	);
 	const achievementItems = achievements;

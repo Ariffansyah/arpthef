@@ -1,9 +1,7 @@
 <script lang="ts">
-	import projectsdata from '$lib/assets/JSON/projects.json';
+	import { projects } from '$lib/constant/apps';
 	import { intersect } from '$lib/actions/intersect';
 	import { resolve } from '$app/paths';
-
-	const projects = projectsdata;
 </script>
 
 <svelte:head>
