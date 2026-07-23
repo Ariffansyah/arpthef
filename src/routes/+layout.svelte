@@ -177,19 +177,19 @@
 					<i class="fa-regular {$theme === 'dark' ? 'fa-sun' : 'fa-moon'} fa-lg"></i>
 				</button>
 				<button
-					class="relative z-50 flex flex-col gap-1"
+					class="relative z-50 flex flex-col gap-1 {isOpen ? 'opacity-0 pointer-events-none' : ''}"
 					onclick={toggleMenu}
 					type="button"
 					aria-label="Toggle menu"
 				>
 					<span
-						class="h-0.5 w-5 rounded bg-ink transition-all {isOpen ? 'translate-y-1.5 rotate-45' : ''}"
+						class="h-0.5 w-5 rounded bg-ink transition-all"
 					></span>
 					<span
-						class="h-0.5 w-5 rounded bg-ink transition-all {isOpen ? 'opacity-0' : ''}"
+						class="h-0.5 w-5 rounded bg-ink transition-all"
 					></span>
 					<span
-						class="h-0.5 w-5 rounded bg-ink transition-all {isOpen ? '-translate-y-1.5 -rotate-45' : ''}"
+						class="h-0.5 w-5 rounded bg-ink transition-all"
 					></span>
 				</button>
 			</div>
@@ -378,6 +378,15 @@
 	<Background3D nodeCount={95} linkDistance={220} />
 </div>
 
+<!-- Dark mode ambient glow (fixed, no scroll issues on mobile) -->
+<div
+	class="pointer-events-none fixed inset-0 z-0 {$theme === 'dark' ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500"
+	aria-hidden="true"
+	style="background-image:
+		radial-gradient(60rem 60rem at 15% 0%, color-mix(in srgb, #ff6969 12%, transparent), transparent 60%),
+		radial-gradient(50rem 50rem at 100% 100%, color-mix(in srgb, #c80036 16%, transparent), transparent 60%);"
+></div>
+
 <!-- Page navigation confirmation overlay -->
 {#if pendingNav}
 	<div
@@ -450,7 +459,11 @@
 		height: 70% !important;
 	}
 
+	:global(html) {
+		overflow-x: hidden;
+	}
 	:global(body) {
+		overflow-x: hidden;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}

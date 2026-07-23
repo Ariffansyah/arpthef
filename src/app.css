@@ -72,13 +72,10 @@
 
 	color-scheme: dark;
 	background-color: var(--surface);
-	/* Ambient depth: warm coral/crimson glows drifting over the navy base. */
-	background-image:
-		radial-gradient(60rem 60rem at 15% 0%, color-mix(in srgb, #ff6969 12%, transparent), transparent 60%),
-		radial-gradient(50rem 50rem at 100% 100%, color-mix(in srgb, #c80036 16%, transparent), transparent 60%);
-	background-attachment: fixed;
 	color: var(--ink);
 }
+
+
 
 .animate-fade-in {
 	opacity: 0;
