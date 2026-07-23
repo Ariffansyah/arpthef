@@ -39,11 +39,13 @@
 	let canvasSize = { w: 0, h: 0 };
 	const dpr = typeof window !== 'undefined' ? window.devicePixelRatio : 1;
 
+	// Brand palette petals: warm cream, soft coral, crimson — legible over both
+	// the off-white (light) and deep-navy (dark) backgrounds.
 	const colors = [
-		{ main: '#ffffff', dark: '#f0f0f0' },
-		{ main: '#fff5f7', dark: '#ffe0e5' },
-		{ main: '#ffdee5', dark: '#ffb7c5' },
-		{ main: '#ffb7c5', dark: '#ff8da1' }
+		{ main: '#fff5e1', dark: '#f7e6c8' },
+		{ main: '#ff6969', dark: '#e5484d' },
+		{ main: '#ff8f8f', dark: '#ff6969' },
+		{ main: '#c80036', dark: '#a20539' }
 	];
 
 	function petalParams(): Petal {

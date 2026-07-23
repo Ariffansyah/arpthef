@@ -1,9 +1,83 @@
 @import 'tailwindcss';
 
+/* Manual (class-based) dark mode: toggled via `.dark` on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Brand palette (exact hex codes — do not alter):
+ *   Primary    #FFF5E1  Warm Cream   — CTA text, crisp highlights
+ *   Secondary  #C80036  Crimson      — brand accents, CTA fill, active elements
+ *   Tertiary   #FF6969  Soft Coral   — borders, secondary indicators, badges
+ *   Quaternary #0C1844  Deep Navy    — primary text (light) / background (dark)
+ *   Background #FAFAFC  Off-white    — page background (light)
+ *
+ * Semantic tokens below are exposed to Tailwind as utilities
+ * (bg-surface, text-ink, text-brand, border-edge, …). Muted/faint tiers
+ * and hover shades are derived only by mixing the five palette hexes, so the
+ * whole UI stays within the specified colors while meeting WCAG AA contrast
+ * in both modes.
+ */
+@theme inline {
+	--color-surface: var(--surface);
+	--color-card: var(--card);
+	--color-ink: var(--ink);
+	--color-ink-muted: var(--ink-muted);
+	--color-ink-faint: var(--ink-faint);
+	--color-brand: var(--brand);
+	--color-brand-hover: var(--brand-hover);
+	--color-cta: var(--cta);
+	--color-cta-ink: var(--cta-ink);
+	--color-edge: var(--edge);
+	--color-edge-strong: var(--edge-strong);
+	--color-edge-ink: var(--edge-ink);
+}
+
+/* Light mode — off-white page, deep-navy ink, crimson accents */
 :root {
-	background-color: #fff5f7;
-	color: #4a4a4a;
+	--surface: #fafafc;
+	--card: #ffffff;
+	--ink: #0c1844;
+	--ink-muted: color-mix(in srgb, #0c1844 78%, #fafafc);
+	--ink-faint: color-mix(in srgb, #0c1844 60%, #fafafc);
+	--brand: #c80036;
+	--brand-hover: color-mix(in srgb, #c80036 80%, #0c1844);
+	--cta: #c80036;
+	--cta-ink: #fff5e1;
+	--edge: color-mix(in srgb, #ff6969 45%, transparent);
+	--edge-strong: #ff6969;
+	--edge-ink: #0c1844;
+
+	color-scheme: light;
+	background-color: var(--surface);
+	color: var(--ink);
 	font-family: 'Fira Code', monospace;
+}
+
+/* Dark mode — deep-navy page, warm-cream ink, soft-coral accents.
+   Cards are lifted more, faint text is brighter, and coral borders carry
+   more weight so panels/dividers read clearly against the navy. */
+:root.dark {
+	--surface: #0c1844;
+	--card: color-mix(in srgb, #fff5e1 10%, #0c1844);
+	--ink: #fff5e1;
+	--ink-muted: color-mix(in srgb, #fff5e1 82%, #0c1844);
+	--ink-faint: color-mix(in srgb, #fff5e1 66%, #0c1844);
+	--brand: #ff6969;
+	--brand-hover: color-mix(in srgb, #ff6969 82%, #fff5e1);
+	--cta: #c80036;
+	--cta-ink: #fff5e1;
+	--edge: color-mix(in srgb, #ff6969 45%, transparent);
+	--edge-strong: #ff6969;
+	--edge-ink: #fff5e1;
+
+	color-scheme: dark;
+	background-color: var(--surface);
+	/* Ambient depth: warm coral/crimson glows drifting over the navy base. */
+	background-image:
+		radial-gradient(60rem 60rem at 15% 0%, color-mix(in srgb, #ff6969 12%, transparent), transparent 60%),
+		radial-gradient(50rem 50rem at 100% 100%, color-mix(in srgb, #c80036 16%, transparent), transparent 60%);
+	background-attachment: fixed;
+	color: var(--ink);
 }
 
 .animate-fade-in {
@@ -23,6 +97,6 @@
 }
 
 ::selection {
-	background-color: #ffdee5;
-	color: #d63384;
+	background-color: var(--brand);
+	color: var(--cta-ink);
 }

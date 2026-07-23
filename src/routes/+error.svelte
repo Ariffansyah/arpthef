@@ -24,17 +24,17 @@
 	>
 		<div class="flex flex-col items-center">
 			<h1
-				class="text-[12rem] leading-none font-black tracking-tighter text-pink-500 md:text-[20rem]"
+				class="text-[12rem] leading-none font-black tracking-tighter text-brand md:text-[20rem]"
 			>
 				{$page.status}
 			</h1>
-			<p class="-mt-4 text-xs font-black tracking-[0.5em] text-gray-900 uppercase md:-mt-8">
+			<p class="-mt-4 text-xs font-black tracking-[0.5em] text-ink uppercase md:-mt-8">
 				{$page.error?.message || 'Page Not Found'}
 			</p>
 		</div>
 
 		<div class="max-w-md">
-			<p class="text-sm leading-relaxed font-medium text-gray-500">
+			<p class="text-sm leading-relaxed font-medium text-ink-muted">
 				The petals have scattered, and the path you are looking for is currently hidden or no longer
 				exists.
 			</p>
@@ -42,7 +42,7 @@
 
 		<div class="mt-4">
 			<a
-				class="group flex items-center gap-3 text-xs font-black tracking-widest text-gray-900 uppercase transition-all hover:text-pink-600"
+				class="group flex items-center gap-3 text-xs font-black tracking-widest text-ink uppercase transition-all hover:text-brand-hover"
 				href={resolve('/')}
 				aria-label="Go back to homepage"
 			>

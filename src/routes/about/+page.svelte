@@ -18,13 +18,7 @@
 		};
 	}
 
-	const textColors = [
-		'text-pink-600',
-		'text-rose-600',
-		'text-fuchsia-600',
-		'text-pink-500',
-		'text-rose-500'
-	];
+	const textColors = ['text-brand'];
 
 	const tabs = [
 		{ label: 'Work', value: 'work' },
@@ -99,23 +93,23 @@
 
 <section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
 	<div class="mb-24 flex flex-col gap-4">
-		<h1 class="text-5xl font-black tracking-tighter text-gray-900 lg:text-8xl">
-			About<br /><span class="text-pink-500">Me</span>
+		<h1 class="text-5xl font-black tracking-tighter text-ink lg:text-8xl">
+			About<br /><span class="text-brand">Me</span>
 		</h1>
-		<p class="text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">The story so far</p>
+		<p class="text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">The story so far</p>
 	</div>
 
 	<div class="grid grid-cols-1 gap-20 lg:grid-cols-2">
 		<div class="flex flex-col gap-10">
 			<div class="flex flex-col gap-6" use:intersect={{ threshold: 0.1, once: true }}>
-				<p class="text-xl leading-relaxed font-medium text-gray-600 md:text-2xl">
+				<p class="text-xl leading-relaxed font-medium text-ink-muted md:text-2xl">
 					I am an undergraduate student primarily focused on <span
-						class="text-gray-900 underline decoration-pink-200 decoration-4"
+						class="text-ink underline decoration-brand decoration-4"
 						>backend development</span
 					>, building the invisible engines that power the web.
 				</p>
 
-				<div class="flex flex-col gap-6 leading-relaxed text-gray-500">
+				<div class="flex flex-col gap-6 leading-relaxed text-ink-muted">
 					<p>
 						My journey began in elementary school, but it wasn't until my final year of high school
 						that I realized programming was my calling. Inspired by my brother and the online tech
@@ -126,7 +120,7 @@
 						<div
 							in:bioAnimation={{ duration: 400 }}
 							out:bioAnimation={{ duration: 400 }}
-							class="flex flex-col gap-6 border-l-2 border-pink-50 pl-6"
+							class="flex flex-col gap-6 border-l-2 border-edge pl-6"
 						>
 							<p>
 								In high school, I reached the provincial level of the National Science Olympiad (IT
@@ -144,7 +138,7 @@
 
 					<button
 						on:click={toggleBio}
-						class="w-fit text-xs font-black tracking-widest text-pink-600 uppercase transition-all hover:text-pink-400"
+						class="w-fit text-xs font-black tracking-widest text-brand uppercase transition-all hover:text-brand-hover"
 					>
 						{isBioExpanded ? '[-] Read Less' : '[+] Read Full Story'}
 					</button>
@@ -153,20 +147,20 @@
 
 			<a
 				href={resolve('/contact')}
-				class="w-fit border-b-2 border-gray-900 pb-1 text-xs font-black tracking-widest uppercase transition-all hover:border-pink-500 hover:text-pink-500"
+				class="w-fit border-b-2 border-edge-ink pb-1 text-xs font-black tracking-widest uppercase transition-all hover:border-brand hover:text-brand"
 			>
 				Get in touch
 			</a>
 		</div>
 
 		<div class="flex flex-col gap-12" use:intersect={{ threshold: 0.1, once: true }}>
-			<div class="no-scrollbar flex w-full gap-8 overflow-x-auto border-b border-gray-100">
+			<div class="no-scrollbar flex w-full gap-8 overflow-x-auto border-b border-edge">
 				{#each tabs as tab (tab.label)}
 					<button
 						class="pb-4 text-[10px] font-black tracking-[0.2em] whitespace-nowrap uppercase transition-all {activeTab ===
 						tab.value
-							? 'border-b-2 border-pink-500 text-gray-900'
-							: 'text-gray-300 hover:text-gray-500'}"
+							? 'border-b-2 border-brand text-ink'
+							: 'text-ink-faint hover:text-ink-muted'}"
 						on:click={() => (activeTab = tab.value)}
 					>
 						{tab.label}
@@ -183,17 +177,17 @@
 									i % textColors.length
 								]}">{exp.date}</span
 							>
-							<h3 class="text-xl font-black text-gray-900">{exp.title}</h3>
-							<p class="text-sm font-bold tracking-tight text-gray-400 uppercase">
+							<h3 class="text-xl font-black text-ink">{exp.title}</h3>
+							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
 								{exp.experienceName}
 							</p>
-							<p class="mt-2 text-sm leading-relaxed text-gray-500">{exp.description}</p>
+							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{exp.description}</p>
 						</div>
 					{/each}
 					{#if workExperiences.length > 3}
 						<button
 							on:click={toggleShowMoreWork}
-							class="w-fit text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase hover:text-pink-500"
+							class="w-fit text-[10px] font-black tracking-[0.2em] text-ink-faint uppercase hover:text-brand"
 						>
 							{isShowMoreWork ? '[-] Show Less' : '[+] Show More'}
 						</button>
@@ -201,17 +195,17 @@
 				{:else if activeTab === 'education'}
 					{#each showEducationExperiences as edu, i (i)}
 						<div class="flex flex-col gap-1">
-							<span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase"
+							<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
 								>{edu.date}</span
 							>
-							<h3 class="text-xl font-black text-gray-900">{edu.experienceName}</h3>
-							<p class="mt-2 text-sm leading-relaxed text-gray-500">{edu.description}</p>
+							<h3 class="text-xl font-black text-ink">{edu.experienceName}</h3>
+							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{edu.description}</p>
 						</div>
 					{/each}
 					{#if educationExperiences.length > 3}
 						<button
 							on:click={toggleShowMoreEdu}
-							class="w-fit text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase hover:text-pink-500"
+							class="w-fit text-[10px] font-black tracking-[0.2em] text-ink-faint uppercase hover:text-brand"
 						>
 							{isShowMoreEdu ? '[-] Show Less' : '[+] Show More'}
 						</button>
@@ -224,17 +218,17 @@
 									i % textColors.length
 								]}">{org.date}</span
 							>
-							<h3 class="text-xl font-black text-gray-900">{org.title}</h3>
-							<p class="text-sm font-bold tracking-tight text-gray-400 uppercase">
+							<h3 class="text-xl font-black text-ink">{org.title}</h3>
+							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
 								{org.experienceName}
 							</p>
-							<p class="mt-2 text-sm leading-relaxed text-gray-500">{org.description}</p>
+							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{org.description}</p>
 						</div>
 					{/each}
 					{#if organizationExperiences.length > 3}
 						<button
 							on:click={toggleShowMoreOrg}
-							class="w-fit text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase hover:text-pink-500"
+							class="w-fit text-[10px] font-black tracking-[0.2em] text-ink-faint uppercase hover:text-brand"
 						>
 							{isShowMoreOrg ? '[-] Show Less' : '[+] Show More'}
 						</button>
@@ -247,17 +241,17 @@
 									i % textColors.length
 								]}">{ach.date}</span
 							>
-							<h3 class="text-xl font-black text-gray-900">{ach.title}</h3>
-							<p class="text-sm font-bold tracking-widest text-pink-500 uppercase">
+							<h3 class="text-xl font-black text-ink">{ach.title}</h3>
+							<p class="text-sm font-bold tracking-widest text-brand uppercase">
 								{ach.achievementName}
 							</p>
-							<p class="mt-2 text-sm leading-relaxed text-gray-500">{ach.description}</p>
+							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{ach.description}</p>
 						</div>
 					{/each}
 					{#if achievementItems.length > 3}
 						<button
 							on:click={toggleShowMoreAch}
-							class="w-fit text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase hover:text-pink-500"
+							class="w-fit text-[10px] font-black tracking-[0.2em] text-ink-faint uppercase hover:text-brand"
 						>
 							{isShowMoreAch ? '[-] Show Less' : '[+] Show More'}
 						</button>

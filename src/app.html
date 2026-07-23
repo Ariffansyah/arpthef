@@ -2,6 +2,18 @@
 <html lang="en" class="relative">
 	<head>
 		<meta charset="utf-8" />
+		<script>
+			// Set the color theme before first paint to avoid a flash of the wrong mode.
+			(function () {
+				try {
+					var stored = localStorage.getItem('theme');
+					var dark = stored
+						? stored === 'dark'
+						: window.matchMedia('(prefers-color-scheme: dark)').matches;
+					if (dark) document.documentElement.classList.add('dark');
+				} catch (e) {}
+			})();
+		</script>
 		<link rel="icon" href="%sveltekit.assets%/Logo.webp" />
 		<link rel="shortcut icon" href="%sveltekit.assets%/Logo.webp" />
 		<link

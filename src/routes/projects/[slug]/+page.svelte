@@ -50,11 +50,11 @@
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
 		<div class="flex flex-col gap-4">
-			<h1 class="text-5xl font-black tracking-tighter text-gray-900 lg:text-9xl">
+			<h1 class="text-5xl font-black tracking-tighter text-ink lg:text-9xl">
 				{project.projectName.split(' ').slice(0, -1).join(' ')}<br />
-				<span class="text-pink-500">{project.projectName.split(' ').slice(-1)}</span>
+				<span class="text-brand">{project.projectName.split(' ').slice(-1)}</span>
 			</h1>
-			<p class="text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">
+			<p class="text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">
 				Case Study / Project Details
 			</p>
 		</div>
@@ -65,7 +65,7 @@
 					class="flex items-center gap-3 opacity-40 grayscale transition-all hover:opacity-100 hover:grayscale-0"
 				>
 					<img src={tech.icon} alt={tech.name} class="h-6 w-6" />
-					<span class="text-[10px] font-bold tracking-widest text-gray-800 uppercase"
+					<span class="text-[10px] font-bold tracking-widest text-ink uppercase"
 						>{tech.name}</span
 					>
 				</div>
@@ -75,7 +75,7 @@
 
 	<div class="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-32">
 		<div class="flex flex-col gap-8" use:intersect={{ threshold: 0.3, once: true }}>
-			<p class="text-xl leading-relaxed font-medium text-gray-600 md:text-2xl">
+			<p class="text-xl leading-relaxed font-medium text-ink-muted md:text-2xl">
 				{project.projectDescription}
 			</p>
 
@@ -84,7 +84,7 @@
 					href={asset(project.visitLink)}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="w-fit border-b-2 border-gray-900 pb-1 text-xs font-black tracking-widest uppercase transition-all hover:border-pink-500 hover:text-pink-500"
+					class="w-fit border-b-2 border-edge-ink pb-1 text-xs font-black tracking-widest uppercase transition-all hover:border-brand hover:text-brand"
 				>
 					Visit Project →
 				</a>
@@ -93,7 +93,7 @@
 
 		{#if project.projectDetails}
 			<div
-				class="flex flex-col gap-6 border-l border-gray-100 pl-8 leading-relaxed text-gray-500 lg:pl-16"
+				class="flex flex-col gap-6 border-l border-edge pl-8 leading-relaxed text-ink-muted lg:pl-16"
 			>
 				<p class="whitespace-pre-line">{project.projectDetails}</p>
 			</div>
@@ -101,17 +101,17 @@
 	</div>
 
 	{#if galleryImages.length > 0}
-		<div class="mt-32 border-t border-gray-100 pt-16">
+		<div class="mt-32 border-t border-edge pt-16">
 			<div class="mb-12 flex items-baseline justify-between">
-				<h2 class="text-[10px] font-black tracking-[0.5em] text-gray-400 uppercase">Gallery</h2>
-				<span class="text-[10px] font-bold text-gray-300 uppercase">Click to expand</span>
+				<h2 class="text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">Gallery</h2>
+				<span class="text-[10px] font-bold text-ink-faint uppercase">Click to expand</span>
 			</div>
 
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 				{#each galleryImages as imgUrl (imgUrl)}
 					<button
 						type="button"
-						class="group overflow-hidden border border-gray-100 bg-gray-50 focus:outline-none"
+						class="group overflow-hidden border border-edge bg-card focus:outline-none"
 						on:click={() => openImage(imgUrl)}
 						aria-label="View screenshot"
 					>
@@ -129,7 +129,7 @@
 
 {#if selectedImage}
 	<div
-		class="fixed inset-0 z-100 flex items-center justify-center bg-white/95 p-4 backdrop-blur-xl transition-all"
+		class="fixed inset-0 z-100 flex items-center justify-center bg-surface/95 p-4 backdrop-blur-xl transition-all"
 		on:click={closeImage}
 		on:keydown={(e) => e.key === 'Escape' && closeImage()}
 		role="button"
@@ -143,7 +143,7 @@
 			/>
 			<button
 				on:click={closeImage}
-				class="text-[10px] font-black tracking-[0.3em] text-gray-400 uppercase transition-colors hover:text-pink-500"
+				class="text-[10px] font-black tracking-[0.3em] text-ink-faint uppercase transition-colors hover:text-brand"
 			>
 				Close [esc]
 			</button>
@@ -153,6 +153,6 @@
 
 <style>
 	:global(body) {
-		background-color: white;
+		background: transparent;
 	}
 </style>

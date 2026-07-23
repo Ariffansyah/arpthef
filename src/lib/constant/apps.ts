@@ -31,11 +31,19 @@ export const achievement = [
 
 export const experience = [
 	{
+		experienceName: 'Freelance Web Developer - Booknesa',
+		category: 'Work',
+		title: 'Web Developer',
+		date: 'Feb, 2026 - Jul, 2026',
+		description:
+			'Provided freelance web development services to the Booknesa P2MW team. Single-handedly developed their full-stack e-commerce platform for preloved books using Next.js, TypeScript, and Supabase.'
+	},
+	{
 		experienceName: 'Teaching Assistant - State University of Surabaya',
 		category: 'Work',
 		title:
 			'Teaching Assistant — Computer Architecture Artificial Intelligence Study Program, FMIPA, Universitas Negeri Surabaya',
-		date: 'Feb, 2024 - Present',
+		date: 'Feb, 2026 - Jun, 2026',
 		description:
 			'Assisted in teaching lectures and guiding practical sessions, supported students understanding of computer architecture concepts, and helped with assignments and course activities.'
 	},
@@ -43,7 +51,7 @@ export const experience = [
 		experienceName: 'Freelance Web Developer - GenRe Papua',
 		category: 'Work',
 		title: 'Web Developer',
-		date: 'Aug, 2024 – Present',
+		date: 'Aug, 2025 – Present',
 		description:
 			"Developed and maintained the GenRe Papua website, ensuring a user-friendly experience and up-to-date content. Collaborated with the team to implement new features and optimize performance, contributing to the organization's online presence and outreach efforts."
 	},
@@ -109,6 +117,30 @@ export const experience = [
 ];
 
 export const projects = [
+	{
+		projectName: 'Booknesa - E-Commerce for Preloved Books',
+		visitLink: 'https://booknesa.com',
+		projectImages: ['/assets/booknesa-1.webp', '/assets/booknesa-2.webp'],
+		technologies: [
+			{
+				name: 'Next.js',
+				icon: 'https://cdn.simpleicons.org/nextdotjs/ec4899'
+			},
+			{
+				name: 'TypeScript',
+				icon: 'https://cdn.simpleicons.org/typescript/ec4899'
+			},
+			{
+				name: 'Supabase',
+				icon: 'https://cdn.simpleicons.org/supabase/ec4899'
+			}
+		],
+		projectDescription:
+			'A custom e-commerce platform for preloved books, developed as a freelance project for a P2MW team.',
+		projectDetails:
+			'I was contracted as a freelance web developer by the Booknesa P2MW team to build their e-commerce platform from the ground up. I utilized Next.js and TypeScript to architect a responsive, intuitive frontend for browsing and purchasing preloved books. For the backend, I integrated Supabase to handle secure user authentication, product database management, and real-time inventory updates. Delivering this project independently as a service provider, I managed the entire end-to-end development cycle to ensure a fast, reliable, and seamless product for the client.',
+		projectLink: 'booknesa-ecommerce'
+	},
 	{
 		projectName: 'Naya - Knowledge Base and Documentation System',
 		visitLink: 'https://asta.syntesa.net/naya',

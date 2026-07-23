@@ -1,34 +1,59 @@
 export function customAlert(message: string) {
-	const alertDiv = document.createElement('div');
-	alertDiv.className = `
-    fixed inset-0 flex items-center justify-center
-    bg-black bg-opacity-50 z-[2147483647]
-    pointer-events-auto
-  `.trim();
+	const overlay = document.createElement('div');
+	overlay.style.cssText = [
+		'position:fixed',
+		'inset:0',
+		'display:flex',
+		'align-items:center',
+		'justify-content:center',
+		'background:color-mix(in srgb, #0c1844 55%, transparent)',
+		'z-index:2147483647',
+		'padding:1rem'
+	].join(';');
 
-	alertDiv.innerHTML = `
-    <div class="relative bg-darkgray rounded-lg shadow-lg p-6 max-w-sm w-full">
-      <h2 class="text-lg font-semibold mb-4">Alert</h2>
-      <p class="mb-4">${message}</p>
-      <button
-        id="alert-ok-button"
-        class="text-white py-2 rounded hover:underline"
-      >
-        OK
-      </button>
-    </div>
-  `;
+	const card = document.createElement('div');
+	card.style.cssText = [
+		'position:relative',
+		'max-width:24rem',
+		'width:100%',
+		'padding:1.5rem',
+		'background:var(--card)',
+		'color:var(--ink)',
+		'border:1px solid var(--edge-strong)',
+		'border-radius:0.5rem',
+		'box-shadow:0 10px 30px rgba(12, 24, 68, 0.35)',
+		"font-family:'Fira Code', monospace"
+	].join(';');
 
-	document.body.appendChild(alertDiv);
+	const heading = document.createElement('h2');
+	heading.textContent = 'Alert';
+	heading.style.cssText =
+		'font-size:1.125rem;font-weight:700;margin:0 0 1rem;color:var(--brand)';
 
-	const okButton = alertDiv.querySelector('#alert-ok-button');
-	okButton?.addEventListener('click', () => {
-		document.body.removeChild(alertDiv);
-	});
+	const body = document.createElement('p');
+	body.textContent = message;
+	body.style.cssText = 'margin:0 0 1rem;color:var(--ink-muted)';
 
-	setTimeout(() => {
-		if (document.body.contains(alertDiv)) {
-			document.body.removeChild(alertDiv);
-		}
-	}, 5000);
+	const button = document.createElement('button');
+	button.textContent = 'OK';
+	button.style.cssText = [
+		'padding:0.5rem 1.25rem',
+		'background:var(--cta)',
+		'color:var(--cta-ink)',
+		'border:none',
+		'border-radius:0.375rem',
+		'font-weight:700',
+		'cursor:pointer'
+	].join(';');
+
+	card.append(heading, body, button);
+	overlay.append(card);
+	document.body.appendChild(overlay);
+
+	const remove = () => {
+		if (document.body.contains(overlay)) document.body.removeChild(overlay);
+	};
+
+	button.addEventListener('click', remove);
+	setTimeout(remove, 5000);
 }
