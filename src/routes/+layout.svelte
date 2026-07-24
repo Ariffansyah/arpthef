@@ -25,9 +25,14 @@
 
 	const NAV_DELAY = 3000;
 	let scrollProgress = $state(0);
-	let pendingNav = $state<{ dir: -1 | 1; startedAt: number; target: string } | null>(null);
+	let pendingNav = $state<{ dir: -1 | 1; target: string } | null>(null);
 	let navProgress = $state(0);
 	let navRaf = 0;
+	let holdElapsed = 0;
+	let lastTickTime = 0;
+	let lastWheelEvent = 0;
+	let touchActive = false;
+	let notHoldingSince = 0;
 
 	function isAtTop() {
 		return (window.scrollY || document.documentElement.scrollTop || 0) <= 0;
@@ -43,34 +48,47 @@
 		if (pendingNav) {
 			pendingNav = null;
 			navProgress = 0;
+			holdElapsed = 0;
+			notHoldingSince = 0;
 			cancelAnimationFrame(navRaf);
 		}
 	}
 
-	function startNav(dir: -1 | 1) {
-		if (isOpen) return;
-		if (pendingNav) return;
-		const idx = navLinks.findIndex((l) => l.path === page.url.pathname);
-		if (idx === -1) return;
-		const next = idx + dir;
-		if (next < 0 || next >= navLinks.length) return;
-		pendingNav = { dir, startedAt: performance.now(), target: navLinks[next].path };
+	function completeNav() {
+		if (!pendingNav) return;
+		const t = pendingNav.target;
+		pendingNav = null;
 		navProgress = 0;
+		holdElapsed = 0;
+		cancelAnimationFrame(navRaf);
+		goto(t);
+	}
 
-		function tick() {
-			if (!pendingNav) return;
-			const elapsed = performance.now() - pendingNav.startedAt;
-			navProgress = Math.min(elapsed / NAV_DELAY, 1);
-			if (navProgress >= 1) {
-				const t = pendingNav.target;
-				pendingNav = null;
-				navProgress = 0;
-				goto(t);
+	function holdTick() {
+		if (!pendingNav) return;
+		const now = performance.now();
+		const dt = now - lastTickTime;
+		lastTickTime = now;
+
+		const atEdge = pendingNav.dir === 1 ? isAtBottom() : isAtTop();
+		if (!atEdge) { cancelNav(); return; }
+
+		const isHolding = (lastWheelEvent > 0 && now - lastWheelEvent < 300) || touchActive;
+		if (isHolding) {
+			holdElapsed += dt;
+			notHoldingSince = 0;
+		} else {
+			if (notHoldingSince === 0) {
+				notHoldingSince = now;
+			} else if (now - notHoldingSince > 3000) {
+				cancelNav();
 				return;
 			}
-			navRaf = requestAnimationFrame(tick);
 		}
-		navRaf = requestAnimationFrame(tick);
+
+		navProgress = Math.min(holdElapsed / NAV_DELAY, 1);
+		if (navProgress >= 1) { completeNav(); return; }
+		navRaf = requestAnimationFrame(holdTick);
 	}
 
 	function onScroll() {
@@ -85,21 +103,68 @@
 	}
 
 	function onWheel(e: WheelEvent) {
-		if (pendingNav) return;
-		if (e.deltaY > 0 && isAtBottom()) startNav(1);
-		else if (e.deltaY < 0 && isAtTop()) startNav(-1);
+		if (isOpen) return;
+
+		const dir = e.deltaY > 0 ? 1 : -1;
+		const atEdge = dir === 1 ? isAtBottom() : isAtTop();
+
+		if (pendingNav) {
+			if (!atEdge) { cancelNav(); return; }
+			lastWheelEvent = performance.now();
+			return;
+		}
+
+		if (!atEdge) return;
+
+		const idx = navLinks.findIndex((l) => l.path === page.url.pathname);
+		if (idx === -1) return;
+		const next = idx + dir;
+		if (next < 0 || next >= navLinks.length) return;
+
+		pendingNav = { dir, target: navLinks[next].path };
+		holdElapsed = 0;
+		lastWheelEvent = performance.now();
+		lastTickTime = performance.now();
+		navRaf = requestAnimationFrame(holdTick);
 	}
 
 	let touchStartY = 0;
+
 	function onTouchStart(e: TouchEvent) {
 		touchStartY = e.touches[0].clientY;
 	}
-	function onTouchEnd(e: TouchEvent) {
-		if (pendingNav) return;
-		const dy = touchStartY - e.changedTouches[0].clientY;
+
+	function onTouchMove(e: TouchEvent) {
+		if (e.touches.length !== 1) return;
+
+		if (pendingNav) {
+			const atEdge = pendingNav.dir === 1 ? isAtBottom() : isAtTop();
+			if (!atEdge) { cancelNav(); return; }
+			touchActive = true;
+			return;
+		}
+
+		const dy = touchStartY - e.touches[0].clientY;
 		if (Math.abs(dy) < 40) return;
-		if (dy > 0 && isAtBottom()) startNav(1);
-		else if (dy < 0 && isAtTop()) startNav(-1);
+
+		const dir = dy > 0 ? 1 : -1;
+		const atEdge = dir === 1 ? isAtBottom() : isAtTop();
+		if (!atEdge) return;
+
+		const idx = navLinks.findIndex((l) => l.path === page.url.pathname);
+		if (idx === -1) return;
+		const next = idx + dir;
+		if (next < 0 || next >= navLinks.length) return;
+
+		pendingNav = { dir, target: navLinks[next].path };
+		holdElapsed = 0;
+		lastTickTime = performance.now();
+		touchActive = true;
+		navRaf = requestAnimationFrame(holdTick);
+	}
+
+	function onTouchEnd(_e: TouchEvent) {
+		touchActive = false;
 	}
 
 	$effect(() => {
@@ -124,9 +189,11 @@
 
 	$effect(() => {
 		window.addEventListener('touchstart', onTouchStart, { passive: true });
+		window.addEventListener('touchmove', onTouchMove, { passive: true });
 		window.addEventListener('touchend', onTouchEnd, { passive: true });
 		return () => {
 			window.removeEventListener('touchstart', onTouchStart);
+			window.removeEventListener('touchmove', onTouchMove);
 			window.removeEventListener('touchend', onTouchEnd);
 		};
 	});
@@ -472,7 +539,7 @@
 					{pendingName}
 				</span>
 				<span class="text-[10px] font-bold tracking-widest text-ink-faint/50 uppercase">
-					{Math.ceil((1 - navProgress) * 3)}s
+					{Math.round(navProgress * 100)}%
 				</span>
 				<button
 					onclick={cancelNav}
