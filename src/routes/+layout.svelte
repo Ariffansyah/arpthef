@@ -54,14 +54,24 @@
 		}
 	}
 
-	function completeNav() {
+	async function completeNav() {
 		if (!pendingNav) return;
-		const t = pendingNav.target;
+		const { dir, target } = pendingNav;
 		pendingNav = null;
 		navProgress = 0;
 		holdElapsed = 0;
 		cancelAnimationFrame(navRaf);
-		goto(t);
+		await goto(target);
+		const idx = navLinks.findIndex((l) => l.path === page.url.pathname);
+		const next = idx + dir;
+		if (next < 0 || next >= navLinks.length) return;
+		const now = performance.now();
+		const stillHolding = (lastWheelEvent > 0 && now - lastWheelEvent < 300) || touchActive;
+		if (!stillHolding) return;
+		pendingNav = { dir, target: navLinks[next].path };
+		holdElapsed = 0;
+		lastTickTime = performance.now();
+		navRaf = requestAnimationFrame(holdTick);
 	}
 
 	function holdTick() {
