@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Background3D from '$lib/components/Background3D.svelte';
+	import Amogus from '$lib/components/Amogus.svelte';
 	import '../app.css';
 	import { dev } from '$app/environment';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
@@ -151,6 +152,44 @@
 
 	let activeIndex = $derived(navLinks.findIndex((l) => l.path === page.url.pathname));
 
+	let amogusX = $state(120);
+	let amogusY = $state(200);
+	let amogusAngle = $state(0);
+	let amogusVX = $state(1.2);
+	let amogusVY = $state(0.9);
+	let amogusFloat = $state(0);
+
+	const AMOGUS_SIZE = 48;
+	const AMOGUS_MIN_X = 20;
+	const AMOGUS_MAX_X = 260;
+	const AMOGUS_MIN_Y = 80;
+
+	let prevH = $state(0);
+
+	$effect(() => {
+		let raf = 0;
+		function tick() {
+			const h = window.innerHeight;
+			prevH = h;
+			const maxY = h - 120;
+
+			amogusX += amogusVX;
+			amogusY += amogusVY;
+			amogusFloat += 0.05;
+
+			if (amogusX <= AMOGUS_MIN_X) { amogusX = AMOGUS_MIN_X; amogusVX = 0.6 + Math.random() * 1.2; amogusVY = -0.8 + Math.random() * 1.6; }
+			if (amogusX >= AMOGUS_MAX_X) { amogusX = AMOGUS_MAX_X; amogusVX = -(0.6 + Math.random() * 1.2); amogusVY = -0.8 + Math.random() * 1.6; }
+			if (amogusY <= AMOGUS_MIN_Y) { amogusY = AMOGUS_MIN_Y; amogusVY = 0.6 + Math.random() * 1.2; amogusVX = -0.8 + Math.random() * 1.6; }
+			if (amogusY >= maxY) { amogusY = maxY; amogusVY = -(0.6 + Math.random() * 1.2); amogusVX = -0.8 + Math.random() * 1.6; }
+
+			amogusAngle = Math.atan2(amogusVY, amogusVX) * (180 / Math.PI) + 90;
+
+			raf = requestAnimationFrame(tick);
+		}
+		raf = requestAnimationFrame(tick);
+		return () => cancelAnimationFrame(raf);
+	});
+
 	const socialLinks = [
 		{ name: 'GitHub', url: 'https://github.com/Ariffansyah', icon: 'fa-github' },
 		{ name: 'LinkedIn', url: 'https://linkedin.com/in/arpthef', icon: 'fa-linkedin' },
@@ -160,9 +199,13 @@
 </script>
 
 <div id="app-wrapper" class="relative flex min-h-screen flex-col md:flex-row">
-	<nav
+		<nav
 		class="nav-sidebar relative z-50 flex w-full flex-col border-b border-edge bg-surface px-6 py-5 md:fixed md:h-screen md:w-64 md:border-r md:border-b-0 md:px-8 md:py-0 lg:w-72"
 	>
+		<!-- Floating Amogus background (desktop) -->
+		<div class="hidden md:block">
+			<Amogus x={amogusX} y={amogusY} angle={amogusAngle} floatPhase={amogusFloat} />
+		</div>
 		<!-- Top section: logo + subtitle + mobile controls -->
 		<div
 			class="flex items-center justify-between border-b border-edge pb-4 md:flex-col md:items-start md:border-b-0 md:pb-0 md:pt-10"
@@ -228,13 +271,19 @@
 							class="fa-solid {link.icon} w-4 text-center text-[11px] transition-all {page.url.pathname === link.path ? 'text-brand' : 'text-ink-faint group-hover:text-ink'}"
 						></i>
 						{link.name}
-						{#if page.url.pathname === link.path}
-							<span class="ml-auto h-1.5 w-1.5 rounded-full bg-brand"></span>
-						{/if}
 					</a>
 				</li>
 			{/each}
 		</ul>
+
+		<!-- Panel decorative line -->
+		<div class="hidden md:relative md:mx-3 md:mb-2 md:mt-1 md:block">
+			<div class="flex items-center gap-1">
+				<span class="h-2 w-2 rounded-full border border-edge-strong bg-card"></span>
+				<div class="h-px flex-1 bg-gradient-to-r from-edge-strong via-brand/20 to-transparent"></div>
+				<span class="h-1.5 w-1.5 rounded-sm bg-brand/30"></span>
+			</div>
+		</div>
 
 		<!-- Scroll progress bar (desktop) -->
 		<div
@@ -465,13 +514,47 @@
 	.nav-sidebar {
 		scrollbar-width: none;
 		-ms-overflow-style: none;
+		background-image:
+			repeating-linear-gradient(
+				0deg,
+				transparent,
+				transparent 28px,
+				color-mix(in srgb, var(--edge-strong) 6%, transparent) 28px,
+				color-mix(in srgb, var(--edge-strong) 6%, transparent) 29px
+			),
+			repeating-linear-gradient(
+				90deg,
+				transparent,
+				transparent 28px,
+				color-mix(in srgb, var(--edge-strong) 6%, transparent) 28px,
+				color-mix(in srgb, var(--edge-strong) 6%, transparent) 29px
+			);
 	}
 	.nav-sidebar::-webkit-scrollbar {
 		display: none;
 	}
 
+	:global(.dark) .nav-sidebar {
+		background-image:
+			repeating-linear-gradient(
+				0deg,
+				transparent,
+				transparent 28px,
+				color-mix(in srgb, var(--edge-strong) 8%, transparent) 28px,
+				color-mix(in srgb, var(--edge-strong) 8%, transparent) 29px
+			),
+			repeating-linear-gradient(
+				90deg,
+				transparent,
+				transparent 28px,
+				color-mix(in srgb, var(--edge-strong) 8%, transparent) 28px,
+				color-mix(in srgb, var(--edge-strong) 8%, transparent) 29px
+			);
+	}
+
 	.nav-link {
 		position: relative;
+		letter-spacing: 0.25em;
 	}
 	.nav-link::before {
 		content: '';
@@ -490,6 +573,29 @@
 	}
 	.nav-link-active::before {
 		height: 70% !important;
+	}
+
+	.nav-link::after {
+		content: '';
+		position: absolute;
+		right: 8px;
+		top: 50%;
+		translate: 0 -50%;
+		width: 4px;
+		height: 4px;
+		border-radius: 50%;
+		background: var(--edge-strong);
+		opacity: 0;
+		transition: opacity 0.25s ease, box-shadow 0.25s ease;
+	}
+	.nav-link:hover::after {
+		opacity: 1;
+		box-shadow: 0 0 6px var(--brand);
+	}
+	.nav-link-active::after {
+		opacity: 1;
+		background: var(--brand);
+		box-shadow: 0 0 8px var(--brand);
 	}
 
 	:global(html) {
@@ -516,4 +622,5 @@
 		from { opacity: 0; }
 		to { opacity: 1; }
 	}
+
 </style>
