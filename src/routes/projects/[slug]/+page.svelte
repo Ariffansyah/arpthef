@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { intersect } from '$lib/actions/intersect';
 	import { asset } from '$app/paths';
+	import { openLightbox } from '$lib/lightbox';
 
 	export let data;
 	$: project = data.project;
@@ -11,16 +12,6 @@
 	$: galleryImages = project.projectImages
 		? project.projectImages.filter((img: string) => !img.toLowerCase().includes('sourcecode'))
 		: [];
-
-	let selectedImage: string | null = null;
-
-	function openImage(url: string) {
-		selectedImage = url;
-	}
-
-	function closeImage() {
-		selectedImage = null;
-	}
 </script>
 
 <svelte:head>
@@ -112,7 +103,7 @@
 					<button
 						type="button"
 						class="group overflow-hidden border border-edge bg-card focus:outline-none"
-						on:click={() => openImage(imgUrl)}
+						on:click={() => openLightbox(imgUrl)}
 						aria-label="View screenshot"
 					>
 						<img
@@ -126,30 +117,6 @@
 		</div>
 	{/if}
 </section>
-
-{#if selectedImage}
-	<div
-		class="fixed inset-0 z-100 flex items-center justify-center bg-surface/95 p-4 backdrop-blur-xl transition-all"
-		on:click={closeImage}
-		on:keydown={(e) => e.key === 'Escape' && closeImage()}
-		role="button"
-		tabindex="0"
-	>
-		<div class="relative flex flex-col items-center gap-6">
-			<img
-				src={selectedImage}
-				alt="Enlarged view"
-				class="max-h-[80vh] max-w-[90vw] object-contain shadow-2xl"
-			/>
-			<button
-				on:click={closeImage}
-				class="text-[10px] font-black tracking-[0.3em] text-ink-faint uppercase transition-colors hover:text-brand"
-			>
-				Close [esc]
-			</button>
-		</div>
-	</div>
-{/if}
 
 <style>
 	:global(body) {

@@ -118,6 +118,54 @@ export const experience = [
 
 export const projects = [
 	{
+		projectName: 'UniversitiesAPI - Indonesia University List',
+		visitLink: 'https://github.com/Ariffansyah/UniversitiesAPI',
+		projectImages: ['/assets/SourceCode.svg'],
+		technologies: [
+			{
+				name: 'Go',
+				icon: 'https://cdn.simpleicons.org/go/ec4899'
+			},
+			{
+				name: 'PostgreSQL',
+				icon: 'https://cdn.simpleicons.org/postgresql/ec4899'
+			},
+			{
+				name: 'Gin',
+				icon: 'https://cdn.simpleicons.org/go/ec4899'
+			}
+		],
+		projectDescription:
+			'University data API with an admin approval workflow, built with Go, Gin, GORM, and Supabase.',
+		projectDetails:
+			'A comprehensive REST API for managing university data with an admin approval workflow. Features full CRUD operations for university data, search by name, country, and domain, pagination, and an admin approval queue where all mutations go to a pending list first. Built with Go using the Gin framework and GORM ORM, backed by PostgreSQL via Supabase. Includes interactive API documentation at /docs.',
+		projectLink: 'universities-api'
+	},
+	{
+		projectName: 'Parse',
+		visitLink: 'https://parse.naithef.my.id',
+		projectImages: ['/assets/parse.webp', '/assets/parse2.webp'],
+		technologies: [
+			{
+				name: 'Next.js',
+				icon: 'https://cdn.simpleicons.org/nextdotjs/ec4899'
+			},
+			{
+				name: 'Tailwind CSS',
+				icon: 'https://cdn.simpleicons.org/tailwindcss/ec4899'
+			},
+			{
+				name: 'Groq',
+				icon: '/assets/robot.svg'
+			}
+		],
+		projectDescription:
+			'AI-powered document accessibility reader that extracts text from complex PDFs and uses Groq AI to re-render content into personalized reading formats optimized for neurodivergent and visually impaired users.',
+		projectDetails:
+			'Built for a hackathon in collaboration with my girlfriend, Parse is an AI-powered document accessibility reader designed to make PDFs accessible to everyone. It extracts text from complex PDF documents and leverages Groq AI to intelligently re-render the content into personalized reading formats. These formats are optimized for neurodivergent users (e.g., ADHD-friendly layouts, dyslexia-optimized fonts) and visually impaired users (e.g., high-contrast modes, screen-reader-optimized output). Built with Next.js, Tailwind CSS, and the Groq API.',
+		projectLink: 'parse'
+	},
+	{
 		projectName: 'Booknesa - E-Commerce for Preloved Books',
 		visitLink: 'https://booknesa.com',
 		projectImages: ['/assets/booknesa-1.webp', '/assets/booknesa-2.webp'],

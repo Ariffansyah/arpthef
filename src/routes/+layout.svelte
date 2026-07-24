@@ -9,6 +9,7 @@
 	import { fade, fly, slide } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { theme } from '$lib/theme';
+	import { lightboxImage, closeLightbox } from '$lib/lightbox';
 
 	injectAnalytics({ mode: dev ? 'development' : 'production' });
 
@@ -127,6 +128,14 @@
 			window.removeEventListener('touchstart', onTouchStart);
 			window.removeEventListener('touchend', onTouchEnd);
 		};
+	});
+
+	$effect(() => {
+		function onKeydown(e: KeyboardEvent) {
+			if (e.key === 'Escape') closeLightbox();
+		}
+		document.addEventListener('keydown', onKeydown);
+		return () => document.removeEventListener('keydown', onKeydown);
 	});
 
 	const navLinks = [
@@ -424,6 +433,30 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
+		</div>
+	</div>
+{/if}
+
+{#if $lightboxImage}
+	<div
+		class="fixed inset-0 z-100 flex items-center justify-center bg-surface/95 p-4 backdrop-blur-xl transition-all"
+		onclick={closeLightbox}
+		onkeydown={(e) => e.key === 'Escape' && closeLightbox()}
+		role="button"
+		tabindex="0"
+	>
+		<div class="relative flex flex-col items-center gap-6">
+			<img
+				src={$lightboxImage}
+				alt="Enlarged view"
+				class="max-h-[80vh] max-w-[90vw] object-contain shadow-2xl"
+			/>
+			<button
+				onclick={closeLightbox}
+				class="text-[10px] font-black tracking-[0.3em] text-ink-faint uppercase transition-colors hover:text-brand"
+			>
+				Close [esc]
+			</button>
 		</div>
 	</div>
 {/if}
