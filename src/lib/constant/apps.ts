@@ -137,7 +137,7 @@ export const projects = [
       },
       {
         name: "Gemini",
-        icon: "https://cdn.simpleicons.org/gemini/ec4899",
+        icon: "https://cdn.simpleicons.org/googlegemini/ec4899",
       },
       {
         name: "Supabase",
