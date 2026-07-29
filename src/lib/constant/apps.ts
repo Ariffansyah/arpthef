@@ -125,11 +125,11 @@ export const projects = [
     technologies: [
       {
         name: "Next.js",
-        icon: "https://cdn.simpleicons.org/nextdotjs/ec4899",
+        icon: "https://cdn.simpleicons.org/nextdotjs/c80036",
       },
       {
         name: "Tailwind CSS",
-        icon: "https://cdn.simpleicons.org/tailwindcss/ec4899",
+        icon: "https://cdn.simpleicons.org/tailwindcss/c80036",
       },
       {
         name: "Groq",
@@ -137,11 +137,11 @@ export const projects = [
       },
       {
         name: "Gemini",
-        icon: "https://cdn.simpleicons.org/googlegemini/ec4899",
+        icon: "https://cdn.simpleicons.org/googlegemini/c80036",
       },
       {
         name: "Supabase",
-        icon: "https://cdn.simpleicons.org/supabase/ec4899",
+        icon: "https://cdn.simpleicons.org/supabase/c80036",
       },
     ],
     projectDescription:
@@ -158,7 +158,7 @@ export const projects = [
     technologies: [
       {
         name: "C",
-        icon: "https://cdn.simpleicons.org/c/ec4899",
+        icon: "https://cdn.simpleicons.org/c/c80036",
       },
     ],
     projectDescription:
@@ -174,15 +174,15 @@ export const projects = [
     technologies: [
       {
         name: "Go",
-        icon: "https://cdn.simpleicons.org/go/ec4899",
+        icon: "https://cdn.simpleicons.org/go/c80036",
       },
       {
         name: "PostgreSQL",
-        icon: "https://cdn.simpleicons.org/postgresql/ec4899",
+        icon: "https://cdn.simpleicons.org/postgresql/c80036",
       },
       {
         name: "Gin",
-        icon: "https://cdn.simpleicons.org/go/ec4899",
+        icon: "https://cdn.simpleicons.org/go/c80036",
       },
     ],
     projectDescription:
@@ -198,11 +198,11 @@ export const projects = [
     technologies: [
       {
         name: "Next.js",
-        icon: "https://cdn.simpleicons.org/nextdotjs/ec4899",
+        icon: "https://cdn.simpleicons.org/nextdotjs/c80036",
       },
       {
         name: "Tailwind CSS",
-        icon: "https://cdn.simpleicons.org/tailwindcss/ec4899",
+        icon: "https://cdn.simpleicons.org/tailwindcss/c80036",
       },
       {
         name: "Groq",
@@ -222,15 +222,15 @@ export const projects = [
     technologies: [
       {
         name: "Next.js",
-        icon: "https://cdn.simpleicons.org/nextdotjs/ec4899",
+        icon: "https://cdn.simpleicons.org/nextdotjs/c80036",
       },
       {
         name: "TypeScript",
-        icon: "https://cdn.simpleicons.org/typescript/ec4899",
+        icon: "https://cdn.simpleicons.org/typescript/c80036",
       },
       {
         name: "Supabase",
-        icon: "https://cdn.simpleicons.org/supabase/ec4899",
+        icon: "https://cdn.simpleicons.org/supabase/c80036",
       },
     ],
     projectDescription:
@@ -246,15 +246,15 @@ export const projects = [
     technologies: [
       {
         name: "Next.js",
-        icon: "https://cdn.simpleicons.org/nextdotjs/ec4899",
+        icon: "https://cdn.simpleicons.org/nextdotjs/c80036",
       },
       {
         name: "TypeScript",
-        icon: "https://cdn.simpleicons.org/typescript/ec4899",
+        icon: "https://cdn.simpleicons.org/typescript/c80036",
       },
       {
         name: "Supabase",
-        icon: "https://cdn.simpleicons.org/supabase/ec4899",
+        icon: "https://cdn.simpleicons.org/supabase/c80036",
       },
     ],
     projectDescription:
@@ -274,15 +274,15 @@ export const projects = [
     technologies: [
       {
         name: "Next.js",
-        icon: "https://cdn.simpleicons.org/nextdotjs/ec4899",
+        icon: "https://cdn.simpleicons.org/nextdotjs/c80036",
       },
       {
         name: "TypeScript",
-        icon: "https://cdn.simpleicons.org/typescript/ec4899",
+        icon: "https://cdn.simpleicons.org/typescript/c80036",
       },
       {
         name: "Supabase",
-        icon: "https://cdn.simpleicons.org/supabase/ec4899",
+        icon: "https://cdn.simpleicons.org/supabase/c80036",
       },
     ],
     projectDescription:
@@ -302,19 +302,19 @@ export const projects = [
     technologies: [
       {
         name: "SvelteKit",
-        icon: "https://cdn.simpleicons.org/svelte/ec4899",
+        icon: "https://cdn.simpleicons.org/svelte/c80036",
       },
       {
         name: "TypeScript",
-        icon: "https://cdn.simpleicons.org/typescript/ec4899",
+        icon: "https://cdn.simpleicons.org/typescript/c80036",
       },
       {
         name: "Python",
-        icon: "https://cdn.simpleicons.org/python/ec4899",
+        icon: "https://cdn.simpleicons.org/python/c80036",
       },
       {
         name: "SQLite",
-        icon: "https://cdn.simpleicons.org/sqlite/ec4899",
+        icon: "https://cdn.simpleicons.org/sqlite/c80036",
       },
     ],
     projectDescription:
@@ -334,11 +334,11 @@ export const projects = [
     technologies: [
       {
         name: "React",
-        icon: "https://cdn.simpleicons.org/react/ec4899",
+        icon: "https://cdn.simpleicons.org/react/c80036",
       },
       {
         name: "TypeScript",
-        icon: "https://cdn.simpleicons.org/typescript/ec4899",
+        icon: "https://cdn.simpleicons.org/typescript/c80036",
       },
     ],
     projectDescription:
@@ -354,11 +354,11 @@ export const projects = [
     technologies: [
       {
         name: "Go",
-        icon: "https://cdn.simpleicons.org/go/ec4899",
+        icon: "https://cdn.simpleicons.org/go/c80036",
       },
       {
         name: "SQLite",
-        icon: "https://cdn.simpleicons.org/sqlite/ec4899",
+        icon: "https://cdn.simpleicons.org/sqlite/c80036",
       },
     ],
     projectDescription:
@@ -374,19 +374,19 @@ export const projects = [
     technologies: [
       {
         name: "React",
-        icon: "https://cdn.simpleicons.org/react/ec4899",
+        icon: "https://cdn.simpleicons.org/react/c80036",
       },
       {
         name: "TypeScript",
-        icon: "https://cdn.simpleicons.org/typescript/ec4899",
+        icon: "https://cdn.simpleicons.org/typescript/c80036",
       },
       {
         name: "Go",
-        icon: "https://cdn.simpleicons.org/go/ec4899",
+        icon: "https://cdn.simpleicons.org/go/c80036",
       },
       {
         name: "PostgreSQL",
-        icon: "https://cdn.simpleicons.org/postgresql/ec4899",
+        icon: "https://cdn.simpleicons.org/postgresql/c80036",
       },
     ],
     projectDescription:
@@ -406,11 +406,11 @@ export const projects = [
     technologies: [
       {
         name: "SvelteKit",
-        icon: "https://cdn.simpleicons.org/svelte/ec4899",
+        icon: "https://cdn.simpleicons.org/svelte/c80036",
       },
       {
         name: "TypeScript",
-        icon: "https://cdn.simpleicons.org/typescript/ec4899",
+        icon: "https://cdn.simpleicons.org/typescript/c80036",
       },
     ],
     projectDescription:
@@ -426,15 +426,15 @@ export const projects = [
     technologies: [
       {
         name: "Unity",
-        icon: "https://cdn.simpleicons.org/unity/ec4899",
+        icon: "https://cdn.simpleicons.org/unity/c80036",
       },
       {
         name: "C#",
-        icon: "https://img.icons8.com/?size=100&id=111972&format=webp&color=ec4899",
+        icon: "https://img.icons8.com/?size=100&id=111972&format=webp&color=c80036",
       },
       {
         name: "Itch.io",
-        icon: "https://cdn.simpleicons.org/itch.io/ec4899",
+        icon: "https://cdn.simpleicons.org/itch.io/c80036",
       },
     ],
     projectDescription: "Fatebound is a 2d fighting game developed in Unity.",
@@ -449,11 +449,11 @@ export const projects = [
     technologies: [
       {
         name: "Python",
-        icon: "https://cdn.simpleicons.org/python/ec4899",
+        icon: "https://cdn.simpleicons.org/python/c80036",
       },
       {
         name: "Mailtrap",
-        icon: "https://cdn.simpleicons.org/mailtrap/ec4899",
+        icon: "https://cdn.simpleicons.org/mailtrap/c80036",
       },
     ],
     projectDescription: "A simple email sender application using Mailtrap.",
@@ -468,11 +468,11 @@ export const projects = [
     technologies: [
       {
         name: "Docker",
-        icon: "https://cdn.simpleicons.org/docker/ec4899",
+        icon: "https://cdn.simpleicons.org/docker/c80036",
       },
       {
         name: "Shell",
-        icon: "https://cdn.simpleicons.org/gnubash/ec4899",
+        icon: "https://cdn.simpleicons.org/gnubash/c80036",
       },
     ],
     projectDescription:
@@ -488,11 +488,11 @@ export const projects = [
     technologies: [
       {
         name: "Kotlin",
-        icon: "https://cdn.simpleicons.org/kotlin/ec4899",
+        icon: "https://cdn.simpleicons.org/kotlin/c80036",
       },
       {
         name: "Sqlite",
-        icon: "https://cdn.simpleicons.org/sqlite/ec4899",
+        icon: "https://cdn.simpleicons.org/sqlite/c80036",
       },
     ],
     projectDescription:
@@ -508,15 +508,15 @@ export const projects = [
     technologies: [
       {
         name: "C++",
-        icon: "https://cdn.simpleicons.org/cplusplus/ec4899",
+        icon: "https://cdn.simpleicons.org/cplusplus/c80036",
       },
       {
         name: "Qt",
-        icon: "https://cdn.simpleicons.org/qt/ec4899",
+        icon: "https://cdn.simpleicons.org/qt/c80036",
       },
       {
         name: "SQLite",
-        icon: "https://cdn.simpleicons.org/sqlite/ec4899",
+        icon: "https://cdn.simpleicons.org/sqlite/c80036",
       },
     ],
     projectDescription:
@@ -532,11 +532,11 @@ export const projects = [
     technologies: [
       {
         name: "Go",
-        icon: "https://cdn.simpleicons.org/go/ec4899",
+        icon: "https://cdn.simpleicons.org/go/c80036",
       },
       {
         name: "sqlite",
-        icon: "https://cdn.simpleicons.org/sqlite/ec4899",
+        icon: "https://cdn.simpleicons.org/sqlite/c80036",
       },
     ],
     projectDescription:
@@ -556,19 +556,19 @@ export const projects = [
     technologies: [
       {
         name: "React",
-        icon: "https://cdn.simpleicons.org/react/ec4899",
+        icon: "https://cdn.simpleicons.org/react/c80036",
       },
       {
         name: "TypeScript",
-        icon: "https://cdn.simpleicons.org/typescript/ec4899",
+        icon: "https://cdn.simpleicons.org/typescript/c80036",
       },
       {
         name: "Vite",
-        icon: "https://cdn.simpleicons.org/vite/ec4899",
+        icon: "https://cdn.simpleicons.org/vite/c80036",
       },
       {
         name: "Bootstrap",
-        icon: "https://cdn.simpleicons.org/bootstrap/ec4899",
+        icon: "https://cdn.simpleicons.org/bootstrap/c80036",
       },
     ],
     projectDescription:
@@ -582,109 +582,109 @@ export const projects = [
 export const technologies = [
   {
     name: "TypeScript",
-    icon: "https://cdn.simpleicons.org/typescript/ec4899",
+    icon: "https://cdn.simpleicons.org/typescript/c80036",
     alt: "TypeScript",
     category: "Language",
   },
   {
     name: "Go",
-    icon: "https://cdn.simpleicons.org/go/ec4899",
+    icon: "https://cdn.simpleicons.org/go/c80036",
     alt: "Go",
     category: "Language",
   },
   {
     name: "POSTGRESQL",
-    icon: "https://cdn.simpleicons.org/postgresql/ec4899",
+    icon: "https://cdn.simpleicons.org/postgresql/c80036",
     alt: "POSTGRESQL",
     category: "Language",
   },
   {
     name: "Docker",
-    icon: "https://cdn.simpleicons.org/docker/ec4899",
+    icon: "https://cdn.simpleicons.org/docker/c80036",
     alt: "Docker",
     category: "Tool",
   },
   {
     name: "HTML",
-    icon: "https://cdn.simpleicons.org/html5/ec4899",
+    icon: "https://cdn.simpleicons.org/html5/c80036",
     alt: "HTML",
     category: "Web",
   },
   {
     name: "CSS",
-    icon: "https://img.icons8.com/ios-filled/50/ec4899/css3.png",
+    icon: "https://img.icons8.com/ios-filled/50/c80036/css3.png",
     alt: "CSS3",
     category: "Web",
   },
   {
     name: "React",
-    icon: "https://cdn.simpleicons.org/react/ec4899",
+    icon: "https://cdn.simpleicons.org/react/c80036",
     alt: "React",
     category: "Web",
   },
   {
     name: "Svelte",
-    icon: "https://cdn.simpleicons.org/svelte/ec4899",
+    icon: "https://cdn.simpleicons.org/svelte/c80036",
     alt: "Svelte",
     category: "Web",
   },
   {
     name: "C#",
-    icon: "https://img.icons8.com/?size=100&id=111972&format=png&color=ec4899",
+    icon: "https://img.icons8.com/?size=100&id=111972&format=png&color=c80036",
     alt: "C#",
     category: "Language",
   },
   {
     name: "Unity",
-    icon: "https://cdn.simpleicons.org/unity/ec4899",
+    icon: "https://cdn.simpleicons.org/unity/c80036",
     alt: "Unity",
     category: "Game Engine",
   },
   {
     name: "C++",
-    icon: "https://cdn.simpleicons.org/cplusplus/ec4899",
+    icon: "https://cdn.simpleicons.org/cplusplus/c80036",
     alt: "C++",
     category: "Language",
   },
   {
     name: "Tailwind CSS",
-    icon: "https://cdn.simpleicons.org/tailwindcss/ec4899",
+    icon: "https://cdn.simpleicons.org/tailwindcss/c80036",
     alt: "TailwindCSS",
     category: "Web",
   },
   {
     name: "Arch",
-    icon: "https://cdn.simpleicons.org/archlinux/ec4899",
+    icon: "https://cdn.simpleicons.org/archlinux/c80036",
     alt: "Arch",
     category: "OS",
   },
   {
     name: "Fedora",
-    icon: "https://cdn.simpleicons.org/fedora/ec4899",
+    icon: "https://cdn.simpleicons.org/fedora/c80036",
     alt: "Fedora",
     category: "OS",
   },
   {
     name: "Ubuntu",
-    icon: "https://cdn.simpleicons.org/ubuntu/ec4899",
+    icon: "https://cdn.simpleicons.org/ubuntu/c80036",
     alt: "Ubuntu",
     category: "OS",
   },
   {
     name: "Debian",
-    icon: "https://cdn.simpleicons.org/debian/ec4899",
+    icon: "https://cdn.simpleicons.org/debian/c80036",
     alt: "Debian",
     category: "OS",
   },
   {
     name: "Git",
-    icon: "https://cdn.simpleicons.org/git/ec4899",
+    icon: "https://cdn.simpleicons.org/git/c80036",
     alt: "Git",
     category: "Tool",
   },
   {
     name: "GitHub",
-    icon: "https://cdn.simpleicons.org/github/ec4899",
+    icon: "https://cdn.simpleicons.org/github/c80036",
     alt: "GitHub",
     category: "Tool",
   },
