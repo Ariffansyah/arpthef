@@ -119,6 +119,39 @@ export const experience = [
 
 export const projects = [
   {
+    projectName: "Accord",
+    visitLink: "https://accord.arpthef.my.id",
+    projectImages: ["/assets/accord.webp", "/assets/accord2.webp"],
+    technologies: [
+      {
+        name: "Next.js",
+        icon: "https://cdn.simpleicons.org/nextdotjs/ec4899",
+      },
+      {
+        name: "Tailwind CSS",
+        icon: "https://cdn.simpleicons.org/tailwindcss/ec4899",
+      },
+      {
+        name: "Groq",
+        icon: "/assets/robot.svg",
+      },
+      {
+        name: "Gemini",
+        icon: "https://cdn.simpleicons.org/gemini/ec4899",
+      },
+      {
+        name: "Supabase",
+        icon: "https://cdn.simpleicons.org/tailwindcss/ec4899",
+      },
+    ],
+    projectDescription:
+      "Automated change request manager for solo operators. Checks every client request against the signed Statement of Work using pgvector retrieval and Groq, flags scope creep with the contract language quoted back, and turns approved out-of-scope work into billable line items.",
+    projectDetails:
+      "Accord is a web application designed to streamline the change request process for solo operators. It automates the evaluation of client requests against the signed Statement of Work (SOW) using pgvector retrieval and Groq AI. The system flags any scope creep by quoting the relevant contract language back to the user, ensuring that all changes are properly assessed. Approved out-of-scope work is automatically converted into billable line items, simplifying invoicing and project management. Built with Next.js, Tailwind CSS, Groq, Gemini, and Supabase, Accord provides a seamless and efficient solution for managing client requests and maintaining project integrity.",
+    projectLink: "accord",
+  },
+
+  {
     projectName: "Wisp - Terminal",
     visitLink: "https://github.com/Ariffansyah/wisp-terminal",
     projectImages: ["/assets/wisp-terminal.webp"],
