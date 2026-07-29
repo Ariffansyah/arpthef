@@ -141,7 +141,7 @@ export const projects = [
       },
       {
         name: "Supabase",
-        icon: "https://cdn.simpleicons.org/tailwindcss/ec4899",
+        icon: "https://cdn.simpleicons.org/supabase/ec4899",
       },
     ],
     projectDescription:
