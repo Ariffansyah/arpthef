@@ -2,6 +2,12 @@
 	import { projects } from '$lib/constant/apps';
 	import { intersect } from '$lib/actions/intersect';
 	import { resolve } from '$app/paths';
+
+	let wave = $state(-1);
+	function dist(i: number) {
+		if (wave < 0) return -1;
+		return Math.abs(i - wave);
+	}
 </script>
 
 <svelte:head>
@@ -37,9 +43,18 @@
 	</div>
 
 	<div class="w-full">
-		<div class="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-2 lg:grid-cols-3">
-			{#each projects as project (project.projectName)}
-				<div class="group flex flex-col gap-6" use:intersect={{ threshold: 0.1, once: true }}>
+		<div class="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-2 lg:grid-cols-3" role="presentation" onmouseleave={() => wave = -1}>
+			{#each projects as project, i (project.projectName)}
+				{@const d = dist(i)}
+				<div
+					onmouseenter={() => wave = i}
+					style="--wave-delay: {d >= 0 ? d * 0.4 : 0}s"
+					class:wave={d >= 0}
+					class:hovered={i === wave}
+					class="project-card group flex flex-col gap-6"
+					role="presentation"
+					use:intersect={{ threshold: 0.1, once: true }}
+				>
 					<a
 						href={resolve('/projects/[slug]', { slug: project.projectLink })}
 						class="relative aspect-4/5 overflow-hidden border border-edge bg-card"
@@ -107,8 +122,35 @@
 </section>
 
 <style>
-	/* Ensures images maintain their containers without stretching weirdly */
 	img {
 		display: block;
+	}
+
+	.project-card.wave a {
+		animation: proj-pulse 2.5s ease-in-out infinite;
+		animation-delay: var(--wave-delay);
+	}
+	.project-card.hovered a {
+		filter: grayscale(0) !important;
+	}
+	@media (hover: none) {
+		.project-card a {
+			animation: proj-pulse 4s ease-in-out infinite;
+		}
+		.project-card:nth-child(1) a { animation-delay: 0s; }
+		.project-card:nth-child(2) a { animation-delay: 0.6s; }
+		.project-card:nth-child(3) a { animation-delay: 1.2s; }
+		.project-card:nth-child(4) a { animation-delay: 0s; }
+		.project-card:nth-child(5) a { animation-delay: 0.6s; }
+		.project-card:nth-child(6) a { animation-delay: 1.2s; }
+		.project-card:nth-child(7) a { animation-delay: 0s; }
+		.project-card:nth-child(8) a { animation-delay: 0.6s; }
+		.project-card:nth-child(9) a { animation-delay: 1.2s; }
+	}
+
+	@keyframes proj-pulse {
+		0%, 100% { filter: grayscale(1); }
+		20% { filter: grayscale(0); }
+		40% { filter: grayscale(1); }
 	}
 </style>
