@@ -122,7 +122,7 @@
 			if (p.alpha < p.targetAlpha) p.alpha += 0.01;
 
 			p.y += p.dy;
-			p.x += p.dx + vx + Math.sin(p.swing) * 0.5; // Wind interaction
+			p.x += p.dx + vx + Math.sin(p.swing) * 0.5;
 			p.rotation += p.spin;
 			p.swing += p.swingSpeed;
 			p.flip += p.flipSpeed;

@@ -2,7 +2,7 @@
 	export let x = 0;
 	export let y = 0;
 	export let angle = 0;
-	export let floatPhase = 0; // For floating animation
+	export let floatPhase = 0;
 </script>
 
 <div
@@ -29,7 +29,7 @@
 		left: 0;
 		top: 0;
 		pointer-events: none;
-		z-index: 0; /* Behind main content */
+		z-index: 0;
 		width: 48px;
 		height: 48px;
 		will-change: transform;

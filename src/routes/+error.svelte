@@ -53,7 +53,3 @@
 	</div>
 </section>
 
-<style>
-	/* Subtle noise or texture could go here if you wanted, 
-	   but keeping it pure white for the "simple" look */
-</style>

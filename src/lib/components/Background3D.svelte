@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { bellC, basis, hull, makeJelly, updateJelly } from '$lib/jellyfish';
 
 	export let nodeCount = 100;
 	export let linkDistance = 220;
+	export let jellyCount = 5;
 
 	let canvas: HTMLCanvasElement;
 
@@ -14,6 +16,7 @@
 		twinkleSpeed: number;
 		sizeMod: number;
 	};
+
 
 	onMount(() => {
 		const ctx = canvas.getContext('2d') as CanvasRenderingContext2D | null;
@@ -88,6 +91,8 @@
 			});
 		}
 
+		const jellies = Array.from({ length: jellyCount }, () => makeJelly(R));
+
 		function resize() {
 			w = canvas.clientWidth;
 			h = canvas.clientHeight;
@@ -118,6 +123,7 @@
 		const FOV = 1000;
 		let angle = 0;
 		let raf = 0;
+		let last = performance.now();
 
 		const projected = nodes.map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }));
 		const starProjected = stars.map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }));
@@ -140,6 +146,19 @@
 			const sinX = Math.sin(ax);
 			const cx = w / 2;
 			const cy = h / 2 + Math.sin(scrollY * 0.0009) * (h * 0.2);
+
+			const now = performance.now();
+			const dt = Math.min(0.033, Math.max(0.008, (now - last) / 1000));
+			last = now;
+
+			const proj = (x: number, y: number, z: number) => {
+				const x1 = x * cosY - z * sinY;
+				const z1 = x * sinY + z * cosY;
+				const y1 = y * cosX - z1 * sinX;
+				const z2 = y * sinX + z1 * cosX;
+				const s = FOV / (FOV + z2);
+				return { x: cx + x1 * s, y: cy + y1 * s, s, depth: z2 };
+			};
 
 			const t = performance.now() * 0.001;
 			for (let i = 0; i < nodes.length; i++) {
@@ -229,6 +248,123 @@
 					g.moveTo(pa.x, pa.y);
 					g.lineTo(pb.x, pb.y);
 					g.stroke();
+				}
+			}
+
+			// Jellyfish
+			const RIM = 18;
+			for (const j of jellies) {
+				if (!prefersReduced) updateJelly(j, dt, R);
+
+				const pc = proj(j.x, j.y, j.z);
+				if (pc.s < 0.06) continue;
+				const near = Math.min(1, Math.max(0, (2.2 - pc.s) / 0.8));
+				const a = Math.min(1, pc.s * pc.s) * near;
+				if (a < 0.02) continue;
+				const c = bellC(j.pulse);
+				const b = basis(j.dx, j.dy, j.dz);
+				const rimR = j.size * (1 - 0.38 * c);
+				const hgt = j.size * (0.68 + 0.6 * c);
+				const apex = proj(j.x + j.dx * hgt, j.y + j.dy * hgt, j.z + j.dz * hgt);
+
+				g.lineCap = 'round';
+				for (const st of j.strands) {
+					const sp = st.pts.map((p) => proj(p.x, p.y, p.z));
+					for (let i = 1; i < sp.length; i++) {
+						const prevMid = { x: (sp[i - 1].x + sp[i].x) / 2, y: (sp[i - 1].y + sp[i].y) / 2 };
+						const from = i === 1 ? sp[0] : { x: (sp[i - 2].x + sp[i - 1].x) / 2, y: (sp[i - 2].y + sp[i - 1].y) / 2 };
+						const to = i === sp.length - 1 ? sp[i] : prevMid;
+						const taper = 1 - (i / sp.length) * 0.8;
+						g.strokeStyle = `rgba(${accentRGB}, ${a * st.alpha * taper})`;
+						g.lineWidth = Math.max(0.5, st.width * taper * sp[i].s);
+						g.beginPath();
+						g.moveTo(from.x, from.y);
+						g.quadraticCurveTo(sp[i - 1].x, sp[i - 1].y, to.x, to.y);
+						g.stroke();
+					}
+				}
+
+				g.lineCap = 'butt';
+
+				const rim: { x: number; y: number }[] = [];
+				const shoulder: { x: number; y: number }[] = [];
+				const crown: { x: number; y: number }[] = [];
+				for (let i = 0; i < RIM; i++) {
+					const ang = (i / RIM) * Math.PI * 2;
+					const ca = Math.cos(ang);
+					const sa = Math.sin(ang);
+					const rx = b.ux * ca + b.vx * sa;
+					const ry = b.uy * ca + b.vy * sa;
+					const rz = b.uz * ca + b.vz * sa;
+					rim.push(proj(j.x + rx * rimR, j.y + ry * rimR, j.z + rz * rimR));
+					const sr = rimR * 0.86;
+					const sh = hgt * 0.45;
+					shoulder.push(proj(j.x + rx * sr + j.dx * sh, j.y + ry * sr + j.dy * sh, j.z + rz * sr + j.dz * sh));
+					const kr = rimR * 0.5;
+					const kh = hgt * 0.85;
+					crown.push(proj(j.x + rx * kr + j.dx * kh, j.y + ry * kr + j.dy * kh, j.z + rz * kr + j.dz * kh));
+				}
+
+				const glowR = rimR * pc.s * 2.6;
+				const halo = g.createRadialGradient(pc.x, pc.y, 0, pc.x, pc.y, glowR);
+				halo.addColorStop(0, `rgba(${accentRGB}, ${a * 0.12})`);
+				halo.addColorStop(1, `rgba(${accentRGB}, 0)`);
+				g.fillStyle = halo;
+				g.beginPath();
+				g.arc(pc.x, pc.y, glowR, 0, Math.PI * 2);
+				g.fill();
+
+				const outline = hull([...rim, ...shoulder, ...crown, apex]);
+				const smooth = (pts: { x: number; y: number }[]) => {
+					g.beginPath();
+					const n = pts.length;
+					g.moveTo((pts[n - 1].x + pts[0].x) / 2, (pts[n - 1].y + pts[0].y) / 2);
+					for (let i = 0; i < n; i++) {
+						const p = pts[i];
+						const q = pts[(i + 1) % n];
+						g.quadraticCurveTo(p.x, p.y, (p.x + q.x) / 2, (p.y + q.y) / 2);
+					}
+					g.closePath();
+				};
+
+				const body = g.createRadialGradient(apex.x, apex.y, 0, apex.x, apex.y, Math.max(2, rimR * pc.s * 1.9));
+				body.addColorStop(0, `rgba(${accentRGB}, ${a * 0.55})`);
+				body.addColorStop(0.55, `rgba(${brandRGB}, ${a * 0.32})`);
+				body.addColorStop(1, `rgba(${brandRGB}, ${a * 0.1})`);
+				smooth(outline);
+				g.fillStyle = body;
+				g.fill();
+				g.strokeStyle = `rgba(${accentRGB}, ${a * 0.45})`;
+				g.lineWidth = Math.max(0.5, 1.1 * pc.s);
+				g.stroke();
+
+				g.strokeStyle = `rgba(${accentRGB}, ${a * 0.12})`;
+				g.lineWidth = Math.max(0.4, 0.7 * pc.s);
+				for (let i = 0; i < RIM; i += 3) {
+					g.beginPath();
+					g.moveTo(rim[i].x, rim[i].y);
+					g.quadraticCurveTo(shoulder[i].x, shoulder[i].y, apex.x, apex.y);
+					g.stroke();
+				}
+
+				smooth(rim);
+				g.strokeStyle = `rgba(${accentRGB}, ${a * 0.7})`;
+				g.lineWidth = Math.max(0.5, 1.4 * pc.s);
+				g.stroke();
+
+				for (let i = 0; i < 4; i++) {
+					const ang = (i / 4) * Math.PI * 2 + 0.4;
+					const ca = Math.cos(ang) * rimR * 0.42;
+					const sa = Math.sin(ang) * rimR * 0.42;
+					const gp = proj(
+						j.x + b.ux * ca + b.vx * sa + j.dx * hgt * 0.35,
+						j.y + b.uy * ca + b.vy * sa + j.dy * hgt * 0.35,
+						j.z + b.uz * ca + b.vz * sa + j.dz * hgt * 0.35,
+					);
+					g.fillStyle = `rgba(${brandRGB}, ${a * 0.5})`;
+					g.beginPath();
+					g.arc(gp.x, gp.y, Math.max(0.6, rimR * 0.09 * gp.s), 0, Math.PI * 2);
+					g.fill();
 				}
 			}
 
