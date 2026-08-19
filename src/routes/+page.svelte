@@ -92,23 +92,6 @@
 	onMount(() => {
 		updateSectionIndexAndVisibility();
 	});
-
-	let techWave = $state(-1);
-
-	function techDist(i: number) {
-		if (techWave < 0) return -1;
-		const cols = 6;
-		const hr = Math.floor(techWave / cols), hc = techWave % cols;
-		const ir = Math.floor(i / cols), ic = i % cols;
-		return Math.abs(ir - hr) + Math.abs(ic - hc);
-	}
-
-	let projectWave = $state(-1);
-
-	function projectDist(i: number) {
-		if (projectWave < 0) return -1;
-		return Math.abs(i - projectWave);
-	}
 </script>
 
 <svelte:head>
@@ -182,15 +165,10 @@
 		<h2 class="mb-12 text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">
 			Stack / Tools
 		</h2>
-		<div class="tech-grid grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6" role="presentation" onmouseleave={() => techWave = -1}>
+		<div class="tech-grid grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6" role="presentation">
 			{#each technologies as tech, i (tech.name)}
-				{@const d = techDist(i)}
 				<div
-					onmouseenter={() => techWave = i}
-					style="--wave-delay: {d >= 0 ? d * 0.35 : 0}s"
-					class:wave={d >= 0}
-					class:hovered={i === techWave}
-					class="group flex flex-col items-center justify-center gap-4 border border-edge p-8 opacity-40 grayscale transition-all hover:border-edge hover:opacity-100 hover:grayscale-0"
+					class="group flex flex-col items-center justify-center gap-4 border border-brand p-8"
 					role="presentation"
 				>
 					<img src={tech.icon} alt="" class="h-8 w-8" />
@@ -331,20 +309,13 @@
 				>View All</a
 			>
 		</div>
-		<div class="grid grid-cols-1 gap-12 lg:grid-cols-3" role="presentation" onmouseleave={() => projectWave = -1}>
+		<div class="grid grid-cols-1 gap-12 lg:grid-cols-3" role="presentation">
 			{#each projects.slice(0, 3) as project, i (project.projectName)}
-				{@const d = projectDist(i)}
 				<a
-					onmouseenter={() => projectWave = i}
-					style="--wave-delay: {d >= 0 ? d * 0.6 : 0}s"
-					class:wave={d >= 0}
-					class:hovered={i === projectWave}
 					href={resolve('/projects/[slug]', { slug: project.projectLink })}
 					class="project-card group flex flex-col gap-6"
 				>
-					<div
-						class="aspect-video w-full overflow-hidden bg-card grayscale transition-all duration-700 group-hover:grayscale-0"
-					>
+					<div class="aspect-video w-full overflow-hidden border border-brand bg-card">
 						<img
 							src={project.projectImages?.[0]}
 							alt=""
@@ -412,60 +383,5 @@
 
 	:global(html) {
 		scroll-behavior: smooth;
-	}
-
-	.tech-grid > div.wave {
-		animation: tech-pulse 2.5s ease-in-out infinite;
-		animation-delay: var(--wave-delay);
-	}
-	.tech-grid > div.hovered {
-		opacity: 1 !important;
-		filter: grayscale(0) !important;
-		border-color: var(--brand) !important;
-	}
-	@media (hover: none) {
-		.tech-grid > div {
-			animation: tech-pulse 3s ease-in-out infinite;
-		}
-		.tech-grid > div:nth-child(1) { animation-delay: 0s; }
-		.tech-grid > div:nth-child(2) { animation-delay: 0.15s; }
-		.tech-grid > div:nth-child(3) { animation-delay: 0.3s; }
-		.tech-grid > div:nth-child(4) { animation-delay: 0.45s; }
-		.tech-grid > div:nth-child(5) { animation-delay: 0.6s; }
-		.tech-grid > div:nth-child(6) { animation-delay: 0.75s; }
-		.tech-grid > div:nth-child(7) { animation-delay: 0.9s; }
-		.tech-grid > div:nth-child(8) { animation-delay: 1.05s; }
-		.tech-grid > div:nth-child(9) { animation-delay: 1.2s; }
-		.tech-grid > div:nth-child(10) { animation-delay: 1.35s; }
-		.tech-grid > div:nth-child(11) { animation-delay: 1.5s; }
-		.tech-grid > div:nth-child(12) { animation-delay: 1.65s; }
-	}
-
-	@keyframes tech-pulse {
-		0%, 100% { opacity: 0.4; filter: grayscale(1); border-color: var(--edge); }
-		20% { opacity: 1; filter: grayscale(0); border-color: var(--brand); }
-		40% { opacity: 0.4; filter: grayscale(1); border-color: var(--edge); }
-	}
-
-	.project-card.wave > div:first-child {
-		animation: project-pulse 2s ease-in-out infinite;
-		animation-delay: var(--wave-delay);
-	}
-	.project-card.hovered > div:first-child {
-		filter: grayscale(0) !important;
-	}
-	@media (hover: none) {
-		.project-card > div:first-child {
-			animation: project-pulse 4s ease-in-out infinite;
-		}
-		.project-card:nth-child(1) > div:first-child { animation-delay: 0s; }
-		.project-card:nth-child(2) > div:first-child { animation-delay: 0.8s; }
-		.project-card:nth-child(3) > div:first-child { animation-delay: 1.6s; }
-	}
-
-	@keyframes project-pulse {
-		0%, 100% { filter: grayscale(1); }
-		20% { filter: grayscale(0); }
-		40% { filter: grayscale(1); }
 	}
 </style>

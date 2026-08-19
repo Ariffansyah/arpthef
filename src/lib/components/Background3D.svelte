@@ -137,15 +137,14 @@
 			tiltY += (targetTiltY - tiltY) * 0.04;
 
 			const scrollRotY = scrollY * 0.0015;
-			const scrollRotX = scrollY * 0.0005;
 			const ay = angle + tiltY + scrollRotY;
-			const ax = tiltX + Math.sin(angle * 0.5) * 0.15 + scrollRotX;
+			const ax = tiltX + Math.sin(angle * 0.5) * 0.15;
 			const cosY = Math.cos(ay);
 			const sinY = Math.sin(ay);
 			const cosX = Math.cos(ax);
 			const sinX = Math.sin(ax);
-			const cx = w / 2;
-			const cy = h / 2 + Math.sin(scrollY * 0.0009) * (h * 0.2);
+			const cx = w / 2 + Math.sin(scrollY * 0.0009) * (w * 0.2);
+			const cy = h / 2;
 
 			const now = performance.now();
 			const dt = Math.min(0.033, Math.max(0.008, (now - last) / 1000));
