@@ -119,6 +119,58 @@ export const experience = [
 
 export const projects = [
   {
+    projectName: "Arcade",
+    visitLink: "https://arcade.arpthef.my.id",
+    projectImages: ["/assets/arcade.webp", "/assets/arcade2.webp"],
+    technologies: [
+      {
+        name: "Next.js",
+        icon: "https://cdn.simpleicons.org/nextdotjs/c80036",
+      },
+      {
+        name: "Tailwind CSS",
+        icon: "https://cdn.simpleicons.org/tailwindcss/c80036",
+      },
+      {
+        name: "Supabase",
+        icon: "https://cdn.simpleicons.org/supabase/c80036",
+      },
+      {
+        name: "Groq",
+        icon: "/assets/robot.svg",
+      },
+    ],
+    projectDescription:
+      "A real-time multiplayer web-based party game platform to play with friends.",
+    projectDetails:
+      "Arpthef Arcade is an interactive, web-based party game hub designed to bring friends together. Users can easily create private lobbies, share room codes, and compete in a variety of fast-paced, real-time minigames directly from their browsers—no app downloads required. Engineered for low-latency synchronization to ensure smooth multiplayer gameplay, the platform tracks scores and updates game states instantly. Built with a responsive Next.js frontend and styled with Tailwind CSS, the interface is optimized for both desktop and mobile devices, making it perfect for playing on the go or casting to a TV for a group game night.",
+    projectLink: "arcade",
+  },
+  {
+    projectName: "Hiring Last Boss",
+    visitLink: "https://hlb.arpthef.my.id",
+    projectImages: ["/assets/hlb.webp", "/assets/hlb2.webp"],
+    technologies: [
+      {
+        name: "Next.js",
+        icon: "https://cdn.simpleicons.org/nextdotjs/c80036",
+      },
+      {
+        name: "Tailwind CSS",
+        icon: "https://cdn.simpleicons.org/tailwindcss/c80036",
+      },
+      {
+        name: "Groq",
+        icon: "/assets/robot.svg",
+      },
+    ],
+    projectDescription:
+      "An AI-powered interview simulation game where you face off against the ultimate virtual hiring manager.",
+    projectDetails:
+      "Hiring Last Boss is an interactive, AI-driven web application designed to gamify the interview preparation process. Players face off against an intense virtual hiring manager the 'Final Boss'—who asks challenging questions and evaluates responses in real-time. Powered by Groq's ultra-fast AI inference, the game dynamically adapts its follow-ups based on the user's answers, accurately simulating the pressure of a high-stakes interview. Built with Next.js for seamless full-stack performance and styled with Tailwind CSS for a sleek, immersive UI, the platform provides job seekers with instant, actionable feedback to level up their communication skills before the real thing.",
+    projectLink: "hlb",
+  },
+  {
     projectName: "Accord",
     visitLink: "https://accord.arpthef.my.id",
     projectImages: ["/assets/accord.webp", "/assets/accord2.webp"],
