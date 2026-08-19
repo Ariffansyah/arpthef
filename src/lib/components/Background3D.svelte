@@ -8,6 +8,33 @@
 
 	let canvas: HTMLCanvasElement;
 
+	export let exploring = false;
+
+	let keys = new Set<string>();
+	let cam = { x: 0, y: 0, z: 0 };
+	let vel = { x: 0, y: 0, z: 0 };
+	let yaw = 0;
+	let pitch = 0;
+
+	let wasExploring = false;
+	$: if (exploring !== wasExploring) {
+		wasExploring = exploring;
+		if (exploring) {
+			try {
+				canvas.requestPointerLock();
+			} catch {
+				/* pointer lock unsupported — drag-to-look still works */
+			}
+		} else {
+			if (document.pointerLockElement === canvas) document.exitPointerLock();
+			keys.clear();
+			vel = { x: 0, y: 0, z: 0 };
+			cam = { x: 0, y: 0, z: 0 };
+			yaw = 0;
+			pitch = 0;
+		}
+	}
+
 	type Node = {
 		x: number; y: number; z: number;
 		vx: number; vy: number; vz: number;
@@ -110,6 +137,48 @@
 		resize();
 		window.addEventListener('resize', resize);
 
+		let dragging = false;
+		let lastPX = 0;
+		let lastPY = 0;
+		function onMouseMove(e: MouseEvent) {
+			if (!exploring) return;
+			if (document.pointerLockElement === canvas) {
+				yaw -= e.movementX * 0.0022;
+				pitch += e.movementY * 0.0022;
+			} else if (dragging) {
+				yaw -= (e.clientX - lastPX) * 0.004;
+				pitch += (e.clientY - lastPY) * 0.004;
+				lastPX = e.clientX;
+				lastPY = e.clientY;
+			}
+			pitch = Math.max(-Math.PI / 2 + 0.01, Math.min(Math.PI / 2 - 0.01, pitch));
+		}
+		function onPointerDown(e: PointerEvent) {
+			if (!exploring) return;
+			dragging = true;
+			lastPX = e.clientX;
+			lastPY = e.clientY;
+		}
+		function onPointerUp() {
+			dragging = false;
+		}
+		function onKeyDown(e: KeyboardEvent) {
+			if (!exploring) return;
+			if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'Space', 'ShiftLeft', 'ShiftRight'].includes(e.code)) {
+				keys.add(e.code);
+				e.preventDefault();
+			}
+		}
+		function onKeyUp(e: KeyboardEvent) {
+			keys.delete(e.code);
+		}
+		canvas.addEventListener('mousemove', onMouseMove);
+		canvas.addEventListener('pointerdown', onPointerDown);
+		window.addEventListener('pointerup', onPointerUp);
+		window.addEventListener('blur', onPointerUp);
+		window.addEventListener('keydown', onKeyDown);
+		window.addEventListener('keyup', onKeyUp);
+
 		let targetTiltX = 0;
 		let targetTiltY = 0;
 		let tiltX = 0;
@@ -133,12 +202,65 @@
 		let pulseTimer = 0;
 
 		function frame() {
-			angle += prefersReduced ? 0 : 0.0018;
-			tiltX += (targetTiltX - tiltX) * 0.04;
-			tiltY += (targetTiltY - tiltY) * 0.04;
+			const now = performance.now();
+			const dt = Math.min(0.033, Math.max(0.008, (now - last) / 1000));
+			last = now;
 
-			const ay = angle + tiltY;
-			const ax = tiltX + Math.sin(angle * 0.5) * 0.15;
+			if (!exploring) {
+				angle += prefersReduced ? 0 : 0.0018;
+				tiltX += (targetTiltX - tiltX) * 0.04;
+				tiltY += (targetTiltY - tiltY) * 0.04;
+			}
+
+			if (exploring) {
+				const cf = Math.cos(pitch);
+				const sf = Math.sin(pitch);
+				const cy = Math.cos(yaw);
+				const sy = Math.sin(yaw);
+				const fwd = { x: sy * cf, y: sf, z: cy * cf };
+				const right = { x: cy, y: 0, z: -sy };
+				const up = { x: -sf * sy, y: cf, z: -sf * cy };
+				let ix = 0, iy = 0, iz = 0;
+				if (keys.has('KeyW')) {
+					ix += fwd.x; iy += fwd.y; iz += fwd.z;
+				}
+				if (keys.has('KeyS')) {
+					ix -= fwd.x; iy -= fwd.y; iz -= fwd.z;
+				}
+				if (keys.has('KeyD')) {
+					ix += right.x; iy += right.y; iz += right.z;
+				}
+				if (keys.has('KeyA')) {
+					ix -= right.x; iy -= right.y; iz -= right.z;
+				}
+				if (keys.has('Space')) {
+					ix += up.x; iy += up.y; iz += up.z;
+				}
+				if (keys.has('ShiftLeft') || keys.has('ShiftRight')) {
+					ix -= up.x; iy -= up.y; iz -= up.z;
+				}
+				const len = Math.hypot(ix, iy, iz);
+				const speed = 260;
+				const k = Math.min(1, dt * 6);
+				if (len > 0) {
+					vel.x += ((ix / len) * speed - vel.x) * k;
+					vel.y += ((iy / len) * speed - vel.y) * k;
+					vel.z += ((iz / len) * speed - vel.z) * k;
+				} else {
+					vel.x -= vel.x * k;
+					vel.y -= vel.y * k;
+					vel.z -= vel.z * k;
+				}
+				cam.x += vel.x * dt;
+				cam.y += vel.y * dt;
+				cam.z += vel.z * dt;
+			}
+
+			const ay = exploring ? yaw : angle + tiltY;
+			const ax = exploring ? pitch : tiltX + Math.sin(angle * 0.5) * 0.15;
+			const camX = exploring ? cam.x : 0;
+			const camY = exploring ? cam.y : 0;
+			const camZ = exploring ? cam.z : 0;
 			const cosY = Math.cos(ay);
 			const sinY = Math.sin(ay);
 			const cosX = Math.cos(ax);
@@ -146,11 +268,10 @@
 			const cx = w / 2;
 			const cy = h / 2;
 
-			const now = performance.now();
-			const dt = Math.min(0.033, Math.max(0.008, (now - last) / 1000));
-			last = now;
-
 			const proj = (x: number, y: number, z: number) => {
+				x -= camX;
+				y -= camY;
+				z -= camZ;
 				const x1 = x * cosY - z * sinY;
 				const z1 = x * sinY + z * cosY;
 				const y1 = y * cosX - z1 * sinX;
@@ -170,10 +291,10 @@
 					n.y += n.vy + driftY * 0.02;
 					n.z += n.vz + driftZ * 0.02;
 				}
-				const x1 = n.x * cosY - n.z * sinY;
-				const z1 = n.x * sinY + n.z * cosY;
-				const y1 = n.y * cosX - z1 * sinX;
-				const z2 = n.y * sinX + z1 * cosX;
+				const x1 = (n.x - camX) * cosY - (n.z - camZ) * sinY;
+				const z1 = (n.x - camX) * sinY + (n.z - camZ) * cosY;
+				const y1 = (n.y - camY) * cosX - z1 * sinX;
+				const z2 = (n.y - camY) * sinX + z1 * cosX;
 				const scale = FOV / (FOV + z2);
 				const p = projected[i];
 				p.x = cx + x1 * scale;
@@ -184,10 +305,10 @@
 
 			for (let i = 0; i < stars.length; i++) {
 				const s = stars[i];
-				const x1 = s.x * cosY - s.z * sinY;
-				const z1 = s.x * sinY + s.z * cosY;
-				const y1 = s.y * cosX - z1 * sinX;
-				const z2 = s.y * sinX + z1 * cosX;
+				const x1 = (s.x - camX) * cosY - (s.z - camZ) * sinY;
+				const z1 = (s.x - camX) * sinY + (s.z - camZ) * cosY;
+				const y1 = (s.y - camY) * cosX - z1 * sinX;
+				const z2 = (s.y - camY) * sinX + z1 * cosX;
 				const scale = FOV / (FOV + z2);
 				const p = starProjected[i];
 				p.x = cx + x1 * scale;
@@ -198,10 +319,10 @@
 
 			for (let i = 0; i < planets.length; i++) {
 				const p = planets[i];
-				const x1 = p.x * cosY - p.z * sinY;
-				const z1 = p.x * sinY + p.z * cosY;
-				const y1 = p.y * cosX - z1 * sinX;
-				const z2 = p.y * sinX + z1 * cosX;
+				const x1 = (p.x - camX) * cosY - (p.z - camZ) * sinY;
+				const z1 = (p.x - camX) * sinY + (p.z - camZ) * cosY;
+				const y1 = (p.y - camY) * cosX - z1 * sinX;
+				const z2 = (p.y - camY) * sinX + z1 * cosX;
 				const scale = FOV / (FOV + z2);
 				const pp = planetProjected[i];
 				pp.x = cx + x1 * scale;
@@ -506,8 +627,15 @@
 			observer.disconnect();
 			window.removeEventListener('resize', resize);
 			window.removeEventListener('mousemove', onMouse);
+			window.removeEventListener('pointerup', onPointerUp);
+			window.removeEventListener('blur', onPointerUp);
+			window.removeEventListener('keydown', onKeyDown);
+			window.removeEventListener('keyup', onKeyUp);
 		};
 	});
 </script>
 
-<canvas bind:this={canvas} class="h-full w-full"></canvas>
+<canvas
+	bind:this={canvas}
+	class="h-full w-full {exploring ? 'pointer-events-auto touch-none select-none cursor-crosshair' : 'pointer-events-none'}"
+></canvas>
