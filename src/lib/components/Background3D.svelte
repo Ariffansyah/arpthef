@@ -91,6 +91,13 @@
 			});
 		}
 
+		// ponytail: 3 static planets, ring drawn as an ellipse — add orbits if realism wanted
+		const planets = [
+			{ x: R * 2.6, y: -R * 0.9, z: -R * 1.2, r: 90, ring: 0.4, hue: 'brand' },
+			{ x: -R * 2.2, y: R * 1.4, z: -R * 1.8, r: 60, ring: 0, hue: 'accent' },
+			{ x: R * 0.8, y: R * 2.4, z: -R * 2.6, r: 40, ring: 0.3, hue: 'accent' },
+		];
+
 		const jellies = Array.from({ length: jellyCount }, () => makeJelly(R));
 
 		function resize() {
@@ -113,13 +120,6 @@
 		}
 		window.addEventListener('mousemove', onMouse);
 
-		let scrollY = 0;
-		function onScroll() {
-			scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-		}
-		window.addEventListener('scroll', onScroll, { passive: true });
-		onScroll();
-
 		const FOV = 1000;
 		let angle = 0;
 		let raf = 0;
@@ -127,6 +127,7 @@
 
 		const projected = nodes.map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }));
 		const starProjected = stars.map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }));
+		const planetProjected = planets.map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }));
 
 		let pulses: { from: number; progress: number; speed: number }[] = [];
 		let pulseTimer = 0;
@@ -136,14 +137,13 @@
 			tiltX += (targetTiltX - tiltX) * 0.04;
 			tiltY += (targetTiltY - tiltY) * 0.04;
 
-			const scrollRotY = scrollY * 0.0015;
-			const ay = angle + tiltY + scrollRotY;
+			const ay = angle + tiltY;
 			const ax = tiltX + Math.sin(angle * 0.5) * 0.15;
 			const cosY = Math.cos(ay);
 			const sinY = Math.sin(ay);
 			const cosX = Math.cos(ax);
 			const sinX = Math.sin(ax);
-			const cx = w / 2 + Math.sin(scrollY * 0.0009) * (w * 0.2);
+			const cx = w / 2;
 			const cy = h / 2;
 
 			const now = performance.now();
@@ -196,7 +196,57 @@
 				p.depth = z2;
 			}
 
+			for (let i = 0; i < planets.length; i++) {
+				const p = planets[i];
+				const x1 = p.x * cosY - p.z * sinY;
+				const z1 = p.x * sinY + p.z * cosY;
+				const y1 = p.y * cosX - z1 * sinX;
+				const z2 = p.y * sinX + z1 * cosX;
+				const scale = FOV / (FOV + z2);
+				const pp = planetProjected[i];
+				pp.x = cx + x1 * scale;
+				pp.y = cy + y1 * scale;
+				pp.scale = scale;
+				pp.depth = z2;
+			}
+
 			g.clearRect(0, 0, w, h);
+
+			// Planets — big glow circles with a ring
+			const planetOrder = planetProjected.map((_, i) => i).sort((a, b) => planetProjected[b].depth - planetProjected[a].depth);
+			for (const i of planetOrder) {
+				const p = planets[i];
+				const pp = planetProjected[i];
+				if (pp.scale < 0.05) continue;
+				const rgb = p.hue === 'accent' ? accentRGB : brandRGB;
+				const pr = p.r * pp.scale;
+				const alpha = Math.min(1, pp.scale * pp.scale);
+
+				const glow = g.createRadialGradient(pp.x, pp.y, 0, pp.x, pp.y, pr * 2.2);
+				glow.addColorStop(0, `rgba(${rgb}, ${alpha * 0.1})`);
+				glow.addColorStop(1, `rgba(${rgb}, 0)`);
+				g.fillStyle = glow;
+				g.beginPath();
+				g.arc(pp.x, pp.y, pr * 2.2, 0, Math.PI * 2);
+				g.fill();
+
+				if (p.ring > 0) {
+					g.strokeStyle = `rgba(${rgb}, ${alpha * 0.5})`;
+					g.lineWidth = Math.max(1, pr * 0.12);
+					g.beginPath();
+					g.ellipse(pp.x, pp.y, pr * 1.9, pr * 0.55, angle + i, 0, Math.PI * 2);
+					g.stroke();
+				}
+
+				const body = g.createRadialGradient(pp.x - pr * 0.35, pp.y - pr * 0.35, 0, pp.x, pp.y, pr);
+				body.addColorStop(0, `rgba(${accentRGB}, ${alpha * 0.8})`);
+				body.addColorStop(0.5, `rgba(${rgb}, ${alpha * 0.55})`);
+				body.addColorStop(1, `rgba(${rgb}, ${alpha * 0.25})`);
+				g.fillStyle = body;
+				g.beginPath();
+				g.arc(pp.x, pp.y, pr, 0, Math.PI * 2);
+				g.fill();
+			}
 
 			// Distant stars (ink-colored, tiny)
 			const starOrder = starProjected.map((_, i) => i).sort((a, b) => starProjected[b].depth - starProjected[a].depth);
@@ -456,7 +506,6 @@
 			observer.disconnect();
 			window.removeEventListener('resize', resize);
 			window.removeEventListener('mousemove', onMouse);
-			window.removeEventListener('scroll', onScroll);
 		};
 	});
 </script>
