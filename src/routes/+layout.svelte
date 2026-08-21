@@ -18,13 +18,6 @@
 
 	let isOpen = $state(false);
 	const toggleMenu = () => (isOpen = !isOpen);
-	let exploring = $state(false);
-	let locked = $state(false);
-	$effect(() => {
-		const onChange = () => (locked = document.pointerLockElement !== null);
-		document.addEventListener('pointerlockchange', onChange);
-		return () => document.removeEventListener('pointerlockchange', onChange);
-	});
 
 	if (page.url.pathname) {
 		isOpen = false;
@@ -517,28 +510,8 @@
 </div>
 
 <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden opacity-90">
-	<Background3D bind:exploring nodeCount={95} linkDistance={220} />
+	<Background3D nodeCount={95} linkDistance={220} />
 </div>
-
-<!-- Astronaut explore mode toggle (kept outside the z-0 wrapper so it stays clickable) -->
-<button
-	type="button"
-	title={exploring ? 'Exit flight' : 'Explore space'}
-	aria-label={exploring ? 'Exit flight' : 'Explore space'}
-	class="fixed bottom-4 left-4 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-edge bg-surface/80 text-xl shadow-lg backdrop-blur transition-colors hover:bg-surface md:left-80"
-class:ring-2={exploring}
-	class:ring-brand={exploring}
-	onclick={() => (exploring = !exploring)}
->
-	<i class="fa-solid fa-rocket" aria-hidden="true"></i>
-</button>
-{#if exploring && locked}
-	<p
-		class="pointer-events-none fixed bottom-16 left-4 z-40 text-[10px] tracking-widest text-ink/60 md:left-80"
-	>
-		WASD fly · Space/Shift up/down · drag or mouse to look · Esc to free cursor
-	</p>
-{/if}
 
 <!-- Dark mode ambient glow (fixed, no scroll issues on mobile) -->
 <div
