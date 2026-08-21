@@ -1,104 +1,169 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { bellC, basis, hull, makeJelly, updateJelly } from '$lib/jellyfish';
-
-	export let nodeCount = 100;
-	export let linkDistance = 220;
-	export let jellyCount = 5;
+	import { DIMENSIONS, rgb } from '$lib/dimensions';
 
 	let canvas: HTMLCanvasElement;
 
-	type Node = {
-		x: number; y: number; z: number;
-		vx: number; vy: number; vz: number;
-		phase: number;
-		twinklePhase: number;
-		twinkleSpeed: number;
-		sizeMod: number;
-	};
-
-
 	onMount(() => {
-		const ctx = canvas.getContext('2d') as CanvasRenderingContext2D | null;
+		const ctx = canvas.getContext('2d');
 		if (!ctx) return;
-		const g: CanvasRenderingContext2D = ctx;
+		const g = ctx;
 
 		const dpr = Math.min(window.devicePixelRatio || 1, 2);
 		const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const TAU = Math.PI * 2;
 
 		let w = 0;
 		let h = 0;
 
-		let inkRGB = '12, 24, 68';
-		let brandRGB = '200, 0, 54';
-		let accentRGB = '255, 105, 105';
-
-		function toRGB(value: string, fallback: string): string {
-			const v = value.trim();
-			const m = v.match(/^#?([0-9a-f]{6})$/i);
-			if (m) {
-				const n = parseInt(m[1], 16);
-				return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+		/* Spider-Verse multiverse palette. Each dimension (theme) has its own
+		   web ink, chromatic-aberration pair, wash and nebula blobs. The CA pair
+		   is what sells the "two printing plates misaligned" look — additive in
+		   the dark dimension, subtractive on the light one. */
+		const PAL = {
+			dark: {
+				web: rgb(DIMENSIONS.dark.ink),
+				ca1: rgb(DIMENSIONS.dark.plateA),
+				ca2: rgb(DIMENSIONS.dark.plateB),
+				comp: 'lighter' as GlobalCompositeOperation,
+				alpha: 1,
+				wash: [
+					[0, 'rgba(58,26,92,0.60)'],
+					[0.55, 'rgba(22,8,48,0.50)'],
+					[1, 'rgba(6,3,18,0.40)']
+				] as [number, string][],
+				blobs: [
+					{ x: 0.16, y: 0.22, r: 0.34, rgb: '255,138,46' },
+					{ x: 0.86, y: 0.62, r: 0.4, rgb: '255,45,140' },
+					{ x: 0.62, y: 0.14, r: 0.26, rgb: '70,205,195' },
+					{ x: 0.08, y: 0.78, r: 0.3, rgb: '255,210,80' },
+					{ x: 0.94, y: 0.12, r: 0.22, rgb: '110,90,255' }
+				],
+				riftCore: '255,255,255',
+				riftBoost: 1,
+				dust: ['255,255,255', '255,255,255', '255,255,255', '255,180,220', '150,220,255']
+			},
+			light: {
+				web: rgb(DIMENSIONS.light.ink),
+				ca1: rgb(DIMENSIONS.light.plateA),
+				ca2: rgb(DIMENSIONS.light.plateB),
+				comp: 'source-over' as GlobalCompositeOperation,
+				alpha: 0.66,
+				wash: [
+					[0, 'rgba(196,175,255,0.30)'],
+					[0.55, 'rgba(255,190,225,0.18)'],
+					[1, 'rgba(255,255,255,0)']
+				] as [number, string][],
+				blobs: [
+					{ x: 0.16, y: 0.22, r: 0.34, rgb: '255,150,90' },
+					{ x: 0.86, y: 0.62, r: 0.4, rgb: '255,110,199' },
+					{ x: 0.62, y: 0.14, r: 0.26, rgb: '111,231,224' },
+					{ x: 0.08, y: 0.78, r: 0.3, rgb: '255,222,130' },
+					{ x: 0.94, y: 0.12, r: 0.22, rgb: '160,145,255' }
+				],
+				riftCore: '255,245,225',
+				riftBoost: 1.9,
+				dust: ['90,40,150', '90,40,150', '90,40,150', '190,30,120', '20,140,150']
 			}
-			return fallback;
-		}
+		};
 
-		function readColors() {
-			const s = getComputedStyle(document.documentElement);
-			inkRGB = toRGB(s.getPropertyValue('--ink'), inkRGB);
-			brandRGB = toRGB(s.getPropertyValue('--brand'), brandRGB);
-			accentRGB = toRGB(s.getPropertyValue('--edge-strong'), accentRGB);
+		let P = PAL.dark;
+		let isDark = false;
+		function readTheme() {
+			isDark = document.documentElement.classList.contains('dark');
+			P = isDark ? PAL.dark : PAL.light;
 		}
-		readColors();
-
-		const observer = new MutationObserver(readColors);
+		readTheme();
+		const observer = new MutationObserver(readTheme);
 		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-		const R = 600;
-		const nodes: Node[] = [];
-		for (let i = 0; i < nodeCount; i++) {
-			const u = Math.random();
-			const theta = Math.random() * Math.PI * 2;
-			const phi = Math.acos(2 * Math.random() - 1);
-			const r = R * Math.cbrt(u);
-			nodes.push({
-				x: r * Math.sin(phi) * Math.cos(theta),
-				y: r * Math.sin(phi) * Math.sin(theta),
-				z: r * Math.cos(phi),
-				vx: (Math.random() - 0.5) * 0.08,
-				vy: (Math.random() - 0.5) * 0.08,
-				vz: (Math.random() - 0.5) * 0.08,
-				phase: Math.random() * Math.PI * 2,
-				twinklePhase: Math.random() * Math.PI * 2,
-				twinkleSpeed: 0.01 + Math.random() * 0.03,
-				sizeMod: 0.6 + Math.random() * 0.8,
-			});
+		function rand(seed: number) {
+			const s = Math.sin(seed * 12.9898) * 43758.5453;
+			return s - Math.floor(s);
 		}
 
-		const starCount = 120;
-		const stars: { x: number; y: number; z: number; size: number; twinkle: number; twinkleSpeed: number }[] = [];
-		for (let i = 0; i < starCount; i++) {
-			const theta = Math.random() * Math.PI * 2;
-			const phi = Math.acos(2 * Math.random() - 1);
-			const r = R * 2.5 + Math.random() * R * 2;
-			stars.push({
-				x: r * Math.sin(phi) * Math.cos(theta),
-				y: r * Math.sin(phi) * Math.sin(theta),
-				z: r * Math.cos(phi),
-				size: 0.3 + Math.random() * 0.8,
-				twinkle: Math.random() * Math.PI * 2,
-				twinkleSpeed: 0.005 + Math.random() * 0.02,
-			});
+		/* ---------- parallax ---------- */
+		let targetTX = 0;
+		let targetTY = 0;
+		let tx = 0;
+		let ty = 0;
+		function onMouse(e: MouseEvent) {
+			targetTX = (e.clientX / window.innerWidth - 0.5) * 90;
+			targetTY = (e.clientY / window.innerHeight - 0.5) * 90;
 		}
+		window.addEventListener('mousemove', onMouse);
 
-		// ponytail: 3 static planets, ring drawn as an ellipse — add orbits if realism wanted
-		const planets = [
-			{ x: R * 2.6, y: -R * 0.9, z: -R * 1.2, r: 90, ring: 0.4, hue: 'brand' },
-			{ x: -R * 2.2, y: R * 1.4, z: -R * 1.8, r: 60, ring: 0, hue: 'accent' },
-			{ x: R * 0.8, y: R * 2.4, z: -R * 2.6, r: 40, ring: 0.3, hue: 'accent' },
+		/* ---------- webs ---------- */
+		type Chord = { r1: number; i1: number; r2: number; i2: number };
+		type Web = {
+			cx: number;
+			cy: number;
+			radius: number;
+			spokes: number;
+			rings: number;
+			seed: number;
+			rot: number;
+			bright: number;
+			chords: Chord[];
+			broken: Set<number>;
+		};
+		let webs: Web[] = [];
+		let stars: { x: number; y: number; size: number; tw: number; twSpeed: number; pal: number }[] = [];
+
+		/* ---------- dimension rifts ---------- */
+		const RIFTS = [
+			{ x: 0.79, y: 0.2, r: 0.3, pts: 30, seed: 3.2, spin: 0.1, phase: 0, period: 0.13, depth: 0.5 },
+			{ x: 0.13, y: 0.73, r: 0.24, pts: 26, seed: 7.7, spin: -0.13, phase: 2.1, period: 0.1, depth: 0.8 },
+			{ x: 0.5, y: 1.02, r: 0.15, pts: 24, seed: 11.3, spin: 0.08, phase: 4.0, period: 0.16, depth: 1.2 }
 		];
 
-		const jellies = Array.from({ length: jellyCount }, () => makeJelly(R));
+		/* Krackle sparks flung off the rift edges. */
+		type Spark = { x: number; y: number; vx: number; vy: number; life: number; max: number; rgb: string };
+		let sparks: Spark[] = [];
+
+		function makeChords(spokes: number, rings: number, seed: number): Chord[] {
+			const chords: Chord[] = [];
+			const count = Math.round(spokes * 1.3);
+			for (let c = 0; c < count; c++) {
+				const r1 = Math.floor(rand(seed * 300 + c * 11) * rings);
+				const r2 = Math.floor(rand(seed * 400 + c * 17) * rings);
+				const i1 = Math.floor(rand(seed * 500 + c * 23) * spokes);
+				let i2 = Math.floor(rand(seed * 600 + c * 29) * spokes);
+				if (i2 === i1) i2 = (i2 + 1 + Math.floor(rand(seed * 700 + c) * (spokes - 2))) % spokes;
+				chords.push({ r1, i1, r2, i2 });
+			}
+			return chords;
+		}
+
+		function makeBroken(spokes: number, seed: number): Set<number> {
+			const broken = new Set<number>();
+			for (let i = 0; i < spokes; i++) if (rand(seed * 800 + i * 41) < 0.12) broken.add(i);
+			return broken;
+		}
+
+		function build() {
+			const short = Math.min(w, h);
+			webs = [
+				{ cx: w * 0.9, cy: h * 0.12, radius: short * 0.55, spokes: 16, rings: 6, seed: 5.1, rot: -0.02, bright: 0.85, chords: [], broken: new Set() },
+				{ cx: w * 0.06, cy: h * 0.88, radius: short * 0.46, spokes: 15, rings: 6, seed: 8.7, rot: 0.017, bright: 0.8, chords: [], broken: new Set() }
+			];
+			for (const web of webs) {
+				web.chords = makeChords(web.spokes, web.rings, web.seed);
+				web.broken = makeBroken(web.spokes, web.seed);
+			}
+
+			stars = [];
+			for (let i = 0; i < 130; i++) {
+				stars.push({
+					x: rand(i + 900) * w,
+					y: rand(i + 1000) * h,
+					size: 0.5 + rand(i + 1100) * 1.5,
+					tw: rand(i + 1200) * TAU,
+					twSpeed: 0.01 + rand(i + 1300) * 0.025,
+					pal: i % 5
+				});
+			}
+		}
 
 		function resize() {
 			w = canvas.clientWidth;
@@ -106,401 +171,382 @@
 			canvas.width = Math.max(1, Math.floor(w * dpr));
 			canvas.height = Math.max(1, Math.floor(h * dpr));
 			g.setTransform(dpr, 0, 0, dpr, 0, 0);
+			build();
 		}
+
+		function spokeAngle(web: Web, i: number, t: number) {
+			const spacing = TAU / web.spokes;
+			const jig = (rand(web.seed * 200 + i * 13) - 0.5) * spacing * 0.2;
+			const wind = Math.sin(t * web.rot + web.seed) * 0.06;
+			return (i / web.spokes) * TAU + wind + web.seed + jig;
+		}
+		function ringR(web: Web, idx: number, spokeIdx = -1) {
+			const base = web.radius * Math.pow((idx + 1) / web.rings, 0.82);
+			if (spokeIdx < 0) return base;
+			return base + (rand(web.seed * 900 + idx * 31 + spokeIdx * 7) - 0.5) * web.radius * 0.05;
+		}
+		function spokeReach(web: Web, i: number) {
+			return web.broken.has(i) ? web.radius * (0.35 + rand(web.seed * 1500 + i) * 0.3) : web.radius;
+		}
+		function pt(web: Web, i: number, r: number, t: number) {
+			const ang = spokeAngle(web, i, t);
+			const swayAmp = prefersReduced ? 0 : (r / web.radius) * 7;
+			const sway = prefersReduced ? 0 : Math.sin(t * 0.7 + i * 0.9 + web.seed) * swayAmp;
+			const px = web.cx + tx * (r / web.radius) * 0.22;
+			const py = web.cy + ty * (r / web.radius) * 0.22;
+			return {
+				x: px + Math.cos(ang) * r - Math.sin(ang) * sway,
+				y: py + Math.sin(ang) * r + Math.cos(ang) * sway
+			};
+		}
+
+		/* Stroke a path three times: cyan plate shifted left, magenta plate
+		   shifted right, ink plate dead centre. `draw` re-issues the geometry
+		   with the given offset. */
+		function caStroke(draw: (dx: number, dy: number) => void, a: number, lw: number, off: number) {
+			g.globalCompositeOperation = P.comp;
+			g.lineWidth = lw + 0.5;
+			g.strokeStyle = `rgba(${P.ca1}, ${a * 0.55})`;
+			draw(-off, off * 0.35);
+			g.strokeStyle = `rgba(${P.ca2}, ${a * 0.55})`;
+			draw(off, -off * 0.35);
+			g.globalCompositeOperation = 'source-over';
+			g.lineWidth = lw;
+			g.strokeStyle = `rgba(${P.web}, ${a})`;
+			draw(0, 0);
+		}
+
+		function riftPath(rf: (typeof RIFTS)[number], t: number, cx: number, cy: number, R: number, scale: number, dx: number, dy: number) {
+			g.beginPath();
+			for (let i = 0; i <= rf.pts; i++) {
+				const k = i % rf.pts;
+				const a = (k / rf.pts) * TAU + t * rf.spin;
+				const spike = (k % 2 ? 1 : 0.74) * (0.78 + rand(rf.seed * 100 + k) * 0.42);
+				const wob = prefersReduced ? 1 : 1 + Math.sin(t * 1.6 + k * 1.3 + rf.seed) * 0.09;
+				const rad = R * scale * spike * wob;
+				const px = cx + dx + Math.cos(a) * rad;
+				const py = cy + dy + Math.sin(a) * rad * 0.78;
+				if (i === 0) g.moveTo(px, py);
+				else g.lineTo(px, py);
+			}
+			g.closePath();
+		}
+
+		type Pulse = { webIdx: number; spoke: number; ring: number; along: 'spoke' | 'ring'; t: number; speed: number };
+		let pulses: Pulse[] = [];
+		let pulseTimer = 0;
+		let glitchUntil = 0;
+		let glitchNext = 2.5;
+
 		resize();
 		window.addEventListener('resize', resize);
 
-		let targetTiltX = 0;
-		let targetTiltY = 0;
-		let tiltX = 0;
-		let tiltY = 0;
-		function onMouse(e: MouseEvent) {
-			targetTiltY = (e.clientX / window.innerWidth - 0.5) * 0.8;
-			targetTiltX = (e.clientY / window.innerHeight - 0.5) * 0.8;
-		}
-		window.addEventListener('mousemove', onMouse);
-
-		const FOV = 1000;
-		let angle = 0;
 		let raf = 0;
 		let last = performance.now();
-
-		const projected = nodes.map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }));
-		const starProjected = stars.map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }));
-		const planetProjected = planets.map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }));
-
-		let pulses: { from: number; progress: number; speed: number }[] = [];
-		let pulseTimer = 0;
+		const start = last;
 
 		function frame() {
 			const now = performance.now();
 			const dt = Math.min(0.033, Math.max(0.008, (now - last) / 1000));
 			last = now;
+			const t = (now - start) * 0.001;
 
-			angle += prefersReduced ? 0 : 0.0018;
-			tiltX += (targetTiltX - tiltX) * 0.04;
-			tiltY += (targetTiltY - tiltY) * 0.04;
-
-			const ay = angle + tiltY;
-			const ax = tiltX + Math.sin(angle * 0.5) * 0.15;
-			const camX = 0;
-			const camY = 0;
-			const camZ = 0;
-			const cosY = Math.cos(ay);
-			const sinY = Math.sin(ay);
-			const cosX = Math.cos(ax);
-			const sinX = Math.sin(ax);
-			const cx = w / 2;
-			const cy = h / 2;
-
-			const proj = (x: number, y: number, z: number) => {
-				x -= camX;
-				y -= camY;
-				z -= camZ;
-				const x1 = x * cosY - z * sinY;
-				const z1 = x * sinY + z * cosY;
-				const y1 = y * cosX - z1 * sinX;
-				const z2 = y * sinX + z1 * cosX;
-				const s = FOV / (FOV + z2);
-				return { x: cx + x1 * s, y: cy + y1 * s, s, depth: z2 };
-			};
-
-			const t = performance.now() * 0.001;
-			for (let i = 0; i < nodes.length; i++) {
-				const n = nodes[i];
-				if (!prefersReduced) {
-					const drift = Math.sin(t * 0.3 + n.phase) * 0.3;
-					const driftY = Math.cos(t * 0.25 + n.phase * 1.3) * 0.3;
-					const driftZ = Math.sin(t * 0.2 + n.phase * 0.7) * 0.3;
-					n.x += n.vx + drift * 0.02;
-					n.y += n.vy + driftY * 0.02;
-					n.z += n.vz + driftZ * 0.02;
-				}
-				const x1 = (n.x - camX) * cosY - (n.z - camZ) * sinY;
-				const z1 = (n.x - camX) * sinY + (n.z - camZ) * cosY;
-				const y1 = (n.y - camY) * cosX - z1 * sinX;
-				const z2 = (n.y - camY) * sinX + z1 * cosX;
-				const scale = FOV / (FOV + z2);
-				const p = projected[i];
-				p.x = cx + x1 * scale;
-				p.y = cy + y1 * scale;
-				p.scale = scale;
-				p.depth = z2;
-			}
-
-			for (let i = 0; i < stars.length; i++) {
-				const s = stars[i];
-				const x1 = (s.x - camX) * cosY - (s.z - camZ) * sinY;
-				const z1 = (s.x - camX) * sinY + (s.z - camZ) * cosY;
-				const y1 = (s.y - camY) * cosX - z1 * sinX;
-				const z2 = (s.y - camY) * sinX + z1 * cosX;
-				const scale = FOV / (FOV + z2);
-				const p = starProjected[i];
-				p.x = cx + x1 * scale;
-				p.y = cy + y1 * scale;
-				p.scale = scale;
-				p.depth = z2;
-			}
-
-			for (let i = 0; i < planets.length; i++) {
-				const p = planets[i];
-				const x1 = (p.x - camX) * cosY - (p.z - camZ) * sinY;
-				const z1 = (p.x - camX) * sinY + (p.z - camZ) * cosY;
-				const y1 = (p.y - camY) * cosX - z1 * sinX;
-				const z2 = (p.y - camY) * sinX + z1 * cosX;
-				const scale = FOV / (FOV + z2);
-				const pp = planetProjected[i];
-				pp.x = cx + x1 * scale;
-				pp.y = cy + y1 * scale;
-				pp.scale = scale;
-				pp.depth = z2;
-			}
+			tx += (targetTX - tx) * 0.09;
+			ty += (targetTY - ty) * 0.09;
 
 			g.clearRect(0, 0, w, h);
+			g.globalAlpha = P.alpha;
 
-			// Planets — big glow circles with a ring
-			const planetOrder = planetProjected.map((_, i) => i).sort((a, b) => planetProjected[b].depth - planetProjected[a].depth);
-			for (const i of planetOrder) {
-				const p = planets[i];
-				const pp = planetProjected[i];
-				if (pp.scale < 0.05) continue;
-				const rgb = p.hue === 'accent' ? accentRGB : brandRGB;
-				const pr = p.r * pp.scale;
-				const alpha = Math.min(1, pp.scale * pp.scale);
+			/* --- wash --- */
+			const wash = g.createRadialGradient(w * 0.5, h * 0.4, 0, w * 0.5, h * 0.4, Math.max(w, h) * 0.85);
+			for (const [stop, col] of P.wash) wash.addColorStop(stop, col);
+			g.fillStyle = wash;
+			g.fillRect(0, 0, w, h);
 
-				const glow = g.createRadialGradient(pp.x, pp.y, 0, pp.x, pp.y, pr * 2.2);
-				glow.addColorStop(0, `rgba(${rgb}, ${alpha * 0.1})`);
-				glow.addColorStop(1, `rgba(${rgb}, 0)`);
+			/* --- nebula blobs --- */
+			for (let i = 0; i < P.blobs.length; i++) {
+				const b = P.blobs[i];
+				const float = prefersReduced ? 0 : Math.sin(t * 0.15 + i * 1.7) * 14;
+				const bx = b.x * w + tx * 0.09 + float;
+				const by = b.y * h + ty * 0.09 + float * 0.6;
+				const br = b.r * Math.max(w, h);
+				const glow = g.createRadialGradient(bx, by, 0, bx, by, br);
+				glow.addColorStop(0, `rgba(${b.rgb}, 0.34)`);
+				glow.addColorStop(0.5, `rgba(${b.rgb}, 0.15)`);
+				glow.addColorStop(1, `rgba(${b.rgb}, 0)`);
 				g.fillStyle = glow;
 				g.beginPath();
-				g.arc(pp.x, pp.y, pr * 2.2, 0, Math.PI * 2);
-				g.fill();
-
-				if (p.ring > 0) {
-					g.strokeStyle = `rgba(${rgb}, ${alpha * 0.5})`;
-					g.lineWidth = Math.max(1, pr * 0.12);
-					g.beginPath();
-					g.ellipse(pp.x, pp.y, pr * 1.9, pr * 0.55, angle + i, 0, Math.PI * 2);
-					g.stroke();
-				}
-
-				const body = g.createRadialGradient(pp.x - pr * 0.35, pp.y - pr * 0.35, 0, pp.x, pp.y, pr);
-				body.addColorStop(0, `rgba(${accentRGB}, ${alpha * 0.8})`);
-				body.addColorStop(0.5, `rgba(${rgb}, ${alpha * 0.55})`);
-				body.addColorStop(1, `rgba(${rgb}, ${alpha * 0.25})`);
-				g.fillStyle = body;
-				g.beginPath();
-				g.arc(pp.x, pp.y, pr, 0, Math.PI * 2);
+				g.arc(bx, by, br, 0, TAU);
 				g.fill();
 			}
 
-			// Distant stars (ink-colored, tiny)
-			const starOrder = starProjected.map((_, i) => i).sort((a, b) => starProjected[b].depth - starProjected[a].depth);
-			for (const i of starOrder) {
-				const s = stars[i];
-				const p = starProjected[i];
-				if (p.scale < 0.05) continue;
-				s.twinkle += s.twinkleSpeed;
-				const twinkle = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(s.twinkle));
-				const alpha = Math.min(1, p.scale * 0.8) * twinkle * 0.5;
-				if (alpha < 0.01) continue;
-				g.fillStyle = `rgba(${inkRGB}, ${alpha})`;
-				g.beginPath();
-				g.arc(p.x, p.y, s.size * p.scale, 0, Math.PI * 2);
-				g.fill();
-			}
+			g.lineCap = 'round';
+			const short = Math.min(w, h);
 
-			// Connection pulse spawn
-			if (!prefersReduced) {
-				pulseTimer += 0.005;
-				if (pulseTimer > 1) {
-					pulseTimer = 0;
-					if (Math.random() < 0.3) {
-						pulses.push({ from: Math.floor(Math.random() * nodes.length), progress: 0, speed: 0.006 + Math.random() * 0.006 });
-					}
-				}
-			}
+			/* --- dimension rifts --- */
+			for (const rf of RIFTS) {
+				const open = prefersReduced ? 0.8 : 0.55 + 0.45 * Math.sin(t * rf.period * TAU + rf.phase);
+				const ink = open * P.riftBoost;
+				const R = short * rf.r * open;
+				const cx = rf.x * w + tx * rf.depth * 0.5;
+				const cy = rf.y * h + ty * rf.depth * 0.5;
 
-			// Links
-			g.lineWidth = 1;
-			for (let i = 0; i < nodes.length; i++) {
-				for (let j = i + 1; j < nodes.length; j++) {
-					const a = nodes[i];
-					const b = nodes[j];
-					const dx = a.x - b.x;
-					const dy = a.y - b.y;
-					const dz = a.z - b.z;
-					const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-					if (dist > linkDistance) continue;
-					const pa = projected[i];
-					const pb = projected[j];
-					const closeness = 1 - dist / linkDistance;
-					const depthFade = (pa.scale + pb.scale) / 2;
-					const alpha = closeness * depthFade * 0.35;
-					if (alpha < 0.01) continue;
-					g.strokeStyle = `rgba(${brandRGB}, ${alpha})`;
-					g.beginPath();
-					g.moveTo(pa.x, pa.y);
-					g.lineTo(pb.x, pb.y);
-					g.stroke();
-				}
-			}
-
-			// Jellyfish
-			const RIM = 18;
-			for (const j of jellies) {
-				if (!prefersReduced) updateJelly(j, dt, R);
-
-				const pc = proj(j.x, j.y, j.z);
-				if (pc.s < 0.06) continue;
-				const near = Math.min(1, Math.max(0, (2.2 - pc.s) / 0.8));
-				const a = Math.min(1, pc.s * pc.s) * near;
-				if (a < 0.02) continue;
-				const c = bellC(j.pulse);
-				const b = basis(j.dx, j.dy, j.dz);
-				const rimR = j.size * (1 - 0.38 * c);
-				const hgt = j.size * (0.68 + 0.6 * c);
-				const apex = proj(j.x + j.dx * hgt, j.y + j.dy * hgt, j.z + j.dz * hgt);
-
-				g.lineCap = 'round';
-				for (const st of j.strands) {
-					const sp = st.pts.map((p) => proj(p.x, p.y, p.z));
-					for (let i = 1; i < sp.length; i++) {
-						const prevMid = { x: (sp[i - 1].x + sp[i].x) / 2, y: (sp[i - 1].y + sp[i].y) / 2 };
-						const from = i === 1 ? sp[0] : { x: (sp[i - 2].x + sp[i - 1].x) / 2, y: (sp[i - 2].y + sp[i - 1].y) / 2 };
-						const to = i === sp.length - 1 ? sp[i] : prevMid;
-						const taper = 1 - (i / sp.length) * 0.8;
-						g.strokeStyle = `rgba(${accentRGB}, ${a * st.alpha * taper})`;
-						g.lineWidth = Math.max(0.5, st.width * taper * sp[i].s);
-						g.beginPath();
-						g.moveTo(from.x, from.y);
-						g.quadraticCurveTo(sp[i - 1].x, sp[i - 1].y, to.x, to.y);
-						g.stroke();
-					}
-				}
-
-				g.lineCap = 'butt';
-
-				const rim: { x: number; y: number }[] = [];
-				const shoulder: { x: number; y: number }[] = [];
-				const crown: { x: number; y: number }[] = [];
-				for (let i = 0; i < RIM; i++) {
-					const ang = (i / RIM) * Math.PI * 2;
-					const ca = Math.cos(ang);
-					const sa = Math.sin(ang);
-					const rx = b.ux * ca + b.vx * sa;
-					const ry = b.uy * ca + b.vy * sa;
-					const rz = b.uz * ca + b.vz * sa;
-					rim.push(proj(j.x + rx * rimR, j.y + ry * rimR, j.z + rz * rimR));
-					const sr = rimR * 0.86;
-					const sh = hgt * 0.45;
-					shoulder.push(proj(j.x + rx * sr + j.dx * sh, j.y + ry * sr + j.dy * sh, j.z + rz * sr + j.dz * sh));
-					const kr = rimR * 0.5;
-					const kh = hgt * 0.85;
-					crown.push(proj(j.x + rx * kr + j.dx * kh, j.y + ry * kr + j.dy * kh, j.z + rz * kr + j.dz * kh));
-				}
-
-				const glowR = rimR * pc.s * 2.6;
-				const halo = g.createRadialGradient(pc.x, pc.y, 0, pc.x, pc.y, glowR);
-				halo.addColorStop(0, `rgba(${accentRGB}, ${a * 0.12})`);
-				halo.addColorStop(1, `rgba(${accentRGB}, 0)`);
+				// glow bleeding out of the tear
+				const halo = g.createRadialGradient(cx, cy, 0, cx, cy, R * 1.5);
+				halo.addColorStop(0, `rgba(${P.ca2}, ${0.3 * ink})`);
+				halo.addColorStop(0.45, `rgba(${P.ca1}, ${0.14 * ink})`);
+				halo.addColorStop(1, `rgba(${P.ca1}, 0)`);
+				g.globalCompositeOperation = P.comp;
 				g.fillStyle = halo;
 				g.beginPath();
-				g.arc(pc.x, pc.y, glowR, 0, Math.PI * 2);
+				g.arc(cx, cy, R * 1.5, 0, TAU);
 				g.fill();
 
-				const outline = hull([...rim, ...shoulder, ...crown, apex]);
-				const smooth = (pts: { x: number; y: number }[]) => {
-					g.beginPath();
-					const n = pts.length;
-					g.moveTo((pts[n - 1].x + pts[0].x) / 2, (pts[n - 1].y + pts[0].y) / 2);
-					for (let i = 0; i < n; i++) {
-						const p = pts[i];
-						const q = pts[(i + 1) % n];
-						g.quadraticCurveTo(p.x, p.y, (p.x + q.x) / 2, (p.y + q.y) / 2);
-					}
-					g.closePath();
-				};
-
-				const body = g.createRadialGradient(apex.x, apex.y, 0, apex.x, apex.y, Math.max(2, rimR * pc.s * 1.9));
-				body.addColorStop(0, `rgba(${accentRGB}, ${a * 0.55})`);
-				body.addColorStop(0.55, `rgba(${brandRGB}, ${a * 0.32})`);
-				body.addColorStop(1, `rgba(${brandRGB}, ${a * 0.1})`);
-				smooth(outline);
-				g.fillStyle = body;
+				// the other dimension showing through
+				const core = g.createRadialGradient(cx, cy, 0, cx, cy, R);
+				core.addColorStop(0, `rgba(${P.riftCore}, ${0.3 * ink})`);
+				core.addColorStop(0.35, `rgba(${P.ca2}, ${0.16 * ink})`);
+				core.addColorStop(1, `rgba(${P.ca1}, 0)`);
+				g.fillStyle = core;
+				riftPath(rf, t, cx, cy, R, 1, 0, 0);
 				g.fill();
-				g.strokeStyle = `rgba(${accentRGB}, ${a * 0.45})`;
-				g.lineWidth = Math.max(0.5, 1.1 * pc.s);
-				g.stroke();
+				g.globalCompositeOperation = 'source-over';
 
-				g.strokeStyle = `rgba(${accentRGB}, ${a * 0.12})`;
-				g.lineWidth = Math.max(0.4, 0.7 * pc.s);
-				for (let i = 0; i < RIM; i += 3) {
-					g.beginPath();
-					g.moveTo(rim[i].x, rim[i].y);
-					g.quadraticCurveTo(shoulder[i].x, shoulder[i].y, apex.x, apex.y);
-					g.stroke();
+				// jagged edges, misregistered plates
+				const off = 2.5 + open * 2;
+				caStroke(
+					(dx, dy) => {
+						riftPath(rf, t, cx, cy, R, 1, dx, dy);
+						g.stroke();
+					},
+					0.55 * ink,
+					1.4,
+					off
+				);
+				for (const s of [0.72, 0.46]) {
+					caStroke(
+						(dx, dy) => {
+							riftPath(rf, t, cx * 1, cy, R, s, dx, dy);
+							g.stroke();
+						},
+						0.22 * ink,
+						0.9,
+						off * 0.6
+					);
 				}
 
-				smooth(rim);
-				g.strokeStyle = `rgba(${accentRGB}, ${a * 0.7})`;
-				g.lineWidth = Math.max(0.5, 1.4 * pc.s);
-				g.stroke();
+				// spark emission
+				if (!prefersReduced && Math.random() < 0.35 * open) {
+					const a = Math.random() * TAU;
+					const rad = R * (0.9 + Math.random() * 0.3);
+					sparks.push({
+						x: cx + Math.cos(a) * rad,
+						y: cy + Math.sin(a) * rad * 0.78,
+						vx: Math.cos(a) * (18 + Math.random() * 45),
+						vy: Math.sin(a) * (18 + Math.random() * 45) - 8,
+						life: 0,
+						max: 0.6 + Math.random() * 0.8,
+						rgb: Math.random() < 0.5 ? P.ca1 : P.ca2
+					});
+					if (sparks.length > 90) sparks.shift();
+				}
+			}
 
-				for (let i = 0; i < 4; i++) {
-					const ang = (i / 4) * Math.PI * 2 + 0.4;
-					const ca = Math.cos(ang) * rimR * 0.42;
-					const sa = Math.sin(ang) * rimR * 0.42;
-					const gp = proj(
-						j.x + b.ux * ca + b.vx * sa + j.dx * hgt * 0.35,
-						j.y + b.uy * ca + b.vy * sa + j.dy * hgt * 0.35,
-						j.z + b.uz * ca + b.vz * sa + j.dz * hgt * 0.35,
+			/* --- webs --- */
+			if (!prefersReduced) {
+				pulseTimer += dt;
+				if (pulseTimer > 0.5) {
+					pulseTimer = 0;
+					if (Math.random() < 0.6 && webs.length) {
+						const wi = Math.floor(Math.random() * webs.length);
+						const web = webs[wi];
+						if (Math.random() < 0.5)
+							pulses.push({ webIdx: wi, spoke: Math.floor(Math.random() * web.spokes), ring: 0, along: 'spoke', t: 0, speed: 0.55 + Math.random() * 0.6 });
+						else
+							pulses.push({ webIdx: wi, spoke: Math.floor(Math.random() * web.spokes), ring: Math.floor(Math.random() * web.rings), along: 'ring', t: 0, speed: 0.45 + Math.random() * 0.55 });
+						if (pulses.length > 7) pulses.shift();
+					}
+				}
+			}
+
+			for (let wi = 0; wi < webs.length; wi++) {
+				const web = webs[wi];
+				const centerX = web.cx + tx * 0.22;
+				const centerY = web.cy + ty * 0.22;
+
+				for (let i = 0; i < web.spokes; i++) {
+					const spokeLen = spokeReach(web, i);
+					const end = pt(web, i, spokeLen, t);
+					const a = (0.32 + rand(i + wi * 97) * 0.35) * web.bright;
+					const lw = 0.8 + rand(i + wi * 53) * 0.9;
+					caStroke(
+						(dx, dy) => {
+							g.beginPath();
+							g.moveTo(centerX + dx, centerY + dy);
+							g.lineTo(end.x + dx, end.y + dy);
+							g.stroke();
+						},
+						a,
+						lw,
+						1.6
 					);
-					g.fillStyle = `rgba(${brandRGB}, ${a * 0.5})`;
+
+					if (web.broken.has(i)) {
+						for (let f = 0; f < 2; f++) {
+							const fAng = Math.atan2(end.y - centerY, end.x - centerX) + (f === 0 ? 0.5 : -0.4);
+							const fLen = spokeLen * (0.08 + rand(web.seed * 1600 + i * 3 + f) * 0.1);
+							g.strokeStyle = `rgba(${P.web}, ${a * 0.7})`;
+							g.lineWidth = 0.6;
+							g.beginPath();
+							g.moveTo(end.x, end.y);
+							g.lineTo(end.x + Math.cos(fAng) * fLen, end.y + Math.sin(fAng) * fLen);
+							g.stroke();
+						}
+					}
+				}
+
+				for (let ri = 0; ri < web.rings; ri++) {
+					const a = (0.26 + (ri / web.rings) * 0.28) * web.bright;
+					for (let i = 0; i < web.spokes; i++) {
+						if (rand(web.seed * 1900 + ri * 17 + i * 7) < 0.08) continue;
+						const j = (i + 1) % web.spokes;
+						const r0 = ringR(web, ri, i);
+						const r1 = ringR(web, ri, j);
+						if (r0 > spokeReach(web, i) || r1 > spokeReach(web, j)) continue;
+						const p0 = pt(web, i, r0, t);
+						const p1 = pt(web, j, r1, t);
+						const sagJig = 0.4 + rand(web.seed * 1100 + ri * 13 + i * 5) * 0.5;
+						const mx = (p0.x + p1.x) * 0.5;
+						const my = (p0.y + p1.y) * 0.5 + (r0 / web.radius) * 9 * sagJig;
+						const lw = 0.5 + rand(web.seed * 2100 + ri * 9 + i) * 0.7;
+						caStroke(
+							(dx, dy) => {
+								g.beginPath();
+								g.moveTo(p0.x + dx, p0.y + dy);
+								g.quadraticCurveTo(mx + dx, my + dy, p1.x + dx, p1.y + dy);
+								g.stroke();
+							},
+							a,
+							lw,
+							1.2
+						);
+					}
+				}
+
+				for (const c of web.chords) {
+					const cr1 = ringR(web, c.r1, c.i1);
+					const cr2 = ringR(web, c.r2, c.i2);
+					if (cr1 > spokeReach(web, c.i1) || cr2 > spokeReach(web, c.i2)) continue;
+					const p0 = pt(web, c.i1, cr1, t);
+					const p1 = pt(web, c.i2, cr2, t);
+					g.strokeStyle = `rgba(${P.web}, ${0.16 * web.bright})`;
+					g.lineWidth = 0.65;
 					g.beginPath();
-					g.arc(gp.x, gp.y, Math.max(0.6, rimR * 0.09 * gp.s), 0, Math.PI * 2);
+					g.moveTo(p0.x, p0.y);
+					g.lineTo(p1.x, p1.y);
+					g.stroke();
+				}
+			}
+
+			/* --- pulses --- */
+			if (!prefersReduced) {
+				for (let pi = pulses.length - 1; pi >= 0; pi--) {
+					const p = pulses[pi];
+					p.t += p.speed * dt;
+					if (p.t >= 1) {
+						pulses.splice(pi, 1);
+						continue;
+					}
+					const web = webs[p.webIdx];
+					if (!web) continue;
+					let x = 0;
+					let y = 0;
+					if (p.along === 'spoke') {
+						const pp = pt(web, p.spoke, web.radius * p.t, t);
+						x = pp.x;
+						y = pp.y;
+					} else {
+						const r = ringR(web, p.ring);
+						const a = pt(web, p.spoke, r, t);
+						const b = pt(web, (p.spoke + 1) % web.spokes, r, t);
+						const mx = (a.x + b.x) * 0.5;
+						const my = (a.y + b.y) * 0.5 + (r / web.radius) * 9;
+						const tt = p.t;
+						x = (1 - tt) * (1 - tt) * a.x + 2 * (1 - tt) * tt * mx + tt * tt * b.x;
+						y = (1 - tt) * (1 - tt) * a.y + 2 * (1 - tt) * tt * my + tt * tt * b.y;
+					}
+					const prog = Math.sin(p.t * Math.PI);
+					const glowR = 3 + prog * 5;
+					const glow = g.createRadialGradient(x, y, 0, x, y, glowR);
+					glow.addColorStop(0, `rgba(${P.web}, ${prog * 0.85})`);
+					glow.addColorStop(1, `rgba(${P.ca2}, 0)`);
+					g.fillStyle = glow;
+					g.beginPath();
+					g.arc(x, y, glowR, 0, TAU);
+					g.fill();
+					g.fillStyle = isDark ? `rgba(255,255,255,${prog})` : `rgba(${P.ca2}, ${prog})`;
+					g.beginPath();
+					g.arc(x, y, 1.4 + prog * 1.2, 0, TAU);
 					g.fill();
 				}
 			}
 
-			// Pulse waves along connections
-			if (!prefersReduced) {
-				for (let pi = pulses.length - 1; pi >= 0; pi--) {
-					const pulse = pulses[pi];
-					pulse.progress += pulse.speed;
-					if (pulse.progress >= 1) {
-						pulses.splice(pi, 1);
-						continue;
-					}
-					const fromNode = nodes[pulse.from];
-					for (let j = 0; j < nodes.length; j++) {
-						if (j === pulse.from) continue;
-						const toNode = nodes[j];
-						const dx = fromNode.x - toNode.x;
-						const dy = fromNode.y - toNode.y;
-						const dz = fromNode.z - toNode.z;
-						const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-						if (dist > linkDistance || dist < 10) continue;
-						const pa = projected[pulse.from];
-						const pb = projected[j];
-						if (pa.scale < 0.1 || pb.scale < 0.1) continue;
-
-						const mx = pa.x + (pb.x - pa.x) * pulse.progress;
-						const my = pa.y + (pb.y - pa.y) * pulse.progress;
-
-						const pulseAlpha = Math.sin(pulse.progress * Math.PI) * 0.8;
-						const r = 2 + pulseAlpha * 3;
-						const glow = g.createRadialGradient(mx, my, 0, mx, my, r * 4);
-						glow.addColorStop(0, `rgba(${accentRGB}, ${pulseAlpha * 0.6})`);
-						glow.addColorStop(1, `rgba(${accentRGB}, 0)`);
-						g.fillStyle = glow;
-						g.beginPath();
-						g.arc(mx, my, r * 4, 0, Math.PI * 2);
-						g.fill();
-
-						g.fillStyle = `rgba(${accentRGB}, ${pulseAlpha})`;
-						g.beginPath();
-						g.arc(mx, my, r, 0, Math.PI * 2);
-						g.fill();
-					}
+			/* --- krackle sparks: little four-point stars --- */
+			g.globalCompositeOperation = P.comp;
+			for (let i = sparks.length - 1; i >= 0; i--) {
+				const s = sparks[i];
+				s.life += dt;
+				if (s.life >= s.max) {
+					sparks.splice(i, 1);
+					continue;
 				}
+				s.x += s.vx * dt;
+				s.y += s.vy * dt;
+				s.vx *= 0.97;
+				s.vy *= 0.97;
+				const k = 1 - s.life / s.max;
+				const r = 2 + k * 5;
+				g.strokeStyle = `rgba(${s.rgb}, ${k * 0.9})`;
+				g.lineWidth = 1;
+				g.beginPath();
+				g.moveTo(s.x - r, s.y);
+				g.lineTo(s.x + r, s.y);
+				g.moveTo(s.x, s.y - r);
+				g.lineTo(s.x, s.y + r);
+				g.stroke();
+			}
+			g.globalCompositeOperation = 'source-over';
+
+			/* --- dust --- */
+			for (const s of stars) {
+				s.tw += prefersReduced ? 0 : s.twSpeed;
+				const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(s.tw));
+				g.fillStyle = `rgba(${P.dust[s.pal]}, ${twinkle * 0.85})`;
+				g.beginPath();
+				g.arc(s.x + tx * 0.16, s.y + ty * 0.16, s.size, 0, TAU);
+				g.fill();
 			}
 
-			// Nodes — back-to-front, twinkling
-			const order = projected.map((_, i) => i).sort((a, b) => projected[b].depth - projected[a].depth);
-			for (const i of order) {
-				const n = nodes[i];
-				const p = projected[i];
-				if (p.scale < 0.05) continue;
+			g.globalAlpha = 1;
 
-				n.twinklePhase += n.twinkleSpeed;
-				const twinkle = 0.6 + 0.4 * (0.5 + 0.5 * Math.sin(n.twinklePhase));
-
-				const radius = Math.max(0.6, 2.2 * p.scale * n.sizeMod) * twinkle;
-				const alpha = Math.min(1, p.scale * p.scale) * twinkle;
-
-				// Outer glow (multi-stop for softer falloff)
-				const glowRadius = radius * (3 + twinkle * 2);
-				const glow = g.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius);
-				glow.addColorStop(0, `rgba(${brandRGB}, ${alpha * 0.45})`);
-				glow.addColorStop(0.4, `rgba(${brandRGB}, ${alpha * 0.2})`);
-				glow.addColorStop(1, `rgba(${brandRGB}, 0)`);
-				g.fillStyle = glow;
-				g.beginPath();
-				g.arc(p.x, p.y, glowRadius, 0, Math.PI * 2);
-				g.fill();
-
-				// Inner core
-				g.fillStyle = `rgba(${brandRGB}, ${alpha})`;
-				g.beginPath();
-				g.arc(p.x, p.y, radius, 0, Math.PI * 2);
-				g.fill();
-
-				// Bright point center
-				g.fillStyle = `rgba(${inkRGB}, ${alpha * 0.6})`;
-				g.beginPath();
-				g.arc(p.x, p.y, radius * 0.35, 0, Math.PI * 2);
-				g.fill();
+			/* --- glitch: slice the frame and re-print it misaligned --- */
+			if (!prefersReduced) {
+				if (t > glitchNext) {
+					glitchNext = t + 3 + Math.random() * 6;
+					glitchUntil = t + 0.1 + Math.random() * 0.14;
+				}
+				if (t < glitchUntil) {
+					for (let i = 0; i < 5; i++) {
+						const sy = Math.random() * h;
+						const sh = 6 + Math.random() * 26;
+						const dx = (Math.random() - 0.5) * 40;
+						g.drawImage(canvas, 0, sy * dpr, w * dpr, sh * dpr, dx, sy, w, sh);
+						g.globalCompositeOperation = P.comp;
+						g.fillStyle = `rgba(${Math.random() < 0.5 ? P.ca1 : P.ca2}, 0.16)`;
+						g.fillRect(dx, sy, w, sh);
+						g.globalCompositeOperation = 'source-over';
+					}
+				}
 			}
 
 			raf = requestAnimationFrame(frame);
@@ -516,4 +562,4 @@
 	});
 </script>
 
-<canvas bind:this={canvas} class="pointer-events-none h-full w-full"></canvas>
+<canvas bind:this={canvas} class="h-full w-full"></canvas>
