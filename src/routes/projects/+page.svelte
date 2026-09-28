@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { projects } from '$lib/constant/apps';
+	export let data;
 	import { intersect } from '$lib/actions/intersect';
 	import { resolve } from '$app/paths';
 </script>
@@ -25,10 +25,12 @@
 
 <section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
 	<div
-		class="mb-24 flex flex-col gap-4 border-b border-edge pb-12"
+		class="@container mb-24 flex flex-col gap-4 border-b border-edge pb-12"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
-		<h1 class="text-6xl font-black tracking-tighter text-ink lg:text-9xl">
+		<h1
+			class="text-[length:clamp(2.5rem,13cqw,8rem)] leading-none font-black tracking-tighter text-ink"
+		>
 			Code &<br /><span class="text-brand">Contributions</span>
 		</h1>
 		<p class="text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">
@@ -37,18 +39,16 @@
 	</div>
 
 	<div class="w-full">
-		<div class="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-2 lg:grid-cols-3" role="presentation">
-			{#each projects as project, i (project.projectName)}
+		<div class="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-2 xl:grid-cols-3" role="presentation">
+			{#each data.projects as project (project.id)}
 				<div class="project-card group flex flex-col gap-6" role="presentation" use:intersect={{ threshold: 0.1, once: true }}>
 					<a
-						href={resolve('/projects/[slug]', { slug: project.projectLink })}
+						href={resolve('/projects/[slug]', { slug: project.slug })}
 						class="relative aspect-4/5 overflow-hidden border border-brand bg-card"
 					>
 						<img
-							src={project.projectImages && project.projectImages.length > 0
-								? project.projectImages[0]
-								: '/assets/placeholder.webp'}
-							alt={project.projectName}
+							src={project.images[0] ?? '/assets/placeholder.webp'}
+							alt={project.name}
 							loading="lazy"
 							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						/>
@@ -65,11 +65,11 @@
 					</a>
 
 					<div class="flex flex-col gap-3">
-						<div class="flex items-center justify-between">
+						<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
 							<h2
-								class="text-2xl font-black tracking-tighter text-ink uppercase transition-colors group-hover:text-brand"
+								class="text-2xl font-black tracking-tighter wrap-anywhere text-ink uppercase transition-colors group-hover:text-brand"
 							>
-								{project.projectName}
+								{project.name}
 							</h2>
 							<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
 								>/ Project</span
@@ -77,11 +77,11 @@
 						</div>
 
 						<p class="line-clamp-3 text-sm leading-relaxed text-ink-muted">
-							{project.projectDescription}
+							{project.description}
 						</p>
 
 						<a
-							href={resolve('/projects/[slug]', { slug: project.projectLink })}
+							href={resolve('/projects/[slug]', { slug: project.slug })}
 							class="mt-2 w-fit border-b border-edge-ink pb-1 text-xs font-black tracking-widest uppercase transition-all hover:border-brand hover:text-brand"
 						>
 							View Details

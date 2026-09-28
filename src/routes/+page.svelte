@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { technologies, achievement, projects, experience } from '$lib/constant/apps';
+	import { technologies } from '$lib/constant/apps';
 	import { intersect } from '$lib/actions/intersect';
 	import { handleHistory } from '$lib/components/handleHistory';
 	import GroqChat from '$lib/components/GroqChat.svelte';
 	import { onMount } from 'svelte';
 	import { resolve, asset } from '$app/paths';
 
-	const textColors = ['text-brand'];
+	let { data } = $props();
 
-	const achievements = achievement;
+	const textColors = ['text-brand'];
 
 	let activeTab = $state('work');
 	const tabs = [
@@ -18,12 +18,11 @@
 		{ label: 'Achievement', value: 'achievement' }
 	];
 
-	const workExperiences = experience.filter((e) => e.category?.toLowerCase() === 'work');
-	const educationExperiences = experience.filter((e) => e.category?.toLowerCase() === 'education');
-	const organizationExperiences = experience.filter(
-		(e) => e.category?.toLowerCase() === 'organization'
-	);
-	const achievementItems = achievements;
+	const byCategory = (c: string) => data.experiences.filter((e) => e.category === c);
+	let workExperiences = $derived(byCategory('work'));
+	let educationExperiences = $derived(byCategory('education'));
+	let organizationExperiences = $derived(byCategory('organization'));
+	let achievementItems = $derived(byCategory('achievement'));
 
 	let isShowMoreWork = $state(false);
 	let showWorkExperiences = $derived(isShowMoreWork ? workExperiences : workExperiences.slice(0, 3));
@@ -115,18 +114,21 @@
 <section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
 	<div
 		id="arpthef"
-		class="mb-32 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center"
+		class="mb-32 grid grid-cols-1 gap-12 xl:grid-cols-2 xl:items-center"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
-		<div class="flex flex-col gap-4">
-			<h1 class="text-5xl font-black tracking-tighter text-ink lg:text-8xl">
+		<!-- @container: the name scales to its column so it never runs into the paragraph -->
+		<div class="@container flex flex-col gap-4">
+			<h1
+				class="text-[length:clamp(2.5rem,15cqw,6rem)] leading-none font-black tracking-tighter text-ink"
+			>
 				Mohammad<br /><span class="text-brand">Ariffansyah</span>
 			</h1>
-			<p class="text-xs font-black tracking-[0.5em] text-ink-faint uppercase">
+			<p class="text-xs font-black tracking-[0.5em] text-balance text-ink-faint uppercase">
 				Software Engineering • Surabaya, ID
 			</p>
 		</div>
-		<div class="flex flex-col gap-8 lg:max-w-xl lg:justify-self-end">
+		<div class="flex flex-col gap-8 xl:max-w-xl xl:justify-self-end">
 			<p class="text-xl leading-relaxed font-medium text-ink-muted md:text-2xl">
 				Specializing in <span class="text-ink underline decoration-brand decoration-4"
 					>full-stack web development</span
@@ -165,10 +167,10 @@
 		<h2 class="mb-12 text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">
 			Stack / Tools
 		</h2>
-		<div class="tech-grid grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6" role="presentation">
+		<div class="tech-grid grid grid-cols-2 gap-8 md:grid-cols-4 xl:grid-cols-6" role="presentation">
 			{#each technologies as tech, i (tech.name)}
 				<div
-					class="group flex flex-col items-center justify-center gap-4 border border-brand p-8"
+					class="group flex flex-col items-center justify-center gap-4 border border-brand px-2 py-8 text-center"
 					role="presentation"
 				>
 					<img src={tech.icon} alt="" class="h-8 w-8" />
@@ -216,7 +218,7 @@
 							>
 							<h3 class="text-2xl font-black text-ink">{exp.title}</h3>
 							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-								{exp.experienceName}
+								{exp.name}
 							</p>
 							<p class="mt-2 max-w-2xl leading-relaxed text-ink-muted">{exp.description}</p>
 						</div>
@@ -235,7 +237,7 @@
 							<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
 								>{edu.date}</span
 							>
-							<h3 class="text-2xl font-black text-ink">{edu.experienceName}</h3>
+							<h3 class="text-2xl font-black text-ink">{edu.name}</h3>
 							<p class="mt-2 max-w-2xl leading-relaxed text-ink-muted">{edu.description}</p>
 						</div>
 					{/each}
@@ -257,7 +259,7 @@
 							>
 							<h3 class="text-2xl font-black text-ink">{org.title}</h3>
 							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-								{org.experienceName}
+								{org.name}
 							</p>
 							<p class="mt-2 max-w-2xl leading-relaxed text-ink-muted">{org.description}</p>
 						</div>
@@ -280,7 +282,7 @@
 							>
 							<h3 class="text-2xl font-black text-ink">{ach.title}</h3>
 							<p class="text-sm font-bold tracking-widest text-brand uppercase">
-								{ach.achievementName}
+								{ach.name}
 							</p>
 							<p class="mt-2 max-w-2xl leading-relaxed text-ink-muted">{ach.description}</p>
 						</div>
@@ -310,14 +312,14 @@
 			>
 		</div>
 		<div class="grid grid-cols-1 gap-12 lg:grid-cols-3" role="presentation">
-			{#each projects.slice(0, 3) as project, i (project.projectName)}
+			{#each data.projects as project (project.id)}
 				<a
-					href={resolve('/projects/[slug]', { slug: project.projectLink })}
+					href={resolve('/projects/[slug]', { slug: project.slug })}
 					class="project-card group flex flex-col gap-6"
 				>
 					<div class="aspect-video w-full overflow-hidden border border-brand bg-card">
 						<img
-							src={project.projectImages?.[0]}
+							src={project.images[0]}
 							alt=""
 							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						/>
@@ -326,10 +328,10 @@
 						<h3
 							class="text-2xl font-black tracking-tighter text-ink uppercase transition-colors group-hover:text-brand"
 						>
-							{project.projectName}
+							{project.name}
 						</h3>
 						<p class="line-clamp-2 text-sm leading-relaxed text-ink-muted">
-							{project.projectDescription}
+							{project.description}
 						</p>
 					</div>
 				</a>

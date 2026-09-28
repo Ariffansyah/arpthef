@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { achievement, experience } from '$lib/constant/apps';
 	import { intersect } from '$lib/actions/intersect';
 	import { cubicOut } from 'svelte/easing';
 	import { resolve } from '$app/paths';
@@ -29,14 +28,13 @@
 
 	let activeTab = 'work';
 
-	const workExperiences = experience.filter((e) => e.category?.toLowerCase() === 'work');
-	const educationExperiences = experience.filter(
-		(e) => e.category?.toLowerCase() === 'education'
-	);
-	const organizationExperiences = experience.filter(
-		(e) => e.category?.toLowerCase() === 'organization'
-	);
-	const achievementItems = achievement;
+	export let data;
+
+	$: byCategory = (c: string) => data.experiences.filter((e) => e.category === c);
+	$: workExperiences = byCategory('work');
+	$: educationExperiences = byCategory('education');
+	$: organizationExperiences = byCategory('organization');
+	$: achievementItems = byCategory('achievement');
 
 	let isShowMoreWork = false;
 	$: showWorkExperiences = isShowMoreWork ? workExperiences : workExperiences.slice(0, 3);
@@ -99,7 +97,7 @@
 		<p class="text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">The story so far</p>
 	</div>
 
-	<div class="grid grid-cols-1 gap-20 lg:grid-cols-2">
+	<div class="grid grid-cols-1 gap-20 xl:grid-cols-2">
 		<div class="flex flex-col gap-10">
 			<div class="flex flex-col gap-6" use:intersect={{ threshold: 0.1, once: true }}>
 				<p class="text-xl leading-relaxed font-medium text-ink-muted md:text-2xl">
@@ -179,7 +177,7 @@
 							>
 							<h3 class="text-xl font-black text-ink">{exp.title}</h3>
 							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-								{exp.experienceName}
+								{exp.name}
 							</p>
 							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{exp.description}</p>
 						</div>
@@ -198,7 +196,7 @@
 							<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
 								>{edu.date}</span
 							>
-							<h3 class="text-xl font-black text-ink">{edu.experienceName}</h3>
+							<h3 class="text-xl font-black text-ink">{edu.name}</h3>
 							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{edu.description}</p>
 						</div>
 					{/each}
@@ -220,7 +218,7 @@
 							>
 							<h3 class="text-xl font-black text-ink">{org.title}</h3>
 							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-								{org.experienceName}
+								{org.name}
 							</p>
 							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{org.description}</p>
 						</div>
@@ -243,7 +241,7 @@
 							>
 							<h3 class="text-xl font-black text-ink">{ach.title}</h3>
 							<p class="text-sm font-bold tracking-widest text-brand uppercase">
-								{ach.achievementName}
+								{ach.name}
 							</p>
 							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{ach.description}</p>
 						</div>

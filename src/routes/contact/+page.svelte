@@ -36,7 +36,7 @@
 		</p>
 	</div>
 
-	<div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
+	<div class="grid grid-cols-1 gap-16 xl:grid-cols-2">
 		<div class="flex flex-col gap-8">
 			<p class="text-xl leading-relaxed font-medium text-ink-muted md:text-2xl lg:max-w-xl">
 				Feel free to reach out for inquiries, collaborations, or just to say hello. I am always open
@@ -49,18 +49,18 @@
 				<p class="text-[10px] font-black tracking-widest text-brand uppercase">Email Me</p>
 				<a
 					href="mailto:arppthef@outlook.co.id"
-					class="text-2xl font-black tracking-tighter text-ink transition-colors hover:text-brand-hover md:text-4xl"
+					class="text-2xl font-black tracking-tighter wrap-anywhere text-ink transition-colors hover:text-brand-hover md:text-3xl"
 				>
 					arppthef@outlook.co.id
 				</a>
 			</div>
 		</div>
 
-		<div class="flex flex-col gap-8 lg:items-end lg:justify-end">
-			<p class="text-[10px] font-black tracking-widest text-ink-faint uppercase lg:text-right">
+		<div class="flex flex-col gap-8 xl:items-end xl:justify-end">
+			<p class="text-[10px] font-black tracking-widest text-ink-faint uppercase xl:text-right">
 				Social Media
 			</p>
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:w-full lg:max-w-md">
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:w-full xl:max-w-md">
 				<a
 					href="https://github.com/Ariffansyah"
 					target="_blank"
