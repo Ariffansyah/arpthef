@@ -9,4 +9,4 @@ Legacy background kept for reference — not imported anywhere.
 
 Restore either: `cp _archive/<file> ../components/Background3D.svelte` (jellyfish.legacy also needs `cp _archive/jellyfish.ts ../jellyfish.ts`).
 
-New background: `../components/Background3D.svelte` (Spider-Verse multiverse — per-dimension palette, torn dimension rifts with krackle sparks, chromatic-aberration web strands, and periodic glitch slicing. Halftone plate and comic-panel sidebar live in `src/routes/+layout.svelte`).
+New background: `../components/Background3D.svelte` (Spider-Verse multiverse — per-dimension palette, Across-the-Spider-Verse portals (faceted crystal shell around a flowing orange ring tunnel), scalloped comic webs in misregistered plates, block glitches, all animated on twos. Halftone plate and comic-panel sidebar live in `src/routes/+layout.svelte`).

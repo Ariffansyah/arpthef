@@ -16,6 +16,9 @@
 		let w = 0;
 		let h = 0;
 
+		/* Flat blocks the film's glitches are printed in. */
+		const GLITCH = ['0,229,255', '255,45,150', '255,230,0', '140,90,255', '170,255,60'];
+
 		/* Spider-Verse multiverse palette. Each dimension (theme) has its own
 		   web ink, chromatic-aberration pair, wash and nebula blobs. The CA pair
 		   is what sells the "two printing plates misaligned" look — additive in
@@ -39,8 +42,6 @@
 					{ x: 0.08, y: 0.78, r: 0.3, rgb: '255,210,80' },
 					{ x: 0.94, y: 0.12, r: 0.22, rgb: '110,90,255' }
 				],
-				riftCore: '255,255,255',
-				riftBoost: 1,
 				dust: ['255,255,255', '255,255,255', '255,255,255', '255,180,220', '150,220,255']
 			},
 			light: {
@@ -61,8 +62,6 @@
 					{ x: 0.08, y: 0.78, r: 0.3, rgb: '255,222,130' },
 					{ x: 0.94, y: 0.12, r: 0.22, rgb: '160,145,255' }
 				],
-				riftCore: '255,245,225',
-				riftBoost: 1.9,
 				dust: ['90,40,150', '90,40,150', '90,40,150', '190,30,120', '20,140,150']
 			}
 		};
@@ -94,7 +93,6 @@
 		window.addEventListener('mousemove', onMouse);
 
 		/* ---------- webs ---------- */
-		type Chord = { r1: number; i1: number; r2: number; i2: number };
 		type Web = {
 			cx: number;
 			cy: number;
@@ -104,36 +102,34 @@
 			seed: number;
 			rot: number;
 			bright: number;
-			chords: Chord[];
+			off: number;
 			broken: Set<number>;
 		};
 		let webs: Web[] = [];
 		let stars: { x: number; y: number; size: number; tw: number; twSpeed: number; pal: number }[] = [];
 
-		/* ---------- dimension rifts ---------- */
+		/* ---------- portals ---------- */
+		/* Across the Spider-Verse dimension portal: faceted lavender crystal
+		   around a tunnel of orange rings. Same in both themes — it's a hole
+		   into somewhere else. `tilt` is the direction the tunnel recedes. */
+		const PORTAL = {
+			glow: '190,140,255',
+			shell: '205,165,255',
+			facet: '250,235,255',
+			ring: '255,128,24',
+			rim: '255,214,110',
+			deep: '28,6,60',
+			mouth: '112,44,190'
+		};
 		const RIFTS = [
-			{ x: 0.79, y: 0.2, r: 0.3, pts: 30, seed: 3.2, spin: 0.1, phase: 0, period: 0.13, depth: 0.5 },
-			{ x: 0.13, y: 0.73, r: 0.24, pts: 26, seed: 7.7, spin: -0.13, phase: 2.1, period: 0.1, depth: 0.8 },
-			{ x: 0.5, y: 1.02, r: 0.15, pts: 24, seed: 11.3, spin: 0.08, phase: 4.0, period: 0.16, depth: 1.2 }
+			{ x: 0.87, y: 0.12, r: 0.2, seed: 3.2, spin: 0.1, phase: 0, period: 0.13, depth: 0.5, tilt: 0.8 },
+			{ x: 0.13, y: 0.73, r: 0.2, seed: 7.7, spin: -0.13, phase: 2.1, period: 0.1, depth: 0.8, tilt: -0.5 },
+			{ x: 0.5, y: 1.02, r: 0.15, seed: 11.3, spin: 0.08, phase: 4.0, period: 0.16, depth: 1.2, tilt: -1.6 }
 		];
 
-		/* Krackle sparks flung off the rift edges. */
+		/* Sparks flung off the portal rims. */
 		type Spark = { x: number; y: number; vx: number; vy: number; life: number; max: number; rgb: string };
 		let sparks: Spark[] = [];
-
-		function makeChords(spokes: number, rings: number, seed: number): Chord[] {
-			const chords: Chord[] = [];
-			const count = Math.round(spokes * 1.3);
-			for (let c = 0; c < count; c++) {
-				const r1 = Math.floor(rand(seed * 300 + c * 11) * rings);
-				const r2 = Math.floor(rand(seed * 400 + c * 17) * rings);
-				const i1 = Math.floor(rand(seed * 500 + c * 23) * spokes);
-				let i2 = Math.floor(rand(seed * 600 + c * 29) * spokes);
-				if (i2 === i1) i2 = (i2 + 1 + Math.floor(rand(seed * 700 + c) * (spokes - 2))) % spokes;
-				chords.push({ r1, i1, r2, i2 });
-			}
-			return chords;
-		}
 
 		function makeBroken(spokes: number, seed: number): Set<number> {
 			const broken = new Set<number>();
@@ -144,13 +140,10 @@
 		function build() {
 			const short = Math.min(w, h);
 			webs = [
-				{ cx: w * 0.9, cy: h * 0.12, radius: short * 0.55, spokes: 16, rings: 6, seed: 5.1, rot: -0.02, bright: 0.85, chords: [], broken: new Set() },
-				{ cx: w * 0.06, cy: h * 0.88, radius: short * 0.46, spokes: 15, rings: 6, seed: 8.7, rot: 0.017, bright: 0.8, chords: [], broken: new Set() }
+				{ cx: w * 0.9, cy: h * 0.12, radius: short * 0.55, spokes: 16, rings: 7, seed: 5.1, rot: -0.02, bright: 0.85, off: 2.2, broken: new Set() },
+				{ cx: w * 0.06, cy: h * 0.88, radius: short * 0.46, spokes: 15, rings: 6, seed: 8.7, rot: 0.017, bright: 0.8, off: 1.4, broken: new Set() }
 			];
-			for (const web of webs) {
-				web.chords = makeChords(web.spokes, web.rings, web.seed);
-				web.broken = makeBroken(web.spokes, web.seed);
-			}
+			for (const web of webs) web.broken = makeBroken(web.spokes, web.seed);
 
 			stars = [];
 			for (let i = 0; i < 130; i++) {
@@ -180,9 +173,8 @@
 			const wind = Math.sin(t * web.rot + web.seed) * 0.06;
 			return (i / web.spokes) * TAU + wind + web.seed + jig;
 		}
-		function ringR(web: Web, idx: number, spokeIdx = -1) {
+		function ringR(web: Web, idx: number, spokeIdx: number) {
 			const base = web.radius * Math.pow((idx + 1) / web.rings, 0.82);
-			if (spokeIdx < 0) return base;
 			return base + (rand(web.seed * 900 + idx * 31 + spokeIdx * 7) - 0.5) * web.radius * 0.05;
 		}
 		function spokeReach(web: Web, i: number) {
@@ -199,11 +191,28 @@
 				y: py + Math.sin(ang) * r + Math.cos(ang) * sway
 			};
 		}
+		/* Capture thread from spoke i to i+1 on ring ri. Drawn the comic-book
+		   way: straight spokes, each thread scalloped in towards the hub. */
+		function thread(web: Web, ri: number, i: number, t: number) {
+			if (rand(web.seed * 1900 + ri * 17 + i * 7) < 0.06) return null;
+			const j = (i + 1) % web.spokes;
+			const r0 = ringR(web, ri, i);
+			const r1 = ringR(web, ri, j);
+			if (r0 > spokeReach(web, i) || r1 > spokeReach(web, j)) return null;
+			const p0 = pt(web, i, r0, t);
+			const p1 = pt(web, j, r1, t);
+			const hx = web.cx + tx * 0.22;
+			const hy = web.cy + ty * 0.22;
+			const k = 0.14 + rand(web.seed * 1100 + ri * 13 + i * 5) * 0.08;
+			const mx = (p0.x + p1.x) * 0.5;
+			const my = (p0.y + p1.y) * 0.5;
+			return { p0, p1, cx: mx + (hx - mx) * k, cy: my + (hy - my) * k };
+		}
 
 		/* Stroke a path three times: cyan plate shifted left, magenta plate
 		   shifted right, ink plate dead centre. `draw` re-issues the geometry
 		   with the given offset. */
-		function caStroke(draw: (dx: number, dy: number) => void, a: number, lw: number, off: number) {
+		function caStroke(draw: (dx: number, dy: number) => void, a: number, lw: number, off: number, ink = P.web) {
 			g.globalCompositeOperation = P.comp;
 			g.lineWidth = lw + 0.5;
 			g.strokeStyle = `rgba(${P.ca1}, ${a * 0.55})`;
@@ -212,23 +221,25 @@
 			draw(off, -off * 0.35);
 			g.globalCompositeOperation = 'source-over';
 			g.lineWidth = lw;
-			g.strokeStyle = `rgba(${P.web}, ${a})`;
+			g.strokeStyle = `rgba(${ink}, ${a})`;
 			draw(0, 0);
 		}
 
-		function riftPath(rf: (typeof RIFTS)[number], t: number, cx: number, cy: number, R: number, scale: number, dx: number, dy: number) {
-			g.beginPath();
-			for (let i = 0; i <= rf.pts; i++) {
-				const k = i % rf.pts;
-				const a = (k / rf.pts) * TAU + t * rf.spin;
-				const spike = (k % 2 ? 1 : 0.74) * (0.78 + rand(rf.seed * 100 + k) * 0.42);
-				const wob = prefersReduced ? 1 : 1 + Math.sin(t * 1.6 + k * 1.3 + rf.seed) * 0.09;
-				const rad = R * scale * spike * wob;
-				const px = cx + dx + Math.cos(a) * rad;
-				const py = cy + dy + Math.sin(a) * rad * 0.78;
-				if (i === 0) g.moveTo(px, py);
-				else g.lineTo(px, py);
+		/* Irregular n-gon. Same seed = same silhouette at any size, which is
+		   what lets the tunnel rings nest inside the mouth. */
+		type Pt = { x: number; y: number };
+		function ngon(n: number, seed: number, cx: number, cy: number, r: number, rot: number, jit: number): Pt[] {
+			const out: Pt[] = [];
+			for (let i = 0; i < n; i++) {
+				const a = rot + ((i + (rand(seed + i) - 0.5) * 0.35) / n) * TAU;
+				const rr = r * (1 - jit + rand(seed + i * 7.3) * jit * 2);
+				out.push({ x: cx + Math.cos(a) * rr, y: cy + Math.sin(a) * rr });
 			}
+			return out;
+		}
+		function poly(p: Pt[], dx = 0, dy = 0) {
+			g.moveTo(p[0].x + dx, p[0].y + dy);
+			for (let i = 1; i < p.length; i++) g.lineTo(p[i].x + dx, p[i].y + dy);
 			g.closePath();
 		}
 
@@ -242,17 +253,25 @@
 		window.addEventListener('resize', resize);
 
 		let raf = 0;
-		let last = performance.now();
-		const start = last;
+		const start = performance.now();
+		let lastT = 0;
 
 		function frame() {
 			const now = performance.now();
-			const dt = Math.min(0.033, Math.max(0.008, (now - last) / 1000));
-			last = now;
-			const t = (now - start) * 0.001;
+			/* Animated on twos, like the film: motion advances in 12 fps steps,
+			   only the mouse parallax (the "camera") runs on ones. */
+			const step = Math.floor((now - start) * 0.012);
+			const t = step / 12;
+			const dt = Math.min(0.1, t - lastT);
+			lastT = t;
 
 			tx += (targetTX - tx) * 0.09;
 			ty += (targetTY - ty) * 0.09;
+
+			if (dt === 0 && Math.abs(targetTX - tx) < 0.05 && Math.abs(targetTY - ty) < 0.05) {
+				raf = requestAnimationFrame(frame);
+				return;
+			}
 
 			g.clearRect(0, 0, w, h);
 			g.globalAlpha = P.alpha;
@@ -283,72 +302,149 @@
 			g.lineCap = 'round';
 			const short = Math.min(w, h);
 
-			/* --- dimension rifts --- */
+			/* --- portals --- */
 			for (const rf of RIFTS) {
-				const open = prefersReduced ? 0.8 : 0.55 + 0.45 * Math.sin(t * rf.period * TAU + rf.phase);
-				const ink = open * P.riftBoost;
+				const open = prefersReduced ? 0.93 : 0.86 + 0.14 * Math.sin(t * rf.period * TAU + rf.phase);
 				const R = short * rf.r * open;
 				const cx = rf.x * w + tx * rf.depth * 0.5;
 				const cy = rf.y * h + ty * rf.depth * 0.5;
+				const rot = rf.seed + (prefersReduced ? 0 : t * rf.spin * 0.5);
+				// out of focus = out of register: nearer portals misprint more
+				const off = 2.2 * rf.depth;
 
-				// glow bleeding out of the tear
-				const halo = g.createRadialGradient(cx, cy, 0, cx, cy, R * 1.5);
-				halo.addColorStop(0, `rgba(${P.ca2}, ${0.3 * ink})`);
-				halo.addColorStop(0.45, `rgba(${P.ca1}, ${0.14 * ink})`);
-				halo.addColorStop(1, `rgba(${P.ca1}, 0)`);
+				// the tunnel bends away from the viewer; parallax swings its far end
+				const vx = cx + Math.cos(rf.tilt) * R * 0.3 - tx * rf.depth * 0.4;
+				const vy = cy + Math.sin(rf.tilt) * R * 0.3 - ty * rf.depth * 0.4;
+				const mx = cx + (vx - cx) * 0.15;
+				const my = cy + (vy - cy) * 0.15;
+
+				const outer = ngon(9, rf.seed * 10, cx, cy, R, rot, 0.1);
+				const mid = ngon(9, rf.seed * 20, cx, cy, R * 0.8, rot + TAU / 18, 0.08);
+				const mouth = ngon(7, rf.seed * 30, mx, my, R * 0.58, rot * 1.2, 0.06);
+
+				// lavender bloom
 				g.globalCompositeOperation = P.comp;
+				const halo = g.createRadialGradient(cx, cy, R * 0.4, cx, cy, R * 1.7);
+				halo.addColorStop(0, `rgba(${PORTAL.glow}, ${isDark ? 0.5 : 0.4})`);
+				halo.addColorStop(1, `rgba(${PORTAL.glow}, 0)`);
 				g.fillStyle = halo;
 				g.beginPath();
-				g.arc(cx, cy, R * 1.5, 0, TAU);
-				g.fill();
-
-				// the other dimension showing through
-				const core = g.createRadialGradient(cx, cy, 0, cx, cy, R);
-				core.addColorStop(0, `rgba(${P.riftCore}, ${0.3 * ink})`);
-				core.addColorStop(0.35, `rgba(${P.ca2}, ${0.16 * ink})`);
-				core.addColorStop(1, `rgba(${P.ca1}, 0)`);
-				g.fillStyle = core;
-				riftPath(rf, t, cx, cy, R, 1, 0, 0);
+				g.arc(cx, cy, R * 1.7, 0, TAU);
 				g.fill();
 				g.globalCompositeOperation = 'source-over';
 
-				// jagged edges, misregistered plates
-				const off = 2.5 + open * 2;
+				// crystal shell between rim and mouth
+				const shell = g.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+				shell.addColorStop(0, `rgba(${PORTAL.facet}, 0.5)`);
+				shell.addColorStop(0.5, `rgba(${PORTAL.shell}, 0.38)`);
+				shell.addColorStop(1, `rgba(${PORTAL.glow}, 0.55)`);
+				g.fillStyle = shell;
+				g.beginPath();
+				poly(outer);
+				poly(mouth);
+				g.fill('evenodd');
+
+				// wireframe facets
+				g.strokeStyle = `rgba(${PORTAL.facet}, 0.55)`;
+				g.lineWidth = 0.8;
+				g.beginPath();
+				poly(mid);
+				for (let i = 0; i < 9; i++) {
+					const o = outer[i];
+					const o2 = outer[(i + 1) % 9];
+					const m = mid[i];
+					const q = mouth[Math.round((i * 7) / 9) % 7];
+					g.moveTo(o.x, o.y);
+					g.lineTo(m.x, m.y);
+					g.lineTo(o2.x, o2.y);
+					g.moveTo(m.x, m.y);
+					g.lineTo(q.x, q.y);
+					// cracks cutting across facets
+					if (rand(rf.seed * 44 + i) < 0.5) {
+						const c = mid[(i + 2) % 9];
+						g.moveTo(o.x, o.y);
+						g.lineTo(c.x, c.y);
+					}
+				}
+				g.stroke();
+
+				// the other dimension: dark violet deepening towards the far end
+				g.save();
+				g.beginPath();
+				poly(mouth);
+				g.clip();
+				const deep = g.createRadialGradient(vx, vy, 0, vx, vy, R * 0.7);
+				deep.addColorStop(0, `rgba(${PORTAL.deep}, 0.95)`);
+				deep.addColorStop(1, `rgba(${PORTAL.mouth}, 0.9)`);
+				g.fillStyle = deep;
+				g.fillRect(cx - R, cy - R, R * 2, R * 2);
+
+				g.strokeStyle = `rgba(${PORTAL.facet}, 0.16)`;
+				g.lineWidth = 1;
+				g.beginPath();
+				for (let k = 0; k < 14; k++) {
+					const sa = rand(rf.seed * 40 + k) * TAU;
+					const sr = R * 0.55 * rand(rf.seed * 41 + k);
+					const sx = mx + Math.cos(sa) * sr;
+					const sy = my + Math.sin(sa) * sr;
+					const len = R * (0.05 + rand(rf.seed * 42 + k) * 0.15);
+					const la = rf.tilt + (rand(rf.seed * 43 + k) - 0.5) * 0.6;
+					g.moveTo(sx, sy);
+					g.lineTo(sx + Math.cos(la) * len, sy + Math.sin(la) * len);
+				}
+				g.stroke();
+
+				// tunnel rings flowing towards the far end, deepest drawn first
+				const flow = prefersReduced ? 0.3 : t * 0.14;
+				const rings = [0, 1, 2, 3, 4].map((i) => (i / 5 + flow) % 1).sort((a, b) => b - a);
+				for (const f of rings) {
+					const s = (1 - f) ** 1.8;
+					const rx = vx + (mx - vx) * s;
+					const ry = vy + (my - vy) * s;
+					const rr = R * 0.5 * s;
+					const lw = R * 0.1 * s + 0.5;
+					const fade = Math.min(1, f * 10) * (1 - f * 0.6);
+					g.lineWidth = lw;
+					g.strokeStyle = `rgba(${PORTAL.ring}, ${fade})`;
+					g.beginPath();
+					poly(ngon(7, rf.seed * 30, rx, ry, rr, rot * 1.2 + f * 0.9, 0.06));
+					g.stroke();
+					g.lineWidth = lw * 0.3;
+					g.strokeStyle = `rgba(${PORTAL.rim}, ${fade})`;
+					g.beginPath();
+					poly(ngon(7, rf.seed * 30, rx, ry, rr - lw * 0.3, rot * 1.2 + f * 0.9, 0.06));
+					g.stroke();
+				}
+				g.restore();
+
+				// bright crystal edges, misregistered plates
 				caStroke(
 					(dx, dy) => {
-						riftPath(rf, t, cx, cy, R, 1, dx, dy);
+						g.beginPath();
+						poly(outer, dx, dy);
+						poly(mouth, dx, dy);
 						g.stroke();
 					},
-					0.55 * ink,
+					0.85,
 					1.4,
-					off
+					off,
+					PORTAL.facet
 				);
-				for (const s of [0.72, 0.46]) {
-					caStroke(
-						(dx, dy) => {
-							riftPath(rf, t, cx * 1, cy, R, s, dx, dy);
-							g.stroke();
-						},
-						0.22 * ink,
-						0.9,
-						off * 0.6
-					);
-				}
 
-				// spark emission
-				if (!prefersReduced && Math.random() < 0.35 * open) {
+				// sparks thrown off the rim
+				if (!prefersReduced && dt > 0 && Math.random() < 0.7) {
 					const a = Math.random() * TAU;
-					const rad = R * (0.9 + Math.random() * 0.3);
+					const rad = R * (0.95 + Math.random() * 0.2);
 					sparks.push({
 						x: cx + Math.cos(a) * rad,
-						y: cy + Math.sin(a) * rad * 0.78,
+						y: cy + Math.sin(a) * rad,
 						vx: Math.cos(a) * (18 + Math.random() * 45),
 						vy: Math.sin(a) * (18 + Math.random() * 45) - 8,
 						life: 0,
 						max: 0.6 + Math.random() * 0.8,
-						rgb: Math.random() < 0.5 ? P.ca1 : P.ca2
+						rgb: Math.random() < 0.5 ? PORTAL.ring : PORTAL.glow
 					});
-					if (sparks.length > 90) sparks.shift();
+					if (sparks.length > 60) sparks.shift();
 				}
 			}
 
@@ -377,8 +473,8 @@
 				for (let i = 0; i < web.spokes; i++) {
 					const spokeLen = spokeReach(web, i);
 					const end = pt(web, i, spokeLen, t);
-					const a = (0.32 + rand(i + wi * 97) * 0.35) * web.bright;
-					const lw = 0.8 + rand(i + wi * 53) * 0.9;
+					const a = (0.36 + rand(i + wi * 97) * 0.3) * web.bright;
+					const lw = 1 + rand(i + wi * 53) * 0.9;
 					caStroke(
 						(dx, dy) => {
 							g.beginPath();
@@ -388,7 +484,7 @@
 						},
 						a,
 						lw,
-						1.6
+						web.off
 					);
 
 					if (web.broken.has(i)) {
@@ -406,45 +502,23 @@
 				}
 
 				for (let ri = 0; ri < web.rings; ri++) {
-					const a = (0.26 + (ri / web.rings) * 0.28) * web.bright;
+					const a = (0.3 + (ri / web.rings) * 0.3) * web.bright;
 					for (let i = 0; i < web.spokes; i++) {
-						if (rand(web.seed * 1900 + ri * 17 + i * 7) < 0.08) continue;
-						const j = (i + 1) % web.spokes;
-						const r0 = ringR(web, ri, i);
-						const r1 = ringR(web, ri, j);
-						if (r0 > spokeReach(web, i) || r1 > spokeReach(web, j)) continue;
-						const p0 = pt(web, i, r0, t);
-						const p1 = pt(web, j, r1, t);
-						const sagJig = 0.4 + rand(web.seed * 1100 + ri * 13 + i * 5) * 0.5;
-						const mx = (p0.x + p1.x) * 0.5;
-						const my = (p0.y + p1.y) * 0.5 + (r0 / web.radius) * 9 * sagJig;
-						const lw = 0.5 + rand(web.seed * 2100 + ri * 9 + i) * 0.7;
+						const th = thread(web, ri, i, t);
+						if (!th) continue;
+						const lw = 0.6 + rand(web.seed * 2100 + ri * 9 + i) * 0.7;
 						caStroke(
 							(dx, dy) => {
 								g.beginPath();
-								g.moveTo(p0.x + dx, p0.y + dy);
-								g.quadraticCurveTo(mx + dx, my + dy, p1.x + dx, p1.y + dy);
+								g.moveTo(th.p0.x + dx, th.p0.y + dy);
+								g.quadraticCurveTo(th.cx + dx, th.cy + dy, th.p1.x + dx, th.p1.y + dy);
 								g.stroke();
 							},
 							a,
 							lw,
-							1.2
+							web.off * 0.75
 						);
 					}
-				}
-
-				for (const c of web.chords) {
-					const cr1 = ringR(web, c.r1, c.i1);
-					const cr2 = ringR(web, c.r2, c.i2);
-					if (cr1 > spokeReach(web, c.i1) || cr2 > spokeReach(web, c.i2)) continue;
-					const p0 = pt(web, c.i1, cr1, t);
-					const p1 = pt(web, c.i2, cr2, t);
-					g.strokeStyle = `rgba(${P.web}, ${0.16 * web.bright})`;
-					g.lineWidth = 0.65;
-					g.beginPath();
-					g.moveTo(p0.x, p0.y);
-					g.lineTo(p1.x, p1.y);
-					g.stroke();
 				}
 			}
 
@@ -462,18 +536,15 @@
 					let x = 0;
 					let y = 0;
 					if (p.along === 'spoke') {
-						const pp = pt(web, p.spoke, web.radius * p.t, t);
+						const pp = pt(web, p.spoke, spokeReach(web, p.spoke) * p.t, t);
 						x = pp.x;
 						y = pp.y;
 					} else {
-						const r = ringR(web, p.ring);
-						const a = pt(web, p.spoke, r, t);
-						const b = pt(web, (p.spoke + 1) % web.spokes, r, t);
-						const mx = (a.x + b.x) * 0.5;
-						const my = (a.y + b.y) * 0.5 + (r / web.radius) * 9;
+						const th = thread(web, p.ring, p.spoke, t);
+						if (!th) continue;
 						const tt = p.t;
-						x = (1 - tt) * (1 - tt) * a.x + 2 * (1 - tt) * tt * mx + tt * tt * b.x;
-						y = (1 - tt) * (1 - tt) * a.y + 2 * (1 - tt) * tt * my + tt * tt * b.y;
+						x = (1 - tt) * (1 - tt) * th.p0.x + 2 * (1 - tt) * tt * th.cx + tt * tt * th.p1.x;
+						y = (1 - tt) * (1 - tt) * th.p0.y + 2 * (1 - tt) * tt * th.cy + tt * tt * th.p1.y;
 					}
 					const prog = Math.sin(p.t * Math.PI);
 					const glowR = 3 + prog * 5;
@@ -491,7 +562,8 @@
 				}
 			}
 
-			/* --- krackle sparks: little four-point stars --- */
+			/* --- energy dots --- */
+			const drag = Math.pow(0.16, dt);
 			g.globalCompositeOperation = P.comp;
 			for (let i = sparks.length - 1; i >= 0; i--) {
 				const s = sparks[i];
@@ -502,24 +574,19 @@
 				}
 				s.x += s.vx * dt;
 				s.y += s.vy * dt;
-				s.vx *= 0.97;
-				s.vy *= 0.97;
+				s.vx *= drag;
+				s.vy *= drag;
 				const k = 1 - s.life / s.max;
-				const r = 2 + k * 5;
-				g.strokeStyle = `rgba(${s.rgb}, ${k * 0.9})`;
-				g.lineWidth = 1;
+				g.fillStyle = `rgba(${s.rgb}, ${k * 0.9})`;
 				g.beginPath();
-				g.moveTo(s.x - r, s.y);
-				g.lineTo(s.x + r, s.y);
-				g.moveTo(s.x, s.y - r);
-				g.lineTo(s.x, s.y + r);
-				g.stroke();
+				g.arc(s.x, s.y, 1 + k * 3, 0, TAU);
+				g.fill();
 			}
 			g.globalCompositeOperation = 'source-over';
 
 			/* --- dust --- */
 			for (const s of stars) {
-				s.tw += prefersReduced ? 0 : s.twSpeed;
+				s.tw += prefersReduced ? 0 : s.twSpeed * dt * 60;
 				const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(s.tw));
 				g.fillStyle = `rgba(${P.dust[s.pal]}, ${twinkle * 0.85})`;
 				g.beginPath();
@@ -529,22 +596,22 @@
 
 			g.globalAlpha = 1;
 
-			/* --- glitch: slice the frame and re-print it misaligned --- */
+			/* --- glitch: slice the frame, re-print it misaligned, drop flat
+			   colour blocks over it. Seeded per step so it holds for a twos frame. --- */
 			if (!prefersReduced) {
 				if (t > glitchNext) {
 					glitchNext = t + 3 + Math.random() * 6;
-					glitchUntil = t + 0.1 + Math.random() * 0.14;
+					glitchUntil = t + 0.15 + Math.random() * 0.2;
 				}
 				if (t < glitchUntil) {
-					for (let i = 0; i < 5; i++) {
-						const sy = Math.random() * h;
-						const sh = 6 + Math.random() * 26;
-						const dx = (Math.random() - 0.5) * 40;
+					for (let i = 0; i < 6; i++) {
+						const s = step * 13 + i * 3;
+						const sy = rand(s) * h;
+						const sh = 4 + rand(s + 1) * 28;
+						const dx = (rand(s + 2) - 0.5) * 50;
 						g.drawImage(canvas, 0, sy * dpr, w * dpr, sh * dpr, dx, sy, w, sh);
-						g.globalCompositeOperation = P.comp;
-						g.fillStyle = `rgba(${Math.random() < 0.5 ? P.ca1 : P.ca2}, 0.16)`;
-						g.fillRect(dx, sy, w, sh);
-						g.globalCompositeOperation = 'source-over';
+						g.fillStyle = `rgba(${GLITCH[i % GLITCH.length]}, ${isDark ? 0.4 : 0.3})`;
+						g.fillRect(rand(s + 4) * w, rand(s + 5) * h, 16 + rand(s + 6) * 150, 3 + rand(s + 7) * 18);
 					}
 				}
 			}
