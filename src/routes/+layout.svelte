@@ -255,6 +255,44 @@
 		{ name: 'X', url: 'https://x.com/nishimiyaa12', icon: 'fa-x-twitter' },
 		{ name: 'Instagram', url: 'https://www.instagram.com/_arpchive/', icon: 'fa-instagram' }
 	];
+
+	const WEB = 150;
+	const cornerWeb = (() => {
+		const rand = (n: number) => {
+			const s = Math.sin(n * 12.9898) * 43758.5453;
+			return s - Math.floor(s);
+		};
+		const f = (n: number) => n.toFixed(1);
+		const spokes = 7;
+		const rings = 6;
+		const ang = Array.from(
+			{ length: spokes },
+			(_, i) => Math.PI / 2 + ((i + 0.5) / spokes) * (Math.PI / 2) + (rand(i + 1) - 0.5) * 0.12
+		);
+		const pt = (i: number, k: number) => {
+			const r = WEB * ((k + 1) / rings) ** 0.85 * (0.96 + rand(i * 7 + k) * 0.08);
+			return [WEB + Math.cos(ang[i]) * r, Math.sin(ang[i]) * r];
+		};
+		let d = '';
+		for (let i = 0; i < spokes; i++) {
+			const [x, y] = pt(i, rings);
+			d += `M${WEB},0L${f(x)},${f(y)}`;
+		}
+		for (let k = 0; k < rings; k++) {
+			for (let i = 0; i < spokes - 1; i++) {
+				if (rand(k * 31 + i * 5) < 0.08) continue;
+				const [x0, y0] = pt(i, k);
+				const [x1, y1] = pt(i + 1, k);
+				const mx = (x0 + x1) / 2;
+				const my = (y0 + y1) / 2;
+				const s = 0.16 + rand(k + i * 3) * 0.08;
+				d += `M${f(x0)},${f(y0)}Q${f(mx + (WEB - mx) * s)},${f(my * (1 - s))} ${f(x1)},${f(y1)}`;
+			}
+		}
+		const [ax, ay] = pt(1, 2);
+		return { d, ax: +f(ax), ay: +f(ay) };
+	})();
+	const SILK = 40;
 </script>
 
 <div id="app-wrapper" class="relative flex min-h-screen flex-col md:flex-row">
@@ -263,31 +301,70 @@
 	>
 		<svg
 			class="pointer-events-none absolute top-0 right-0 hidden md:block"
-			width="130"
-			height="130"
-			viewBox="0 0 130 130"
+			width={WEB}
+			height={WEB}
+			viewBox="0 0 {WEB} {WEB}"
 			aria-hidden="true"
 		>
-			<g fill="none" stroke="var(--edge-strong)" stroke-width="1" opacity="0.45">
-				<line x1="130" y1="0" x2="0" y2="15" />
-				<line x1="130" y1="0" x2="0" y2="45" />
-				<line x1="130" y1="0" x2="0" y2="75" />
-				<line x1="130" y1="0" x2="0" y2="105" />
-				<line x1="130" y1="0" x2="105" y2="130" />
-				<line x1="130" y1="0" x2="75" y2="130" />
-				<line x1="130" y1="0" x2="45" y2="130" />
-				<line x1="130" y1="0" x2="15" y2="130" />
-				<path
-					d="M75.4,6.3 L75.4,18.9 L75.4,31.5 L75.4,44.1 L119.5,54.6 L106.9,54.6 L94.3,54.6 L81.7,54.6"
-				/>
+			<defs>
+				<path id="corner-web" d={cornerWeb.d} />
+				<radialGradient id="corner-web-fade" cx="1" cy="0" r="1">
+					<stop offset="0.4" stop-color="#fff" />
+					<stop offset="1" stop-color="#fff" stop-opacity="0" />
+				</radialGradient>
+				<mask id="corner-web-mask">
+					<rect width={WEB} height={WEB} fill="url(#corner-web-fade)" />
+				</mask>
+			</defs>
+			<g fill="none" stroke-linecap="round" mask="url(#corner-web-mask)">
+				<use href="#corner-web" stroke="#00e5ff" stroke-width="1.2" opacity="0.4" x="-1.6" y="1" />
+				<use href="#corner-web" stroke="#ff2d96" stroke-width="1.2" opacity="0.4" x="1.6" y="-1" />
+				<use href="#corner-web" stroke="var(--edge-strong)" stroke-width="0.9" opacity="0.8" />
 			</g>
-			<path
-				d="M32.5,11.3 L32.5,33.8 L32.5,56.3 L32.5,78.8 L111.3,97.5 L88.8,97.5 L66.3,97.5 L43.8,97.5"
-				fill="none"
-				stroke="var(--brand)"
-				stroke-width="1"
-				opacity="0.3"
-			/>
+
+			<g class="dangle" style="transform-origin: {cornerWeb.ax}px {cornerWeb.ay}px">
+				<line
+					class="silk"
+					style="transform-origin: {cornerWeb.ax}px {cornerWeb.ay}px"
+					x1={cornerWeb.ax}
+					y1={cornerWeb.ay}
+					x2={cornerWeb.ax}
+					y2={cornerWeb.ay + SILK}
+					stroke="var(--edge-ink)"
+					stroke-width="0.6"
+					opacity="0.55"
+				/>
+				<g transform="translate({cornerWeb.ax} {cornerWeb.ay + SILK})">
+					<g class="spider">
+						<path
+							d="M-2,9L-7,5L-9,0M-2,10.5L-8,9L-11,6M-2,12L-8,13L-10,17M-1.5,13L-5,16L-6,21M2,9L7,5L9,0M2,10.5L8,9L11,6M2,12L8,13L10,17M1.5,13L5,16L6,21"
+							fill="none"
+							stroke="var(--edge-ink)"
+							stroke-width="0.9"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+						<ellipse
+							cx="0"
+							cy="4"
+							rx="4.2"
+							ry="5"
+							fill="#2b3bb5"
+							stroke="var(--edge-ink)"
+							stroke-width="0.6"
+						/>
+						<ellipse cx="0" cy="11" rx="2.8" ry="2.6" fill="var(--edge-ink)" />
+						<text
+							x="0"
+							y="5.7"
+							text-anchor="middle"
+							font-size="4.6"
+							font-weight="700"
+							fill="#ff2d55">42</text
+						>
+					</g>
+				</g>
+			</g>
 		</svg>
 		<!-- Top section: logo + subtitle + mobile controls -->
 		<div class="flex items-center justify-between pb-4 md:flex-col md:items-start md:pt-10 md:pb-0">
@@ -484,6 +561,8 @@
 		radial-gradient(45rem 45rem at 100% 100%, color-mix(in srgb, var(--brand) 9%, transparent), transparent 62%);"
 ></div>
 
+<div class="reading-scrim pointer-events-none fixed inset-0 z-0" aria-hidden="true"></div>
+
 <!-- Page navigation confirmation overlay -->
 {#if pendingNav}
 	<div
@@ -646,13 +725,6 @@
 		display: none;
 	}
 
-	/*
-	 * The sidebar "plate": wash + comic grid that dissolves into the page rather
-	 * than ending on a border, so panel and background read as one surface. The
-	 * blur rides the same mask, so its edge fades out too. Both layers sit behind
-	 * the nav's content on a negative z-index — the nav is `z-50`, so it
-	 * establishes the stacking context that keeps them contained.
-	 */
 	.nav-sidebar::before,
 	.nav-sidebar::after {
 		content: '';
@@ -664,52 +736,26 @@
 	}
 
 	.nav-sidebar::before {
+		--grid: color-mix(in srgb, var(--edge-strong) 6%, transparent);
 		backdrop-filter: blur(10px);
 		background-image:
-			linear-gradient(
-				to right,
-				color-mix(in srgb, var(--surface) 88%, transparent),
-				color-mix(in srgb, var(--surface) 60%, transparent) 55%,
-				transparent
-			),
 			repeating-linear-gradient(
 				0deg,
 				transparent,
 				transparent 28px,
-				color-mix(in srgb, var(--edge-strong) 6%, transparent) 28px,
-				color-mix(in srgb, var(--edge-strong) 6%, transparent) 29px
+				var(--grid) 28px,
+				var(--grid) 29px
 			),
 			repeating-linear-gradient(
 				90deg,
 				transparent,
 				transparent 28px,
-				color-mix(in srgb, var(--edge-strong) 6%, transparent) 28px,
-				color-mix(in srgb, var(--edge-strong) 6%, transparent) 29px
+				var(--grid) 28px,
+				var(--grid) 29px
 			);
 	}
-
 	:global(.dark) .nav-sidebar::before {
-		background-image:
-			linear-gradient(
-				to right,
-				color-mix(in srgb, var(--surface) 84%, transparent),
-				color-mix(in srgb, var(--surface) 55%, transparent) 55%,
-				transparent
-			),
-			repeating-linear-gradient(
-				0deg,
-				transparent,
-				transparent 28px,
-				color-mix(in srgb, var(--edge-strong) 8%, transparent) 28px,
-				color-mix(in srgb, var(--edge-strong) 8%, transparent) 29px
-			),
-			repeating-linear-gradient(
-				90deg,
-				transparent,
-				transparent 28px,
-				color-mix(in srgb, var(--edge-strong) 8%, transparent) 28px,
-				color-mix(in srgb, var(--edge-strong) 8%, transparent) 29px
-			);
+		--grid: color-mix(in srgb, var(--edge-strong) 8%, transparent);
 	}
 
 	/* On mobile the panel is a top bar, so the falloff runs downwards. */
@@ -718,30 +764,28 @@
 		.nav-sidebar::after {
 			mask-image: linear-gradient(to bottom, #000 50%, transparent);
 		}
-		.nav-sidebar::before,
-		:global(.dark) .nav-sidebar::before {
-			background-image:
-				linear-gradient(
-					to bottom,
-					color-mix(in srgb, var(--surface) 90%, transparent),
-					color-mix(in srgb, var(--surface) 60%, transparent) 65%,
-					transparent
-				),
-				repeating-linear-gradient(
-					0deg,
-					transparent,
-					transparent 28px,
-					color-mix(in srgb, var(--edge-strong) 7%, transparent) 28px,
-					color-mix(in srgb, var(--edge-strong) 7%, transparent) 29px
-				),
-				repeating-linear-gradient(
-					90deg,
-					transparent,
-					transparent 28px,
-					color-mix(in srgb, var(--edge-strong) 7%, transparent) 28px,
-					color-mix(in srgb, var(--edge-strong) 7%, transparent) 29px
-				);
+	}
+
+	.dangle {
+		animation: dangle 3.6s ease-in-out infinite alternate;
+	}
+	@keyframes dangle {
+		from {
+			transform: rotate(-6deg);
 		}
+		to {
+			transform: rotate(6deg);
+		}
+	}
+	.silk,
+	.spider {
+		transition: transform 0.7s cubic-bezier(0.3, 1.4, 0.5, 1);
+	}
+	.nav-sidebar:hover .silk {
+		transform: scaleY(0.3);
+	}
+	.nav-sidebar:hover .spider {
+		transform: translateY(-28px);
 	}
 
 	/* Divider that fades out at both ends instead of butting into the edges. */
@@ -852,6 +896,15 @@
 			opacity: 0.6;
 			transform: translate(1px, 0);
 		}
+	}
+
+	.reading-scrim {
+		background: color-mix(in srgb, var(--surface) 50%, transparent);
+	}
+	main {
+		text-shadow:
+			0 0 2px var(--surface),
+			0 0 8px color-mix(in srgb, var(--surface) 75%, transparent);
 	}
 
 	.halftone {
@@ -1013,8 +1066,13 @@
 		.nav-sidebar::after,
 		.glitch::before,
 		.glitch::after,
-		.halftone {
+		.halftone,
+		.dangle {
 			animation: none;
+		}
+		.silk,
+		.spider {
+			transition: none;
 		}
 		.nav-sidebar::after {
 			opacity: 0;
