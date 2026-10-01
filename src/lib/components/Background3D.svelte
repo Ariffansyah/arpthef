@@ -122,14 +122,42 @@
 			mouth: '112,44,190'
 		};
 		const RIFTS = [
-			{ x: 0.87, y: 0.12, r: 0.2, seed: 3.2, spin: 0.1, phase: 0, period: 0.13, depth: 0.5, tilt: 0.8 },
-			{ x: 0.13, y: 0.73, r: 0.2, seed: 7.7, spin: -0.13, phase: 2.1, period: 0.1, depth: 0.8, tilt: -0.5 },
-			{ x: 0.5, y: 1.02, r: 0.15, seed: 11.3, spin: 0.08, phase: 4.0, period: 0.16, depth: 1.2, tilt: -1.6 }
+			{ x: 0.87, y: 0.12, r: 0.2, seed: 3.2, spin: 0.1, phase: 0, period: 0.13, depth: 0.5, tilt: 0.8, label: 'EARTH-928' },
+			{ x: 0.13, y: 0.73, r: 0.2, seed: 7.7, spin: -0.13, phase: 2.1, period: 0.1, depth: 0.8, tilt: -0.5, label: 'EARTH-65' },
+			{ x: 0.5, y: 1.02, r: 0.15, seed: 11.3, spin: 0.08, phase: 4.0, period: 0.16, depth: 1.2, tilt: -1.6, label: 'EARTH-50101' }
 		];
 
 		/* Sparks flung off the portal rims. */
 		type Spark = { x: number; y: number; vx: number; vy: number; life: number; max: number; rgb: string };
 		let sparks: Spark[] = [];
+
+		type Suit = { suit: string; legs: string; accent: string; head: 'mask' | 'hood' | 'spikes' };
+		const SPIDERS: Suit[] = [
+			{ suit: '18,16,24', legs: '18,16,24', accent: '228,28,48', head: 'mask' },
+			{ suit: '246,244,250', legs: '246,244,250', accent: '255,92,170', head: 'hood' },
+			{ suit: '22,34,102', legs: '22,34,102', accent: '232,40,40', head: 'mask' },
+			{ suit: '206,28,40', legs: '32,58,168', accent: '18,16,24', head: 'mask' },
+			{ suit: '196,30,44', legs: '28,44,130', accent: '255,226,0', head: 'spikes' },
+			{ suit: '222,40,44', legs: '30,70,200', accent: '255,186,40', head: 'mask' }
+		];
+		const INK = '14,10,26';
+		const ARMS = [
+			[0.06, -0.4, 0.12, -0.6, 0.14, -0.8],
+			[-0.07, -0.38, -0.25, -0.3, -0.33, -0.44]
+		];
+		const LEGS = [
+			[0.05, 0, 0.22, 0.12, 0.12, 0.34],
+			[-0.05, 0, -0.1, 0.22, -0.3, 0.28]
+		];
+		const HAND = { x: 0.14, y: -0.8 };
+		const ENDS = [...RIFTS, { x: -0.08, y: 0.3, depth: 0.6 }, { x: 1.08, y: 0.4, depth: 0.6 }];
+		type Swinger = { a: number; b: number; ax: number; ay: number; p: number; dur: number; suit: Suit };
+		let swingers: Swinger[] = [];
+		let swingNext = 1.5;
+
+		type Hole = { x: number; y: number; r: number; age: number; life: number; seed: number };
+		let holes: Hole[] = [];
+		let holeNext = 4;
 
 		function makeBroken(spokes: number, seed: number): Set<number> {
 			const broken = new Set<number>();
@@ -243,6 +271,135 @@
 			g.closePath();
 		}
 
+		function blob(x: number, y: number, r: number, seed: number, boil: number) {
+			g.beginPath();
+			for (let i = 0; i < 16; i++) {
+				const a = (i / 16) * TAU;
+				const rr = r * (0.88 + rand(seed + i * 7 + boil * 101) * 0.24);
+				g.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr);
+			}
+			g.closePath();
+		}
+
+		function spider(x: number, y: number, s: number, rot: number, flip: number, sp: Suit, mono?: string) {
+			if (s < 1) return;
+			g.save();
+			g.translate(x, y);
+			g.rotate(rot);
+			g.scale(flip * s, s);
+			g.lineCap = 'round';
+			g.lineJoin = 'round';
+			const line = (p: number[], lw: number, col: string) => {
+				g.lineWidth = lw;
+				g.strokeStyle = col;
+				g.beginPath();
+				g.moveTo(p[0], p[1]);
+				for (let i = 2; i < p.length; i += 2) g.lineTo(p[i], p[i + 1]);
+				g.stroke();
+			};
+			const oval = (cx: number, cy: number, rx: number, ry: number, r: number, col: string) => {
+				g.fillStyle = col;
+				g.beginPath();
+				g.ellipse(cx, cy, rx, ry, r, 0, TAU);
+				g.fill();
+			};
+			const body = (e: number, top: string, bottom: string) => {
+				for (const l of LEGS) line(l, 0.09 + e, bottom);
+				for (const a of ARMS) line(a, 0.08 + e, top);
+				line([0, 0.02, 0, -0.38], 0.19 + e, top);
+				line([-0.06, -0.33, 0.06, -0.33], 0.15 + e, top);
+				if (sp.head === 'hood') oval(-0.03, -0.55, 0.15 + e / 2, 0.16 + e / 2, -0.4, top);
+				oval(0, -0.53, 0.11 + e / 2, 0.13 + e / 2, 0, top);
+			};
+
+			const ink = mono ?? `rgb(${INK})`;
+			if (sp.head === 'spikes') {
+				g.fillStyle = ink;
+				g.beginPath();
+				for (let k = 0; k < 4; k++) {
+					const a = -2.5 + k * 0.42;
+					g.moveTo(Math.cos(a - 0.2) * 0.1, -0.53 + Math.sin(a - 0.2) * 0.12);
+					g.lineTo(Math.cos(a) * 0.24, -0.53 + Math.sin(a) * 0.26);
+					g.lineTo(Math.cos(a + 0.2) * 0.1, -0.53 + Math.sin(a + 0.2) * 0.12);
+				}
+				g.fill();
+			}
+			body(mono ? 0.02 : 0.05, ink, ink);
+
+			if (!mono) {
+				body(0, `rgb(${sp.suit})`, `rgb(${sp.legs})`);
+				const acc = `rgb(${sp.accent})`;
+				if (sp.head === 'hood') {
+					oval(0.01, -0.53, 0.12, 0.14, 0, acc);
+					oval(0.015, -0.53, 0.095, 0.115, 0, `rgb(${sp.suit})`);
+				}
+				g.strokeStyle = acc;
+				g.lineWidth = 0.025;
+				g.beginPath();
+				g.moveTo(-0.045, -0.3);
+				g.lineTo(0.045, -0.16);
+				g.moveTo(0.045, -0.3);
+				g.lineTo(-0.045, -0.16);
+				g.stroke();
+				oval(0, -0.23, 0.025, 0.04, 0, acc);
+				for (const e of [-1, 1]) {
+					g.beginPath();
+					g.ellipse(e * 0.05, -0.545, 0.05, 0.032, -e * 0.5, 0, TAU);
+					g.fillStyle = '#fff';
+					g.fill();
+					g.lineWidth = 0.02;
+					g.strokeStyle = `rgb(${INK})`;
+					g.stroke();
+				}
+			}
+			g.restore();
+		}
+
+		function swingAt(sw: Swinger, p: number) {
+			const A = ENDS[sw.a];
+			const B = ENDS[sw.b];
+			const u = (1 - Math.cos(Math.PI * p)) / 2;
+			const sx = A.x * w + tx * A.depth * 0.5;
+			const sy = A.y * h + ty * A.depth * 0.5;
+			const ex = B.x * w + tx * B.depth * 0.5;
+			const ey = B.y * h + ty * B.depth * 0.5;
+			const sag = Math.min(h * 0.25, Math.abs(ex - sx) * 0.3);
+			return { x: sx + (ex - sx) * u, y: sy + (ey - sy) * u + sag * Math.sin(Math.PI * u) };
+		}
+
+		function sfx(text: string, x: number, y: number, size: number, tilt: number) {
+			g.save();
+			g.translate(x, y);
+			g.rotate(tilt);
+			g.font = `italic 900 ${Math.round(size)}px Impact, 'Arial Black', sans-serif`;
+			g.textAlign = 'center';
+			g.lineJoin = 'round';
+			g.lineWidth = Math.max(2, size * 0.16);
+			g.strokeStyle = `rgb(${INK})`;
+			g.strokeText(text, 0, 0);
+			g.fillStyle = 'rgb(255,230,0)';
+			g.fillText(text, 0, 0);
+			g.restore();
+		}
+
+		function caption(text: string, x: number, y: number) {
+			g.save();
+			g.translate(x, y);
+			g.rotate(-0.06);
+			g.font = "700 11px 'Fira Code', monospace";
+			const bw = g.measureText(text).width + 12;
+			g.fillStyle = 'rgb(255,230,0)';
+			g.fillRect(-bw / 2, -10, bw, 20);
+			g.strokeStyle = `rgb(${INK})`;
+			g.lineWidth = 1.5;
+			g.strokeRect(-bw / 2, -10, bw, 20);
+			g.fillStyle = `rgb(${INK})`;
+			g.textAlign = 'center';
+			g.textBaseline = 'middle';
+			g.fillText(text, 0, 1);
+			g.restore();
+		}
+
 		type Pulse = { webIdx: number; spoke: number; ring: number; along: 'spoke' | 'ring'; t: number; speed: number };
 		let pulses: Pulse[] = [];
 		let pulseTimer = 0;
@@ -301,6 +458,41 @@
 
 			g.lineCap = 'round';
 			const short = Math.min(w, h);
+
+			if (!prefersReduced) {
+				if (t > holeNext) {
+					holeNext = t + 5 + Math.random() * 7;
+					if (holes.length < 3)
+						holes.push({ x: 0.15 + Math.random() * 0.7, y: 0.15 + Math.random() * 0.7, r: 0.025 + Math.random() * 0.04, age: 0, life: 2.5 + Math.random() * 2.5, seed: Math.random() * 100 });
+				}
+				const boil = step % 3;
+				for (let i = holes.length - 1; i >= 0; i--) {
+					const o = holes[i];
+					o.age += dt;
+					if (o.age >= o.life) {
+						holes.splice(i, 1);
+						continue;
+					}
+					const R = o.r * short * Math.min(1, o.age / 0.3, (o.life - o.age) / 0.3);
+					const x = o.x * w + tx * 0.12;
+					const y = o.y * h + ty * 0.12;
+					g.fillStyle = 'rgba(6,4,12,0.92)';
+					blob(x, y, R, o.seed, boil);
+					g.fill();
+					for (let d = 0; d < 3; d++) {
+						const da = rand(o.seed + d * 3) * TAU;
+						const dd = R * (1.25 + rand(o.seed + d * 5) * 0.5);
+						blob(x + Math.cos(da) * dd, y + Math.sin(da) * dd, R * (0.1 + rand(o.seed + d * 9) * 0.15), o.seed + d, boil);
+						g.fill();
+					}
+					g.strokeStyle = isDark ? 'rgba(255,255,255,0.5)' : `rgba(${INK},0.45)`;
+					g.lineWidth = 0.8;
+					for (let k = 0; k < 2; k++) {
+						blob(x, y, R * (1.08 + k * 0.08), o.seed + 50 + k, boil);
+						g.stroke();
+					}
+				}
+			}
 
 			/* --- portals --- */
 			for (const rf of RIFTS) {
@@ -446,6 +638,9 @@
 					});
 					if (sparks.length > 60) sparks.shift();
 				}
+
+				const la = Math.atan2(h * 0.5 - cy, w * 0.5 - cx);
+				caption(rf.label, cx + Math.cos(la) * R * 0.95, cy + Math.sin(la) * R * 0.95);
 			}
 
 			/* --- webs --- */
@@ -559,6 +754,78 @@
 					g.beginPath();
 					g.arc(x, y, 1.4 + prog * 1.2, 0, TAU);
 					g.fill();
+				}
+			}
+
+			if (!prefersReduced) {
+				if (t > swingNext) {
+					swingNext = t + 3 + Math.random() * 5;
+					if (swingers.length < 2) {
+						const a = Math.floor(Math.random() * ENDS.length);
+						const b = (a + 1 + Math.floor(Math.random() * (ENDS.length - 1))) % ENDS.length;
+						swingers.push({
+							a,
+							b,
+							ax: (ENDS[a].x + ENDS[b].x) / 2 + (Math.random() - 0.5) * 0.2,
+							ay: Math.min(ENDS[a].y, ENDS[b].y) - 0.25 - Math.random() * 0.2,
+							p: 0,
+							dur: 2.4 + Math.random() * 1.2,
+							suit: SPIDERS[Math.floor(Math.random() * SPIDERS.length)]
+						});
+					}
+				}
+				for (let i = swingers.length - 1; i >= 0; i--) {
+					const sw = swingers[i];
+					sw.p += dt / sw.dur;
+					if (sw.p >= 1) {
+						swingers.splice(i, 1);
+						continue;
+					}
+					const { x, y } = swingAt(sw, sw.p);
+					const ahead = swingAt(sw, Math.min(1, sw.p + 0.02));
+					const dir = ENDS[sw.b].x >= ENDS[sw.a].x ? 1 : -1;
+					const s = short * 0.09 * Math.min(1, sw.p / 0.12, (1 - sw.p) / 0.12);
+					const ax = sw.ax * w + tx * 0.15;
+					const ay = sw.ay * h + ty * 0.15;
+					const onWeb = sw.p > 0.08 && sw.p < 0.78;
+					const rot = onWeb
+						? Math.atan2(ay - y, ax - x) - Math.atan2(HAND.y, dir * HAND.x)
+						: Math.atan2(ahead.y - y, ahead.x - x) + Math.PI / 2;
+
+					g.globalCompositeOperation = P.comp;
+					for (const [lag, col] of [
+						[0.012, P.ca1],
+						[0.024, P.ca2]
+					] as const) {
+						const e = swingAt(sw, Math.max(0, sw.p - lag));
+						spider(e.x, e.y, s, rot, dir, sw.suit, `rgba(${col}, 0.5)`);
+					}
+					g.globalCompositeOperation = 'source-over';
+
+					if (onWeb) {
+						const c = Math.cos(rot);
+						const sn = Math.sin(rot);
+						const hx = x + s * (c * dir * HAND.x - sn * HAND.y);
+						const hy = y + s * (sn * dir * HAND.x + c * HAND.y);
+						const shot = Math.min(1, (sw.p - 0.08) / 0.05);
+						const wx = hx + (ax - hx) * shot;
+						const wy = hy + (ay - hy) * shot;
+						caStroke(
+							(dx, dy) => {
+								g.beginPath();
+								g.moveTo(hx + dx, hy + dy);
+								g.lineTo(wx + dx, wy + dy);
+								g.stroke();
+							},
+							0.8,
+							1.3,
+							1.6
+						);
+						if (sw.p < 0.2) sfx('THWIP!', hx + dir * s * 0.3, hy - s * 0.1, s * 0.34, -0.18 * dir);
+					}
+					spider(x, y, s, rot, dir, sw.suit);
+					if (rand(step * 3.1 + sw.ax * 100) < 0.07)
+						spider(x + (rand(step + sw.ay) - 0.5) * s * 0.6, y, s, rot, dir, sw.suit, `rgba(${GLITCH[step % GLITCH.length]}, 0.8)`);
 				}
 			}
 
