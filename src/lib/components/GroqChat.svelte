@@ -84,10 +84,10 @@
 					>
 						<div
 							class="max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed {isUser
-								? 'bg-brand text-cta-ink'
-								: 'border border-edge bg-card text-ink'}"
+								? 'bg-brand text-cta-ink whitespace-pre-wrap'
+								: 'markdown prose prose-sm border border-edge bg-card text-ink prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5'}"
 						>
-							{msg.content}
+							{#if isUser}{msg.content}{:else}{@html msg.content}{/if}
 						</div>
 					</div>
 				{/each}
