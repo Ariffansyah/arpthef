@@ -25,26 +25,24 @@
 
 <section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
 	<div
-		class="@container mb-24 flex flex-col gap-4 border-b border-edge pb-12"
+		class="@container mb-20 flex flex-col gap-4"
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
 		<h1
-			class="text-[length:clamp(2.5rem,13cqw,8rem)] leading-none font-black tracking-tighter text-ink"
+			class="font-display plates text-[length:clamp(3rem,15cqw,9rem)] leading-[0.95] text-ink"
 		>
-			Code &<br /><span class="text-brand">Contributions</span>
+			Code &<br /><span class="judul-komik">Contributions</span>
 		</h1>
-		<p class="text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">
-			Selected developments and open source works
-		</p>
+		<p class="narasi">Selected developments and open source works</p>
 	</div>
 
 	<div class="w-full">
-		<div class="grid grid-cols-1 gap-x-12 gap-y-24 md:grid-cols-2 xl:grid-cols-3" role="presentation">
+		<div class="grid grid-cols-1 gap-x-10 gap-y-16 md:grid-cols-2 xl:grid-cols-3" role="presentation">
 			{#each data.projects as project (project.id)}
 				<div class="project-card group flex flex-col gap-6" role="presentation" use:intersect={{ threshold: 0.1, once: true }}>
 					<a
 						href={resolve('/projects/[slug]', { slug: project.slug })}
-						class="relative aspect-4/5 overflow-hidden border border-brand bg-card"
+						class="komik relative aspect-4/5 overflow-hidden rounded-md bg-card transition-transform duration-150 group-hover:-translate-y-1 group-hover:-rotate-1"
 					>
 						<img
 							src={project.images[0] ?? '/assets/placeholder.webp'}
@@ -57,7 +55,7 @@
 							class="absolute top-4 left-4 flex gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						>
 							{#each project.technologies as tech (tech.name)}
-								<div class="bg-card/90 p-1.5 shadow-sm backdrop-blur-sm">
+								<div class="rounded-sm border-2 border-edge-ink bg-card p-1">
 									<img src={tech.icon} alt={tech.name} class="h-4 w-4" title={tech.name} />
 								</div>
 							{/each}
@@ -67,7 +65,7 @@
 					<div class="flex flex-col gap-3">
 						<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
 							<h2
-								class="text-2xl font-black tracking-tighter wrap-anywhere text-ink uppercase transition-colors group-hover:text-brand"
+								class="font-display text-3xl wrap-anywhere text-ink transition-colors group-hover:text-brand"
 							>
 								{project.name}
 							</h2>
@@ -82,7 +80,7 @@
 
 						<a
 							href={resolve('/projects/[slug]', { slug: project.slug })}
-							class="mt-2 w-fit border-b border-edge-ink pb-1 text-xs font-black tracking-widest uppercase transition-all hover:border-brand hover:text-brand"
+							class="tekan mt-2 w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 						>
 							View Details
 						</a>
@@ -92,14 +90,14 @@
 		</div>
 	</div>
 
-	<div class="mt-32 border-t border-edge py-32 text-center">
+	<div class="mt-24 py-24 text-center">
 		<a href={resolve('/contact')} class="group inline-flex items-center gap-6">
 			<span
-				class="text-4xl font-black tracking-tighter text-ink transition-all group-hover:text-brand lg:text-7xl"
+				class="judul-komik font-display text-5xl transition-transform group-hover:-rotate-2 lg:text-8xl"
 				>Have a project in mind?</span
 			>
 			<span
-				class="text-3xl text-ink-faint transition-transform group-hover:translate-x-4 lg:text-5xl"
+				class="font-display text-4xl text-ink transition-transform group-hover:translate-x-4 lg:text-7xl"
 				>→</span
 			>
 		</a>

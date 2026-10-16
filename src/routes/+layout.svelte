@@ -14,6 +14,8 @@
 
 	injectAnalytics({ mode: dev ? 'development' : 'production' });
 
+	const twos = (frames: number) => (t: number) => cubicOut(Math.ceil(t * frames) / frames);
+
 	let { children } = $props();
 
 	let isOpen = $state(false);
@@ -297,7 +299,7 @@
 
 <div id="app-wrapper" class="relative flex min-h-screen flex-col md:flex-row">
 	<nav
-		class="nav-sidebar relative z-50 flex w-full flex-col px-6 py-5 md:fixed md:h-screen md:w-64 md:px-8 md:py-0 lg:w-72"
+		class="nav-sidebar bg-surface border-edge-ink relative z-50 flex w-full flex-col border-b-3 px-6 py-5 md:fixed md:h-screen md:w-64 md:overflow-y-auto md:border-r-3 md:border-b-0 md:px-8 md:py-0 lg:w-72"
 	>
 		<svg
 			class="pointer-events-none absolute top-0 right-0 hidden md:block"
@@ -317,9 +319,23 @@
 				</mask>
 			</defs>
 			<g fill="none" stroke-linecap="round" mask="url(#corner-web-mask)">
-				<use href="#corner-web" stroke="#00e5ff" stroke-width="1.2" opacity="0.4" x="-1.6" y="1" />
-				<use href="#corner-web" stroke="#ff2d96" stroke-width="1.2" opacity="0.4" x="1.6" y="-1" />
-				<use href="#corner-web" stroke="var(--edge-strong)" stroke-width="0.9" opacity="0.8" />
+				<use
+					href="#corner-web"
+					stroke="var(--plate-a)"
+					stroke-width="1.2"
+					opacity="0.5"
+					x="-1.6"
+					y="1"
+				/>
+				<use
+					href="#corner-web"
+					stroke="var(--plate-b)"
+					stroke-width="1.2"
+					opacity="0.5"
+					x="1.6"
+					y="-1"
+				/>
+				<use href="#corner-web" stroke="var(--edge-ink)" stroke-width="1" opacity="0.85" />
 			</g>
 
 			<g class="dangle" style="transform-origin: {cornerWeb.ax}px {cornerWeb.ay}px">
@@ -366,18 +382,13 @@
 				</g>
 			</g>
 		</svg>
-		<!-- Top section: logo + subtitle + mobile controls -->
 		<div class="flex items-center justify-between pb-4 md:flex-col md:items-start md:pt-10 md:pb-0">
 			<div class="flex items-center gap-3 md:flex-col md:items-start md:gap-1">
-				<a
-					class="glitch group text-ink flex items-center gap-2.5 text-xl font-black tracking-tighter md:text-2xl"
-					data-text="arp."
-					href={resolve('/')}
-				>
-					arp<span class="text-brand group-hover:text-brand-hover transition-colors">.</span>
+				<a class="font-display judul-komik text-4xl md:text-6xl" href={resolve('/')}>
+					arp<span class="text-pop">.</span>
 				</a>
 				<p
-					class="text-ink-faint hidden text-[10px] font-bold tracking-[0.2em] uppercase md:ml-0.5 md:block"
+					class="border-edge-ink bg-pop text-on-pop hidden -rotate-2 border-2 px-2 py-0.5 text-[10px] font-bold tracking-[0.2em] uppercase md:mt-2 md:block"
 				>
 					Software Engineer
 				</p>
@@ -387,13 +398,15 @@
 				<button
 					type="button"
 					onclick={theme.toggle}
-					class="text-brand hover:text-brand-hover transition-colors"
+					class="tekan bg-card text-ink hover:bg-pop hover:text-on-pop flex h-9 w-9 items-center justify-center rounded-md"
 					aria-label="Toggle color theme"
 				>
-					<i class="fa-regular {$theme === 'dark' ? 'fa-sun' : 'fa-moon'} fa-lg"></i>
+					<i class="fa-regular {$theme === 'dark' ? 'fa-sun' : 'fa-moon'}"></i>
 				</button>
 				<button
-					class="relative z-50 flex flex-col gap-1 {isOpen ? 'pointer-events-none opacity-0' : ''}"
+					class="tekan bg-card hover:bg-pop relative z-50 flex h-9 w-9 flex-col items-center justify-center gap-1 rounded-md {isOpen
+						? 'pointer-events-none opacity-0'
+						: ''}"
 					onclick={toggleMenu}
 					type="button"
 					aria-label="Toggle menu"
@@ -405,105 +418,82 @@
 			</div>
 		</div>
 
-		<!-- Tab progression bar (desktop) -->
 		<div class="relative hidden md:mt-10 md:mb-10 md:block">
-			<div class="bg-edge h-px w-full"></div>
+			<div class="border-edge-ink bg-card h-3 w-full border-2"></div>
 			<div
-				class="bg-brand absolute top-0 h-px transition-all duration-500 ease-out"
+				class="bg-cta border-edge-ink absolute top-0 h-3 border-2 transition-all duration-500 ease-out"
 				style="left: {activeIndex >= 0
 					? (activeIndex / navLinks.length) * 100
 					: 0}%; width: {activeIndex >= 0 ? 100 / navLinks.length : 0}%"
 			></div>
 		</div>
 
-		<!-- Navigation links (desktop) -->
-		<ul class="hidden flex-col gap-1 md:flex">
+		<ul class="hidden flex-col gap-3 md:flex">
 			{#each navLinks as link (link.path)}
 				<li>
 					<a
-						class="nav-link group flex items-center gap-3 rounded-md px-3 py-2.5 text-xs font-bold tracking-[0.3em] uppercase transition-all
+						class="tekan font-display flex items-center gap-3 rounded-md px-3 py-1.5 text-2xl
 						{page.url.pathname === link.path
-							? 'nav-link-active bg-brand/10 text-brand'
-							: 'text-ink-faint hover:bg-surface/80 hover:text-ink'}"
+							? 'bg-pop text-on-pop'
+							: 'bg-card text-ink hover:bg-pop hover:text-on-pop'}"
 						href={resolve(link.path)}
+						aria-current={page.url.pathname === link.path ? 'page' : undefined}
 					>
-						<i
-							class="fa-solid {link.icon} w-4 text-center text-[11px] transition-all {page.url
-								.pathname === link.path
-								? 'text-brand'
-								: 'text-ink-faint group-hover:text-ink'}"
-						></i>
+						<i class="fa-solid {link.icon} w-5 text-center text-sm"></i>
 						{link.name}
 					</a>
 				</li>
 			{/each}
 		</ul>
 
-		<!-- Panel decorative line -->
-		<div class="hidden md:relative md:mx-3 md:mt-1 md:mb-2 md:block">
-			<div class="flex items-center gap-1">
-				<span class="border-edge-strong bg-card h-2 w-2 rounded-full border"></span>
-				<div
-					class="from-edge-strong via-brand/20 h-px flex-1 bg-gradient-to-r to-transparent"
-				></div>
-				<span class="bg-brand/30 h-1.5 w-1.5 rounded-sm"></span>
-			</div>
-		</div>
-
-		<!-- Dimension portrait: Gwen in light mode, Miles in dark. -->
-		<div class="mt-6 hidden md:block">
-			<div class="character-frame">
+		<div class="mt-8 hidden md:block">
+			<div class="character-frame komik rounded-md">
 				<div class="pointer-events-none aspect-4/5 w-full">
 					<Character3D />
 				</div>
 			</div>
-			<div class="mt-2 flex items-baseline justify-between px-0.5">
-				<span class="text-brand text-[9px] font-bold tracking-[0.25em] uppercase">
+			<div class="mt-3 flex items-baseline justify-between px-0.5">
+				<span class="font-display text-ink text-xl">
 					{$theme === 'dark' ? 'Miles' : 'Gwen'}
 				</span>
-				<span class="text-ink-faint/70 text-[9px] font-bold tracking-[0.2em] uppercase">
+				<span class="text-ink-faint text-[10px] font-bold tracking-[0.2em] uppercase">
 					{$theme === 'dark' ? 'Earth-1610' : 'Earth-65'}
 				</span>
 			</div>
 		</div>
 
-		<!-- Scroll progress bar (desktop) -->
 		<div
-			class="scroll-progress absolute top-0 right-0 z-10 hidden h-full w-0.5 md:block"
+			class="scroll-progress fixed top-0 left-[calc(16rem-3px)] z-10 hidden h-full w-[3px] md:block lg:left-[calc(18rem-3px)]"
 			aria-hidden="true"
 		>
 			<div
-				class="bg-brand h-full w-full origin-top transition-transform duration-75 ease-linear"
+				class="bg-cta h-full w-full origin-top transition-transform duration-75 ease-linear"
 				style="transform: scaleY({scrollProgress});"
 			></div>
 		</div>
 
-		<!-- Bottom section (desktop) -->
-		<div class="mt-auto hidden flex-col gap-5 pb-8 md:flex">
-			<div class="bg-edge h-px w-full"></div>
-
+		<div class="mt-auto hidden flex-col gap-5 pt-8 pb-8 md:flex">
 			<button
 				type="button"
 				onclick={theme.toggle}
-				class="group text-ink-faint hover:bg-surface/80 hover:text-ink flex w-fit items-center gap-3 rounded-md px-3 py-2 text-[10px] font-bold tracking-[0.3em] uppercase transition-all"
+				class="tekan bg-card text-ink hover:bg-pop hover:text-on-pop flex w-fit items-center gap-3 rounded-md px-3 py-2 text-[11px] font-bold tracking-[0.2em] uppercase"
 				aria-label="Toggle color theme"
 			>
-				<i class="fa-regular {$theme === 'dark' ? 'fa-sun' : 'fa-moon'} text-brand w-4 text-center"
-				></i>
+				<i class="fa-regular {$theme === 'dark' ? 'fa-sun' : 'fa-moon'} w-4 text-center"></i>
 				{$theme === 'dark' ? 'Light' : 'Dark'} Mode
 			</button>
 
-			<div class="flex gap-3 px-3">
+			<div class="flex gap-3">
 				{#each socialLinks as s (s.name)}
 					<a
 						href={s.url}
 						target="_blank"
-						class="group text-ink-faint hover:bg-surface/80 hover:text-ink relative flex h-8 w-8 items-center justify-center rounded-md text-sm transition-all"
+						class="tekan group bg-card text-ink hover:bg-pop hover:text-on-pop relative flex h-9 w-9 items-center justify-center rounded-md text-sm"
 						aria-label={s.name}
 					>
 						<i class="fa-brands {s.icon}"></i>
 						<span
-							class="bg-ink text-surface absolute -top-8 left-1/2 -translate-x-1/2 rounded px-2 py-1 text-[9px] font-bold tracking-widest whitespace-nowrap opacity-0 transition-opacity group-hover:opacity-100"
+							class="bg-ink text-surface pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded px-2 py-1 text-[10px] font-bold tracking-widest whitespace-nowrap opacity-0 transition-opacity group-hover:opacity-100"
 						>
 							{s.name}
 						</span>
@@ -511,7 +501,7 @@
 				{/each}
 			</div>
 
-			<p class="text-ink-faint/60 px-3 text-[9px] font-bold tracking-widest uppercase">
+			<p class="text-ink-faint text-[10px] font-bold tracking-widest uppercase">
 				&copy; {new Date().getFullYear()} arpthef
 			</p>
 		</div>
@@ -522,7 +512,7 @@
 			{@render children()}
 		</div>
 
-		<footer class="soft-divide p-8 text-center md:hidden">
+		<footer class="border-edge-ink bg-surface border-t-3 p-8 text-center md:hidden">
 			<div class="flex justify-center gap-6 pb-4">
 				{#each socialLinks as s (s.name)}
 					<a
@@ -535,7 +525,7 @@
 					</a>
 				{/each}
 			</div>
-			<p class="text-ink-faint/60 text-[9px] font-bold tracking-widest uppercase">
+			<p class="text-ink-faint text-[10px] font-bold tracking-widest uppercase">
 				&copy; {new Date().getFullYear()} arpthef
 			</p>
 		</footer>
@@ -546,24 +536,10 @@
 	<Background3D />
 </div>
 
-<!-- Ben-Day halftone plate: drifts slowly, heavier towards the edges -->
 <div class="halftone pointer-events-none fixed inset-0 z-0" aria-hidden="true"></div>
-
-<!-- Spider-Verse ambient glow: halftone-friendly wash -->
-<div
-	class="pointer-events-none fixed inset-0 z-0 {$theme === 'dark'
-		? 'opacity-100'
-		: 'opacity-[0.55]'} transition-opacity duration-500"
-	aria-hidden="true"
-	style="background-image:
-		radial-gradient(70rem 55rem at 0% 0%, color-mix(in srgb, var(--brand) 13%, transparent), transparent 62%),
-		radial-gradient(55rem 55rem at 100% 0%, color-mix(in srgb, var(--edge-strong) 10%, transparent), transparent 60%),
-		radial-gradient(45rem 45rem at 100% 100%, color-mix(in srgb, var(--brand) 9%, transparent), transparent 62%);"
-></div>
 
 <div class="reading-scrim pointer-events-none fixed inset-0 z-0" aria-hidden="true"></div>
 
-<!-- Page navigation confirmation overlay -->
 {#if pendingNav}
 	<div
 		class="fixed z-50 flex items-center justify-center transition-all duration-500 ease-out {pendingNav.dir ===
@@ -573,31 +549,31 @@
 	>
 		<div class="relative h-14 w-full overflow-hidden">
 			<div
-				class="bg-surface/80 absolute inset-0 backdrop-blur-md"
-				style="border-{pendingNav.dir === 1 ? 'top' : 'bottom'}: 1px solid var(--edge);"
+				class="bg-pop absolute inset-0"
+				style="border-{pendingNav.dir === 1 ? 'top' : 'bottom'}: 3px solid #0c1844;"
 			></div>
 			<div
-				class="bg-brand absolute bottom-0 left-0 h-0.5 transition-none"
+				class="bg-cta absolute bottom-0 left-0 h-1.5 transition-none"
 				style="width: {navProgress * 100}%"
 			></div>
 			<div class="relative flex h-full items-center justify-center gap-3 px-6">
 				<i
 					class="fa-solid {pendingNav.dir === 1
 						? 'fa-arrow-down'
-						: 'fa-arrow-up'} text-brand text-xs"
+						: 'fa-arrow-up'} text-on-pop text-xs"
 				></i>
-				<span class="text-ink-faint text-[10px] font-bold tracking-[0.3em] uppercase">
+				<span class="text-on-pop text-[10px] font-bold tracking-[0.3em] uppercase">
 					{pendingNav.dir === 1 ? 'Next' : 'Back'}
 				</span>
-				<span class="text-ink text-xs font-black tracking-tighter">
+				<span class="font-display text-on-pop text-2xl">
 					{pendingName}
 				</span>
-				<span class="text-ink-faint/50 text-[10px] font-bold tracking-widest uppercase">
+				<span class="text-on-pop text-[10px] font-bold tracking-widest uppercase">
 					{Math.round(navProgress * 100)}%
 				</span>
 				<button
 					onclick={cancelNav}
-					class="border-edge text-ink-faint hover:border-brand hover:text-brand ml-2 flex h-6 w-6 items-center justify-center rounded-full border text-[10px] transition-colors"
+					class="text-on-pop border-on-pop bg-cta-ink hover:bg-cta hover:text-cta-ink ml-2 flex h-7 w-7 items-center justify-center rounded-full border-2 text-[11px] transition-colors"
 					aria-label="Cancel navigation"
 				>
 					<i class="fa-solid fa-xmark"></i>
@@ -607,27 +583,24 @@
 	</div>
 {/if}
 
-<!-- Mobile overlay menu. Must live OUTSIDE <nav>: the sidebar sets
-	 backdrop-filter, which makes it the containing block for fixed
-	 descendants, so an overlay nested inside it gets clipped to the nav.
-	 z sits above the nav's z-50 so the bar underneath doesn't show through. -->
+<!-- z above the nav's z-50 so the bar doesn't show through -->
 {#if isOpen}
 	<div
-		transition:fly={{ x: -300, duration: 250, easing: cubicOut }}
-		class="bg-surface/95 fixed inset-0 z-[60] flex flex-col backdrop-blur-lg md:hidden"
+		transition:fly={{ x: -300, duration: 250, easing: twos(3) }}
+		class="bg-surface fixed inset-0 z-[60] flex flex-col md:hidden"
 	>
 		<div class="flex items-center justify-between px-6 pt-5 pb-4">
 			<a
-				class="text-ink text-xl font-black tracking-tighter"
+				class="font-display judul-komik text-4xl"
 				href={resolve('/')}
 				onclick={() => (isOpen = false)}
 			>
-				arp<span class="text-brand">.</span>
+				arp<span class="text-pop">.</span>
 			</a>
 			<button
 				onclick={toggleMenu}
 				type="button"
-				class="text-ink hover:bg-surface/80 flex h-8 w-8 items-center justify-center rounded-md transition-colors"
+				class="tekan bg-card text-ink hover:bg-pop hover:text-on-pop flex h-9 w-9 items-center justify-center rounded-md"
 				aria-label="Close menu"
 			>
 				<i class="fa-solid fa-xmark text-xl"></i>
@@ -635,22 +608,20 @@
 		</div>
 
 		<div class="flex-1 overflow-y-auto px-6 py-8">
-			<ul class="flex flex-col gap-2">
+			<ul class="flex flex-col gap-4">
 				{#each navLinks as link, i (link.path)}
 					<li>
 						<a
-							in:fly={{ x: -40, duration: 300, delay: i * 60, easing: cubicOut }}
-							class="text-ink flex items-center gap-4 rounded-lg px-4 py-3.5 text-lg font-black tracking-tighter uppercase transition-all active:scale-[0.98]
-							{page.url.pathname === link.path ? 'bg-brand/10 text-brand' : 'hover:bg-surface/80'}"
+							in:fly={{ x: -40, duration: 250, delay: i * 83, easing: twos(3) }}
+							class="tekan font-display flex items-center gap-4 rounded-md px-4 py-2.5 text-3xl
+							{page.url.pathname === link.path
+								? 'bg-pop text-on-pop'
+								: 'bg-card text-ink hover:bg-pop hover:text-on-pop'}"
 							href={resolve(link.path)}
 							onclick={() => (isOpen = false)}
+							aria-current={page.url.pathname === link.path ? 'page' : undefined}
 						>
-							<i
-								class="fa-solid {link.icon} w-6 text-center text-base {page.url.pathname ===
-								link.path
-									? 'text-brand'
-									: 'text-ink-faint'}"
-							></i>
+							<i class="fa-solid {link.icon} w-6 text-center text-base"></i>
 							{link.name}
 						</a>
 					</li>
@@ -663,9 +634,9 @@
 					onclick={() => {
 						theme.toggle();
 					}}
-					class="text-ink-faint hover:text-ink flex items-center gap-3 text-xs font-bold tracking-[0.3em] uppercase transition-colors"
+					class="tekan bg-card text-ink hover:bg-pop hover:text-on-pop flex w-fit items-center gap-3 rounded-md px-3 py-2 text-xs font-bold tracking-[0.2em] uppercase"
 				>
-					<i class="fa-regular {$theme === 'dark' ? 'fa-sun' : 'fa-moon'} text-brand"></i>
+					<i class="fa-regular {$theme === 'dark' ? 'fa-sun' : 'fa-moon'}"></i>
 					{$theme === 'dark' ? 'Light' : 'Dark'} Mode
 				</button>
 
@@ -682,7 +653,7 @@
 					{/each}
 				</div>
 
-				<p class="text-ink-faint/60 text-[9px] font-bold tracking-widest uppercase">
+				<p class="text-ink-faint text-[10px] font-bold tracking-widest uppercase">
 					&copy; {new Date().getFullYear()} arpthef
 				</p>
 			</div>
@@ -702,11 +673,11 @@
 			<img
 				src={$lightboxImage}
 				alt="Enlarged view"
-				class="max-h-[80vh] max-w-[90vw] object-contain shadow-2xl"
+				class="komik max-h-[80vh] max-w-[90vw] rounded-md object-contain"
 			/>
 			<button
 				onclick={closeLightbox}
-				class="text-ink-faint hover:text-brand text-[10px] font-black tracking-[0.3em] uppercase transition-colors"
+				class="tekan bg-card text-ink hover:bg-pop hover:text-on-pop rounded-md px-4 py-2 text-[11px] font-bold tracking-[0.2em] uppercase"
 			>
 				Close [esc]
 			</button>
@@ -715,9 +686,9 @@
 {/if}
 
 <style>
-	/* Positioning comes from the element's own `relative` / `md:fixed` classes —
-	   setting it here would out-specify them and drop the sidebar back in flow. */
+	/* No position here: it would out-specify the `md:fixed` class. */
 	.nav-sidebar {
+		view-transition-name: sidebar;
 		scrollbar-width: none;
 		-ms-overflow-style: none;
 	}
@@ -725,55 +696,37 @@
 		display: none;
 	}
 
-	.nav-sidebar::before,
-	.nav-sidebar::after {
+	.nav-sidebar::before {
 		content: '';
 		position: absolute;
 		inset: 0;
 		z-index: -1;
 		pointer-events: none;
-		mask-image: linear-gradient(to right, #000 55%, transparent);
+		background-image: radial-gradient(
+			color-mix(in srgb, var(--edge-ink) 9%, transparent) 1.2px,
+			transparent 1.6px
+		);
+		background-size: 9px 9px;
 	}
 
-	.nav-sidebar::before {
-		--grid: color-mix(in srgb, var(--edge-strong) 6%, transparent);
-		backdrop-filter: blur(10px);
-		background-image:
-			repeating-linear-gradient(
-				0deg,
-				transparent,
-				transparent 28px,
-				var(--grid) 28px,
-				var(--grid) 29px
-			),
-			repeating-linear-gradient(
-				90deg,
-				transparent,
-				transparent 28px,
-				var(--grid) 28px,
-				var(--grid) 29px
-			);
-	}
-	:global(.dark) .nav-sidebar::before {
-		--grid: color-mix(in srgb, var(--edge-strong) 8%, transparent);
-	}
-
-	/* On mobile the panel is a top bar, so the falloff runs downwards. */
-	@media (max-width: 767px) {
-		.nav-sidebar::before,
-		.nav-sidebar::after {
-			mask-image: linear-gradient(to bottom, #000 50%, transparent);
-		}
-	}
-
+	/* steps(11) per 0.9 s segment ≈ 12 fps; the keyframes trace the ease. */
 	.dangle {
-		animation: dangle 3.6s ease-in-out infinite alternate;
+		animation: dangle 3.6s steps(11) infinite alternate;
 	}
 	@keyframes dangle {
-		from {
+		0% {
 			transform: rotate(-6deg);
 		}
-		to {
+		25% {
+			transform: rotate(-4.2deg);
+		}
+		50% {
+			transform: rotate(0deg);
+		}
+		75% {
+			transform: rotate(4.2deg);
+		}
+		100% {
 			transform: rotate(6deg);
 		}
 	}
@@ -786,116 +739,6 @@
 	}
 	.nav-sidebar:hover .spider {
 		transform: translateY(-28px);
-	}
-
-	/* Divider that fades out at both ends instead of butting into the edges. */
-	.soft-divide {
-		background-image: linear-gradient(
-			to right,
-			transparent,
-			var(--edge) 25%,
-			var(--edge) 75%,
-			transparent
-		);
-		background-size: 100% 1px;
-		background-repeat: no-repeat;
-		background-position: top;
-	}
-
-	/* Dimension-glitch sweep: a chromatic band crosses the panel now and then.
-	   Shares the plate's mask so it fades out with the rest of the panel. */
-	.nav-sidebar::after {
-		background: linear-gradient(
-			to bottom,
-			transparent 45%,
-			rgba(0, 229, 255, 0.14) 47%,
-			rgba(255, 45, 150, 0.14) 50%,
-			transparent 53%
-		);
-		background-size: 100% 200%;
-		animation: panel-sweep 7s ease-in-out infinite;
-	}
-
-	@keyframes panel-sweep {
-		0%,
-		70%,
-		100% {
-			background-position: 0 -120%;
-			opacity: 0;
-		}
-		74% {
-			opacity: 1;
-		}
-		92% {
-			background-position: 0 220%;
-			opacity: 1;
-		}
-		96% {
-			opacity: 0;
-		}
-	}
-
-	/* Misregistered ink plates on the wordmark, snapping every few seconds */
-	.glitch {
-		position: relative;
-	}
-	.glitch::before,
-	.glitch::after {
-		content: attr(data-text);
-		position: absolute;
-		left: 0;
-		top: 0;
-		pointer-events: none;
-		opacity: 0;
-	}
-	.glitch::before {
-		color: #00e5ff;
-		animation: glitch-cyan 5s steps(1) infinite;
-	}
-	.glitch::after {
-		color: #ff2d96;
-		animation: glitch-magenta 5s steps(1) infinite;
-	}
-
-	@keyframes glitch-cyan {
-		0%,
-		88%,
-		100% {
-			opacity: 0;
-			transform: none;
-		}
-		89% {
-			opacity: 0.85;
-			transform: translate(-2px, 1px);
-		}
-		92% {
-			opacity: 0.85;
-			transform: translate(2px, -1px);
-		}
-		95% {
-			opacity: 0.6;
-			transform: translate(-1px, 0);
-		}
-	}
-	@keyframes glitch-magenta {
-		0%,
-		88%,
-		100% {
-			opacity: 0;
-			transform: none;
-		}
-		89% {
-			opacity: 0.85;
-			transform: translate(2px, -1px);
-		}
-		92% {
-			opacity: 0.85;
-			transform: translate(-2px, 1px);
-		}
-		95% {
-			opacity: 0.6;
-			transform: translate(1px, 0);
-		}
 	}
 
 	.reading-scrim {
@@ -917,7 +760,7 @@
 		opacity: 0.14;
 		mix-blend-mode: multiply;
 		mask-image: radial-gradient(125% 125% at 50% 45%, transparent 28%, black 100%);
-		animation: halftone-drift 24s linear infinite;
+		animation: halftone-drift 24s steps(288) infinite;
 	}
 	:global(.dark) .halftone {
 		mix-blend-mode: screen;
@@ -929,104 +772,23 @@
 		}
 	}
 
-	/* Comic panel the portrait sits in: halftone ground, brand wash from above,
-	   torn bottom-right corner. */
 	.character-frame {
 		position: relative;
 		overflow: hidden;
-		border: 1px solid var(--edge);
-		clip-path: polygon(0 0, 100% 0, 100% 86%, 86% 100%, 0 100%);
 		background-image:
 			radial-gradient(
 				115% 85% at 50% 12%,
-				color-mix(in srgb, var(--brand) 18%, transparent),
+				color-mix(in srgb, var(--cta) 22%, transparent),
 				transparent 72%
 			),
 			radial-gradient(
 				circle at center,
-				color-mix(in srgb, var(--edge-strong) 30%, transparent) 0.8px,
+				color-mix(in srgb, var(--edge-ink) 28%, transparent) 0.8px,
 				transparent 1.1px
 			);
 		background-size:
 			auto,
 			4px 4px;
-	}
-	/* Torn edge highlight along the cut corner */
-	.character-frame::after {
-		content: '';
-		position: absolute;
-		right: -1px;
-		bottom: -1px;
-		width: 24%;
-		height: 24%;
-		background: linear-gradient(
-			135deg,
-			transparent 48%,
-			color-mix(in srgb, var(--brand) 70%, transparent) 50%,
-			transparent 52%
-		);
-		pointer-events: none;
-	}
-
-	.nav-link {
-		position: relative;
-		letter-spacing: 0.25em;
-		transition: text-shadow 0.15s ease;
-	}
-	.nav-link:hover {
-		text-shadow:
-			-1px 0 rgba(0, 229, 255, 0.5),
-			1px 0 rgba(255, 45, 150, 0.5);
-	}
-	/* Active tab is a torn panel corner, printed slightly out of register */
-	.nav-link-active {
-		clip-path: polygon(0 0, 100% 0, 100% 58%, 93% 100%, 0 100%);
-		text-shadow:
-			-1px 0 rgba(0, 229, 255, 0.55),
-			1px 0 rgba(255, 45, 150, 0.55);
-	}
-	.nav-link::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 50%;
-		translate: 0 -50%;
-		width: 2px;
-		height: 0;
-		border-radius: 0 2px 2px 0;
-		background: var(--brand);
-		transition: height 0.25s ease;
-	}
-	.nav-link:hover::before {
-		height: 60%;
-	}
-	.nav-link-active::before {
-		height: 70% !important;
-	}
-
-	.nav-link::after {
-		content: '';
-		position: absolute;
-		right: 8px;
-		top: 50%;
-		translate: 0 -50%;
-		width: 4px;
-		height: 4px;
-		border-radius: 50%;
-		background: var(--edge-strong);
-		opacity: 0;
-		transition:
-			opacity 0.25s ease,
-			box-shadow 0.25s ease;
-	}
-	.nav-link:hover::after {
-		opacity: 1;
-		box-shadow: 0 0 6px var(--brand);
-	}
-	.nav-link-active::after {
-		opacity: 1;
-		background: var(--brand);
-		box-shadow: 0 0 8px var(--brand);
 	}
 
 	:global(html) {
@@ -1039,43 +801,65 @@
 	}
 
 	:global(::view-transition-old(root)) {
-		animation: vt-fade-out 0.35s ease-out;
+		animation: vt-tear-out 250ms steps(1) forwards;
 	}
 	:global(::view-transition-new(root)) {
-		animation: vt-fade-in 0.35s ease-out;
+		animation: vt-tear-in 333ms steps(1);
 	}
 
-	@keyframes vt-fade-out {
-		from {
-			opacity: 1;
+	/* No crossfade: two opaque plus-lighter snapshots would flash white. */
+	:global(::view-transition-old(sidebar)) {
+		display: none;
+	}
+	:global(::view-transition-new(sidebar)) {
+		animation: none;
+	}
+
+	@keyframes vt-tear-out {
+		0% {
+			clip-path: inset(0 0 46% 0);
+			translate: -18px 0;
 		}
-		to {
+		33% {
+			clip-path: inset(38% 0 12% 0);
+			translate: 14px 0;
+		}
+		66% {
+			clip-path: inset(70% 0 0 0);
+			translate: -8px 0;
+		}
+		100% {
 			opacity: 0;
 		}
 	}
-	@keyframes vt-fade-in {
-		from {
-			opacity: 0;
+	@keyframes vt-tear-in {
+		0% {
+			clip-path: inset(22% 0 30% 0);
+			translate: 16px 0;
 		}
-		to {
-			opacity: 1;
+		25% {
+			clip-path: inset(0 0 18% 0);
+			translate: -10px 0;
+		}
+		50% {
+			clip-path: inset(0);
+			translate: 4px 0;
+		}
+		75% {
+			translate: -1px 0;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.nav-sidebar::after,
-		.glitch::before,
-		.glitch::after,
 		.halftone,
-		.dangle {
+		.dangle,
+		:global(::view-transition-old(root)),
+		:global(::view-transition-new(root)) {
 			animation: none;
 		}
 		.silk,
 		.spider {
 			transition: none;
-		}
-		.nav-sidebar::after {
-			opacity: 0;
 		}
 	}
 </style>

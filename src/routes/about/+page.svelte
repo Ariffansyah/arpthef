@@ -7,7 +7,7 @@
 		return {
 			duration,
 			css: (t: number) => {
-				const eased = cubicOut(t);
+				const eased = cubicOut(Math.ceil(t * 5) / 5);
 				return `
 					opacity: ${eased};
 					transform: translateX(${10 * (1 - eased)}px);
@@ -91,20 +91,17 @@
 
 <section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
 	<div class="mb-24 flex flex-col gap-4">
-		<h1 class="text-5xl font-black tracking-tighter text-ink lg:text-8xl">
-			About<br /><span class="text-brand">Me</span>
+		<h1 class="font-display plates text-7xl leading-[0.95] text-ink lg:text-9xl">
+			About<br /><span class="judul-komik">Me</span>
 		</h1>
-		<p class="text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">The story so far</p>
+		<p class="narasi">The story so far</p>
 	</div>
 
 	<div class="grid grid-cols-1 gap-20 xl:grid-cols-2">
 		<div class="flex flex-col gap-10">
 			<div class="flex flex-col gap-6" use:intersect={{ threshold: 0.1, once: true }}>
 				<p class="text-xl leading-relaxed font-medium text-ink-muted md:text-2xl">
-					I am an undergraduate student primarily focused on <span
-						class="text-ink underline decoration-brand decoration-4"
-						>backend development</span
-					>, building the invisible engines that power the web.
+					I am an undergraduate student primarily focused on <span class="bg-pop px-1 text-on-pop box-decoration-clone">backend development</span>, building the invisible engines that power the web.
 				</p>
 
 				<div class="flex flex-col gap-6 leading-relaxed text-ink-muted">
@@ -118,7 +115,7 @@
 						<div
 							in:bioAnimation={{ duration: 400 }}
 							out:bioAnimation={{ duration: 400 }}
-							class="flex flex-col gap-6 border-l-2 border-edge pl-6"
+							class="komik flex flex-col gap-6 rounded-md bg-card p-6"
 						>
 							<p>
 								In high school, I reached the provincial level of the National Science Olympiad (IT
@@ -136,7 +133,7 @@
 
 					<button
 						on:click={toggleBio}
-						class="w-fit text-xs font-black tracking-widest text-brand uppercase transition-all hover:text-brand-hover"
+						class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 					>
 						{isBioExpanded ? '[-] Read Less' : '[+] Read Full Story'}
 					</button>
@@ -145,20 +142,21 @@
 
 			<a
 				href={resolve('/contact')}
-				class="w-fit border-b-2 border-edge-ink pb-1 text-xs font-black tracking-widest uppercase transition-all hover:border-brand hover:text-brand"
+				class="tekan w-fit rounded-md bg-cta px-5 py-2 font-display text-2xl text-cta-ink [text-shadow:none] hover:bg-ink hover:text-surface"
 			>
 				Get in touch
 			</a>
 		</div>
 
 		<div class="flex flex-col gap-12" use:intersect={{ threshold: 0.1, once: true }}>
-			<div class="no-scrollbar flex w-full gap-8 overflow-x-auto border-b border-edge">
+			<div class="flex w-full flex-wrap gap-3">
 				{#each tabs as tab (tab.label)}
 					<button
-						class="pb-4 text-[10px] font-black tracking-[0.2em] whitespace-nowrap uppercase transition-all {activeTab ===
+						class="tekan rounded-md px-4 py-1.5 font-display text-xl whitespace-nowrap {activeTab ===
 						tab.value
-							? 'border-b-2 border-brand text-ink'
-							: 'text-ink-faint hover:text-ink-muted'}"
+							? 'bg-pop text-on-pop'
+							: 'bg-card text-ink hover:bg-pop hover:text-on-pop'}"
+						aria-pressed={activeTab === tab.value}
 						on:click={() => (activeTab = tab.value)}
 					>
 						{tab.label}
@@ -166,16 +164,16 @@
 				{/each}
 			</div>
 
-			<div class="flex flex-col gap-10">
+			<div class="flex flex-col gap-8">
 				{#if activeTab === 'work'}
 					{#each showWorkExperiences as exp, i (i)}
-						<div class="flex flex-col gap-1">
+						<div class="komik flex flex-col gap-1 rounded-md bg-card p-5">
 							<span
 								class="text-[10px] font-bold tracking-widest uppercase {textColors[
 									i % textColors.length
 								]}">{exp.date}</span
 							>
-							<h3 class="text-xl font-black text-ink">{exp.title}</h3>
+							<h3 class="font-display text-2xl text-ink">{exp.title}</h3>
 							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
 								{exp.name}
 							</p>
@@ -185,38 +183,38 @@
 					{#if workExperiences.length > 3}
 						<button
 							on:click={toggleShowMoreWork}
-							class="w-fit text-[10px] font-black tracking-[0.2em] text-ink-faint uppercase hover:text-brand"
+							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 						>
 							{isShowMoreWork ? '[-] Show Less' : '[+] Show More'}
 						</button>
 					{/if}
 				{:else if activeTab === 'education'}
 					{#each showEducationExperiences as edu, i (i)}
-						<div class="flex flex-col gap-1">
+						<div class="komik flex flex-col gap-1 rounded-md bg-card p-5">
 							<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
 								>{edu.date}</span
 							>
-							<h3 class="text-xl font-black text-ink">{edu.name}</h3>
+							<h3 class="font-display text-2xl text-ink">{edu.name}</h3>
 							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{edu.description}</p>
 						</div>
 					{/each}
 					{#if educationExperiences.length > 3}
 						<button
 							on:click={toggleShowMoreEdu}
-							class="w-fit text-[10px] font-black tracking-[0.2em] text-ink-faint uppercase hover:text-brand"
+							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 						>
 							{isShowMoreEdu ? '[-] Show Less' : '[+] Show More'}
 						</button>
 					{/if}
 				{:else if activeTab === 'organization'}
 					{#each showOrganizationExperiences as org, i (i)}
-						<div class="flex flex-col gap-1">
+						<div class="komik flex flex-col gap-1 rounded-md bg-card p-5">
 							<span
 								class="text-[10px] font-bold tracking-widest uppercase {textColors[
 									i % textColors.length
 								]}">{org.date}</span
 							>
-							<h3 class="text-xl font-black text-ink">{org.title}</h3>
+							<h3 class="font-display text-2xl text-ink">{org.title}</h3>
 							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
 								{org.name}
 							</p>
@@ -226,20 +224,20 @@
 					{#if organizationExperiences.length > 3}
 						<button
 							on:click={toggleShowMoreOrg}
-							class="w-fit text-[10px] font-black tracking-[0.2em] text-ink-faint uppercase hover:text-brand"
+							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 						>
 							{isShowMoreOrg ? '[-] Show Less' : '[+] Show More'}
 						</button>
 					{/if}
 				{:else if activeTab === 'achievement'}
 					{#each showAchievements as ach, i (i)}
-						<div class="flex flex-col gap-1">
+						<div class="komik flex flex-col gap-1 rounded-md bg-card p-5">
 							<span
 								class="text-[10px] font-bold tracking-widest uppercase {textColors[
 									i % textColors.length
 								]}">{ach.date}</span
 							>
-							<h3 class="text-xl font-black text-ink">{ach.title}</h3>
+							<h3 class="font-display text-2xl text-ink">{ach.title}</h3>
 							<p class="text-sm font-bold tracking-widest text-brand uppercase">
 								{ach.name}
 							</p>
@@ -249,7 +247,7 @@
 					{#if achievementItems.length > 3}
 						<button
 							on:click={toggleShowMoreAch}
-							class="w-fit text-[10px] font-black tracking-[0.2em] text-ink-faint uppercase hover:text-brand"
+							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 						>
 							{isShowMoreAch ? '[-] Show Less' : '[+] Show More'}
 						</button>
@@ -260,12 +258,3 @@
 	</div>
 </section>
 
-<style>
-	.no-scrollbar::-webkit-scrollbar {
-		display: none;
-	}
-	.no-scrollbar {
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-	}
-</style>

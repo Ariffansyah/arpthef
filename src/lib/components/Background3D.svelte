@@ -16,13 +16,54 @@
 		let w = 0;
 		let h = 0;
 
-		/* Flat blocks the film's glitches are printed in. */
+		/* Painted once per resize/theme; each plate gets its own screen angle. */
+		const DOT_PAD = 24;
+		const dots = document.createElement('canvas');
+		const dg = dots.getContext('2d')!;
+		function paintDots() {
+			if (!w) return;
+			dots.width = Math.floor((w + DOT_PAD * 2) * dpr);
+			dots.height = Math.floor((h + DOT_PAD * 2) * dpr);
+			dg.setTransform(dpr, 0, 0, dpr, 0, 0);
+			const big = Math.max(w, h);
+			const step = 9;
+			FIELDS.forEach((f, i) => {
+				const cx = f.x * w + DOT_PAD;
+				const cy = f.y * h + DOT_PAD;
+				const R = f.r * big;
+				const ang = ((15 + i * 30) * Math.PI) / 180;
+				const c = Math.cos(ang);
+				const sn = Math.sin(ang);
+				dg.fillStyle = `rgba(${P.fields[i]}, ${P.dotAlpha})`;
+				dg.beginPath();
+				for (let u = -R; u <= R; u += step) {
+					for (let v = -R; v <= R; v += step) {
+						const r = step * 0.48 * (1 - Math.hypot(u, v) / R) ** 0.8;
+						if (!(r > 0.4)) continue;
+						const x = cx + u * c - v * sn;
+						const y = cy + u * sn + v * c;
+						dg.moveTo(x + r, y);
+						dg.arc(x, y, r, 0, Math.PI * 2);
+					}
+				}
+				dg.fill();
+			});
+		}
+
+		function dotPattern(size: number, r: number, col: string) {
+			const tile = document.createElement('canvas');
+			tile.width = tile.height = size;
+			const tg = tile.getContext('2d')!;
+			tg.fillStyle = col;
+			tg.beginPath();
+			tg.arc(size / 2, size / 2, r, 0, Math.PI * 2);
+			tg.fill();
+			return g.createPattern(tile, 'repeat')!;
+		}
+
 		const GLITCH = ['0,229,255', '255,45,150', '255,230,0', '140,90,255', '170,255,60'];
 
-		/* Spider-Verse multiverse palette. Each dimension (theme) has its own
-		   web ink, chromatic-aberration pair, wash and nebula blobs. The CA pair
-		   is what sells the "two printing plates misaligned" look — additive in
-		   the dark dimension, subtractive on the light one. */
+		/* Plates add up on the dark page and overprint on the light one. */
 		const PAL = {
 			dark: {
 				web: rgb(DIMENSIONS.dark.ink),
@@ -30,19 +71,10 @@
 				ca2: rgb(DIMENSIONS.dark.plateB),
 				comp: 'lighter' as GlobalCompositeOperation,
 				alpha: 1,
-				wash: [
-					[0, 'rgba(58,26,92,0.60)'],
-					[0.55, 'rgba(22,8,48,0.50)'],
-					[1, 'rgba(6,3,18,0.40)']
-				] as [number, string][],
-				blobs: [
-					{ x: 0.16, y: 0.22, r: 0.34, rgb: '255,138,46' },
-					{ x: 0.86, y: 0.62, r: 0.4, rgb: '255,45,140' },
-					{ x: 0.62, y: 0.14, r: 0.26, rgb: '70,205,195' },
-					{ x: 0.08, y: 0.78, r: 0.3, rgb: '255,210,80' },
-					{ x: 0.94, y: 0.12, r: 0.22, rgb: '110,90,255' }
-				],
-				dust: ['255,255,255', '255,255,255', '255,255,255', '255,180,220', '150,220,255']
+				pulse: '255,105,105',
+				dotAlpha: 0.3,
+				fields: ['255,105,105', '200,0,54', rgb(DIMENSIONS.dark.plateA), '255,245,225', rgb(DIMENSIONS.dark.plateB)],
+				dust: ['255,245,225', '255,245,225', '255,245,225', '255,105,105', '0,229,255']
 			},
 			light: {
 				web: rgb(DIMENSIONS.light.ink),
@@ -50,27 +82,27 @@
 				ca2: rgb(DIMENSIONS.light.plateB),
 				comp: 'source-over' as GlobalCompositeOperation,
 				alpha: 0.66,
-				wash: [
-					[0, 'rgba(196,175,255,0.30)'],
-					[0.55, 'rgba(255,190,225,0.18)'],
-					[1, 'rgba(255,255,255,0)']
-				] as [number, string][],
-				blobs: [
-					{ x: 0.16, y: 0.22, r: 0.34, rgb: '255,150,90' },
-					{ x: 0.86, y: 0.62, r: 0.4, rgb: '255,110,199' },
-					{ x: 0.62, y: 0.14, r: 0.26, rgb: '111,231,224' },
-					{ x: 0.08, y: 0.78, r: 0.3, rgb: '255,222,130' },
-					{ x: 0.94, y: 0.12, r: 0.22, rgb: '160,145,255' }
-				],
-				dust: ['90,40,150', '90,40,150', '90,40,150', '190,30,120', '20,140,150']
+				pulse: '200,0,54',
+				dotAlpha: 0.22,
+				fields: ['255,105,105', '200,0,54', rgb(DIMENSIONS.light.plateA), '12,24,68', rgb(DIMENSIONS.light.plateB)],
+				dust: ['12,24,68', '12,24,68', '12,24,68', '200,0,54', '0,169,192']
 			}
 		};
+
+		const FIELDS = [
+			{ x: 0.16, y: 0.22, r: 0.34 },
+			{ x: 0.86, y: 0.62, r: 0.4 },
+			{ x: 0.62, y: 0.14, r: 0.26 },
+			{ x: 0.08, y: 0.78, r: 0.3 },
+			{ x: 0.94, y: 0.12, r: 0.22 }
+		];
 
 		let P = PAL.dark;
 		let isDark = false;
 		function readTheme() {
 			isDark = document.documentElement.classList.contains('dark');
 			P = isDark ? PAL.dark : PAL.light;
+			paintDots();
 		}
 		readTheme();
 		const observer = new MutationObserver(readTheme);
@@ -81,7 +113,6 @@
 			return s - Math.floor(s);
 		}
 
-		/* ---------- parallax ---------- */
 		let targetTX = 0;
 		let targetTY = 0;
 		let tx = 0;
@@ -92,7 +123,6 @@
 		}
 		window.addEventListener('mousemove', onMouse);
 
-		/* ---------- webs ---------- */
 		type Web = {
 			cx: number;
 			cy: number;
@@ -108,10 +138,7 @@
 		let webs: Web[] = [];
 		let stars: { x: number; y: number; size: number; tw: number; twSpeed: number; pal: number }[] = [];
 
-		/* ---------- portals ---------- */
-		/* Across the Spider-Verse dimension portal: faceted lavender crystal
-		   around a tunnel of orange rings. Same in both themes — it's a hole
-		   into somewhere else. `tilt` is the direction the tunnel recedes. */
+		/* Same in both themes. `tilt` is the direction the tunnel recedes. */
 		const PORTAL = {
 			glow: '190,140,255',
 			shell: '205,165,255',
@@ -127,7 +154,6 @@
 			{ x: 0.5, y: 1.02, r: 0.15, seed: 11.3, spin: 0.08, phase: 4.0, period: 0.16, depth: 1.2, tilt: -1.6, label: 'EARTH-50101' }
 		];
 
-		/* Sparks flung off the portal rims. */
 		type Spark = { x: number; y: number; vx: number; vy: number; life: number; max: number; rgb: string };
 		let sparks: Spark[] = [];
 
@@ -141,6 +167,8 @@
 			{ suit: '222,40,44', legs: '30,70,200', accent: '255,186,40', head: 'mask' }
 		];
 		const INK = '14,10,26';
+		const shade = dotPattern(6, 1.1, `rgba(${INK}, 0.35)`);
+		const deepDots = dotPattern(7, 1.6, 'rgba(112,44,190,0.9)');
 		const ARMS = [
 			[0.06, -0.4, 0.12, -0.6, 0.14, -0.8],
 			[-0.07, -0.38, -0.25, -0.3, -0.33, -0.44]
@@ -193,6 +221,7 @@
 			canvas.height = Math.max(1, Math.floor(h * dpr));
 			g.setTransform(dpr, 0, 0, dpr, 0, 0);
 			build();
+			paintDots();
 		}
 
 		function spokeAngle(web: Web, i: number, t: number) {
@@ -219,8 +248,7 @@
 				y: py + Math.sin(ang) * r + Math.cos(ang) * sway
 			};
 		}
-		/* Capture thread from spoke i to i+1 on ring ri. Drawn the comic-book
-		   way: straight spokes, each thread scalloped in towards the hub. */
+		/* Thread from spoke i to i+1 on ring ri, scalloped in towards the hub. */
 		function thread(web: Web, ri: number, i: number, t: number) {
 			if (rand(web.seed * 1900 + ri * 17 + i * 7) < 0.06) return null;
 			const j = (i + 1) % web.spokes;
@@ -237,9 +265,7 @@
 			return { p0, p1, cx: mx + (hx - mx) * k, cy: my + (hy - my) * k };
 		}
 
-		/* Stroke a path three times: cyan plate shifted left, magenta plate
-		   shifted right, ink plate dead centre. `draw` re-issues the geometry
-		   with the given offset. */
+		/* Cyan plate left, magenta right, ink centred; `draw` re-issues the path at an offset. */
 		function caStroke(draw: (dx: number, dy: number) => void, a: number, lw: number, off: number, ink = P.web) {
 			g.globalCompositeOperation = P.comp;
 			g.lineWidth = lw + 0.5;
@@ -253,8 +279,7 @@
 			draw(0, 0);
 		}
 
-		/* Irregular n-gon. Same seed = same silhouette at any size, which is
-		   what lets the tunnel rings nest inside the mouth. */
+		/* Same seed = same silhouette at any size, so tunnel rings nest in the mouth. */
 		type Pt = { x: number; y: number };
 		function ngon(n: number, seed: number, cx: number, cy: number, r: number, rot: number, jit: number): Pt[] {
 			const out: Pt[] = [];
@@ -371,7 +396,7 @@
 			g.save();
 			g.translate(x, y);
 			g.rotate(tilt);
-			g.font = `italic 900 ${Math.round(size)}px Impact, 'Arial Black', sans-serif`;
+			g.font = `${Math.round(size)}px Bangers, Impact, 'Arial Black', sans-serif`;
 			g.textAlign = 'center';
 			g.lineJoin = 'round';
 			g.lineWidth = Math.max(2, size * 0.16);
@@ -386,14 +411,17 @@
 			g.save();
 			g.translate(x, y);
 			g.rotate(-0.06);
-			g.font = "700 11px 'Fira Code', monospace";
-			const bw = g.measureText(text).width + 12;
-			g.fillStyle = 'rgb(255,230,0)';
+			g.font = "600 10px 'Fira Code', monospace";
+			g.letterSpacing = '2px';
+			const bw = g.measureText(text).width + 14;
+			g.fillStyle = isDark ? 'rgb(200,0,54)' : 'rgb(12,24,68)';
+			g.fillRect(-bw / 2 + 3, -7, bw, 20);
+			g.fillStyle = 'rgb(255,245,225)';
 			g.fillRect(-bw / 2, -10, bw, 20);
-			g.strokeStyle = `rgb(${INK})`;
-			g.lineWidth = 1.5;
+			g.strokeStyle = 'rgb(12,24,68)';
+			g.lineWidth = 2;
 			g.strokeRect(-bw / 2, -10, bw, 20);
-			g.fillStyle = `rgb(${INK})`;
+			g.fillStyle = 'rgb(12,24,68)';
 			g.textAlign = 'center';
 			g.textBaseline = 'middle';
 			g.fillText(text, 0, 1);
@@ -405,6 +433,22 @@
 		let pulseTimer = 0;
 		let glitchUntil = 0;
 		let glitchNext = 2.5;
+		const root = document.documentElement;
+		/* app.css reads data-glitch, --gx and --ca to tear the UI on the same frames. */
+		let glitchStep = -1;
+		function syncGlitch(on: boolean, step: number) {
+			if (on) {
+				if (step === glitchStep) return;
+				glitchStep = step;
+				root.dataset.glitch = '';
+				root.style.setProperty('--gx', `${((rand(step * 7.3) - 0.5) * 10).toFixed(1)}px`);
+				root.style.setProperty('--ca', (0.06 + rand(step * 3.1) * 0.08).toFixed(3));
+			} else if ('glitch' in root.dataset) {
+				delete root.dataset.glitch;
+				root.style.removeProperty('--gx');
+				root.style.removeProperty('--ca');
+			}
+		}
 
 		resize();
 		window.addEventListener('resize', resize);
@@ -415,8 +459,7 @@
 
 		function frame() {
 			const now = performance.now();
-			/* Animated on twos, like the film: motion advances in 12 fps steps,
-			   only the mouse parallax (the "camera") runs on ones. */
+			/* Motion steps at 12 fps (twos); only mouse parallax runs every frame. */
 			const step = Math.floor((now - start) * 0.012);
 			const t = step / 12;
 			const dt = Math.min(0.1, t - lastT);
@@ -433,31 +476,12 @@
 			g.clearRect(0, 0, w, h);
 			g.globalAlpha = P.alpha;
 
-			/* --- wash --- */
-			const wash = g.createRadialGradient(w * 0.5, h * 0.4, 0, w * 0.5, h * 0.4, Math.max(w, h) * 0.85);
-			for (const [stop, col] of P.wash) wash.addColorStop(stop, col);
-			g.fillStyle = wash;
-			g.fillRect(0, 0, w, h);
-
-			/* --- nebula blobs --- */
-			for (let i = 0; i < P.blobs.length; i++) {
-				const b = P.blobs[i];
-				const float = prefersReduced ? 0 : Math.sin(t * 0.15 + i * 1.7) * 14;
-				const bx = b.x * w + tx * 0.09 + float;
-				const by = b.y * h + ty * 0.09 + float * 0.6;
-				const br = b.r * Math.max(w, h);
-				const glow = g.createRadialGradient(bx, by, 0, bx, by, br);
-				glow.addColorStop(0, `rgba(${b.rgb}, 0.34)`);
-				glow.addColorStop(0.5, `rgba(${b.rgb}, 0.15)`);
-				glow.addColorStop(1, `rgba(${b.rgb}, 0)`);
-				g.fillStyle = glow;
-				g.beginPath();
-				g.arc(bx, by, br, 0, TAU);
-				g.fill();
-			}
+			const drift = prefersReduced ? 0 : Math.sin(t * 0.15) * 12;
+			g.drawImage(dots, tx * 0.09 + drift - DOT_PAD, ty * 0.09 + drift * 0.6 - DOT_PAD, w + DOT_PAD * 2, h + DOT_PAD * 2);
 
 			g.lineCap = 'round';
 			const short = Math.min(w, h);
+			const boil = prefersReduced ? 0 : step % 3;
 
 			if (!prefersReduced) {
 				if (t > holeNext) {
@@ -465,7 +489,6 @@
 					if (holes.length < 3)
 						holes.push({ x: 0.15 + Math.random() * 0.7, y: 0.15 + Math.random() * 0.7, r: 0.025 + Math.random() * 0.04, age: 0, life: 2.5 + Math.random() * 2.5, seed: Math.random() * 100 });
 				}
-				const boil = step % 3;
 				for (let i = holes.length - 1; i >= 0; i--) {
 					const o = holes[i];
 					o.age += dt;
@@ -494,14 +517,13 @@
 				}
 			}
 
-			/* --- portals --- */
 			for (const rf of RIFTS) {
 				const open = prefersReduced ? 0.93 : 0.86 + 0.14 * Math.sin(t * rf.period * TAU + rf.phase);
 				const R = short * rf.r * open;
 				const cx = rf.x * w + tx * rf.depth * 0.5;
 				const cy = rf.y * h + ty * rf.depth * 0.5;
 				const rot = rf.seed + (prefersReduced ? 0 : t * rf.spin * 0.5);
-				// out of focus = out of register: nearer portals misprint more
+				// nearer portals misprint more
 				const off = 2.2 * rf.depth;
 
 				// the tunnel bends away from the viewer; parallax swings its far end
@@ -514,31 +536,29 @@
 				const mid = ngon(9, rf.seed * 20, cx, cy, R * 0.8, rot + TAU / 18, 0.08);
 				const mouth = ngon(7, rf.seed * 30, mx, my, R * 0.58, rot * 1.2, 0.06);
 
-				// lavender bloom
-				g.globalCompositeOperation = P.comp;
-				const halo = g.createRadialGradient(cx, cy, R * 0.4, cx, cy, R * 1.7);
-				halo.addColorStop(0, `rgba(${PORTAL.glow}, ${isDark ? 0.5 : 0.4})`);
-				halo.addColorStop(1, `rgba(${PORTAL.glow}, 0)`);
-				g.fillStyle = halo;
+				// action lines re-drawn each twos frame (boil)
+				g.strokeStyle = isDark ? `rgba(${PORTAL.facet}, 0.55)` : `rgba(${INK}, 0.5)`;
+				g.lineWidth = 1.4;
 				g.beginPath();
-				g.arc(cx, cy, R * 1.7, 0, TAU);
-				g.fill();
-				g.globalCompositeOperation = 'source-over';
+				for (let k = 0; k < 22; k++) {
+					const a = (k / 22) * TAU + rot * 0.3;
+					const r0 = R * (1.08 + rand(rf.seed * 50 + k + boil * 7) * 0.12);
+					const r1 = r0 + R * (0.12 + rand(rf.seed * 51 + k + boil * 5) * 0.3);
+					g.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
+					g.lineTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+				}
+				g.stroke();
 
-				// crystal shell between rim and mouth
-				const shell = g.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
-				shell.addColorStop(0, `rgba(${PORTAL.facet}, 0.5)`);
-				shell.addColorStop(0.5, `rgba(${PORTAL.shell}, 0.38)`);
-				shell.addColorStop(1, `rgba(${PORTAL.glow}, 0.55)`);
-				g.fillStyle = shell;
 				g.beginPath();
 				poly(outer);
 				poly(mouth);
+				g.fillStyle = `rgba(${PORTAL.shell}, 0.85)`;
+				g.fill('evenodd');
+				g.fillStyle = shade;
 				g.fill('evenodd');
 
-				// wireframe facets
-				g.strokeStyle = `rgba(${PORTAL.facet}, 0.55)`;
-				g.lineWidth = 0.8;
+				g.strokeStyle = `rgba(${INK}, 0.7)`;
+				g.lineWidth = 1.1;
 				g.beginPath();
 				poly(mid);
 				for (let i = 0; i < 9; i++) {
@@ -551,7 +571,6 @@
 					g.lineTo(o2.x, o2.y);
 					g.moveTo(m.x, m.y);
 					g.lineTo(q.x, q.y);
-					// cracks cutting across facets
 					if (rand(rf.seed * 44 + i) < 0.5) {
 						const c = mid[(i + 2) % 9];
 						g.moveTo(o.x, o.y);
@@ -560,18 +579,16 @@
 				}
 				g.stroke();
 
-				// the other dimension: dark violet deepening towards the far end
 				g.save();
 				g.beginPath();
 				poly(mouth);
 				g.clip();
-				const deep = g.createRadialGradient(vx, vy, 0, vx, vy, R * 0.7);
-				deep.addColorStop(0, `rgba(${PORTAL.deep}, 0.95)`);
-				deep.addColorStop(1, `rgba(${PORTAL.mouth}, 0.9)`);
-				g.fillStyle = deep;
+				g.fillStyle = `rgb(${PORTAL.deep})`;
+				g.fillRect(cx - R, cy - R, R * 2, R * 2);
+				g.fillStyle = deepDots;
 				g.fillRect(cx - R, cy - R, R * 2, R * 2);
 
-				g.strokeStyle = `rgba(${PORTAL.facet}, 0.16)`;
+				g.strokeStyle = `rgba(${PORTAL.facet}, 0.35)`;
 				g.lineWidth = 1;
 				g.beginPath();
 				for (let k = 0; k < 14; k++) {
@@ -586,7 +603,7 @@
 				}
 				g.stroke();
 
-				// tunnel rings flowing towards the far end, deepest drawn first
+				// deepest ring drawn first
 				const flow = prefersReduced ? 0.3 : t * 0.14;
 				const rings = [0, 1, 2, 3, 4].map((i) => (i / 5 + flow) % 1).sort((a, b) => b - a);
 				for (const f of rings) {
@@ -596,10 +613,14 @@
 					const rr = R * 0.5 * s;
 					const lw = R * 0.1 * s + 0.5;
 					const fade = Math.min(1, f * 10) * (1 - f * 0.6);
+					const ring = ngon(7, rf.seed * 30, rx, ry, rr, rot * 1.2 + f * 0.9, 0.06);
+					g.beginPath();
+					poly(ring);
+					g.lineWidth = lw + 3;
+					g.strokeStyle = `rgba(${INK}, ${fade})`;
+					g.stroke();
 					g.lineWidth = lw;
 					g.strokeStyle = `rgba(${PORTAL.ring}, ${fade})`;
-					g.beginPath();
-					poly(ngon(7, rf.seed * 30, rx, ry, rr, rot * 1.2 + f * 0.9, 0.06));
 					g.stroke();
 					g.lineWidth = lw * 0.3;
 					g.strokeStyle = `rgba(${PORTAL.rim}, ${fade})`;
@@ -609,7 +630,6 @@
 				}
 				g.restore();
 
-				// bright crystal edges, misregistered plates
 				caStroke(
 					(dx, dy) => {
 						g.beginPath();
@@ -617,13 +637,12 @@
 						poly(mouth, dx, dy);
 						g.stroke();
 					},
-					0.85,
-					1.4,
+					0.9,
+					2.4,
 					off,
-					PORTAL.facet
+					INK
 				);
 
-				// sparks thrown off the rim
 				if (!prefersReduced && dt > 0 && Math.random() < 0.7) {
 					const a = Math.random() * TAU;
 					const rad = R * (0.95 + Math.random() * 0.2);
@@ -643,7 +662,6 @@
 				caption(rf.label, cx + Math.cos(la) * R * 0.95, cy + Math.sin(la) * R * 0.95);
 			}
 
-			/* --- webs --- */
 			if (!prefersReduced) {
 				pulseTimer += dt;
 				if (pulseTimer > 0.5) {
@@ -668,8 +686,8 @@
 				for (let i = 0; i < web.spokes; i++) {
 					const spokeLen = spokeReach(web, i);
 					const end = pt(web, i, spokeLen, t);
-					const a = (0.36 + rand(i + wi * 97) * 0.3) * web.bright;
-					const lw = 1 + rand(i + wi * 53) * 0.9;
+					const a = (0.6 + rand(i + wi * 97) * 0.3) * web.bright;
+					const lw = 1.4 + rand(i + wi * 53) * 1.2;
 					caStroke(
 						(dx, dy) => {
 							g.beginPath();
@@ -687,7 +705,7 @@
 							const fAng = Math.atan2(end.y - centerY, end.x - centerX) + (f === 0 ? 0.5 : -0.4);
 							const fLen = spokeLen * (0.08 + rand(web.seed * 1600 + i * 3 + f) * 0.1);
 							g.strokeStyle = `rgba(${P.web}, ${a * 0.7})`;
-							g.lineWidth = 0.6;
+							g.lineWidth = 1;
 							g.beginPath();
 							g.moveTo(end.x, end.y);
 							g.lineTo(end.x + Math.cos(fAng) * fLen, end.y + Math.sin(fAng) * fLen);
@@ -697,11 +715,11 @@
 				}
 
 				for (let ri = 0; ri < web.rings; ri++) {
-					const a = (0.3 + (ri / web.rings) * 0.3) * web.bright;
+					const a = (0.5 + (ri / web.rings) * 0.35) * web.bright;
 					for (let i = 0; i < web.spokes; i++) {
 						const th = thread(web, ri, i, t);
 						if (!th) continue;
-						const lw = 0.6 + rand(web.seed * 2100 + ri * 9 + i) * 0.7;
+						const lw = 1 + rand(web.seed * 2100 + ri * 9 + i) * 0.9;
 						caStroke(
 							(dx, dy) => {
 								g.beginPath();
@@ -717,7 +735,6 @@
 				}
 			}
 
-			/* --- pulses --- */
 			if (!prefersReduced) {
 				for (let pi = pulses.length - 1; pi >= 0; pi--) {
 					const p = pulses[pi];
@@ -742,18 +759,13 @@
 						y = (1 - tt) * (1 - tt) * th.p0.y + 2 * (1 - tt) * tt * th.cy + tt * tt * th.p1.y;
 					}
 					const prog = Math.sin(p.t * Math.PI);
-					const glowR = 3 + prog * 5;
-					const glow = g.createRadialGradient(x, y, 0, x, y, glowR);
-					glow.addColorStop(0, `rgba(${P.web}, ${prog * 0.85})`);
-					glow.addColorStop(1, `rgba(${P.ca2}, 0)`);
-					g.fillStyle = glow;
+					g.fillStyle = `rgba(${P.pulse}, ${prog})`;
+					g.strokeStyle = `rgba(${P.web}, ${prog})`;
+					g.lineWidth = 1;
 					g.beginPath();
-					g.arc(x, y, glowR, 0, TAU);
+					g.arc(x, y, 1.6 + prog * 2.4, 0, TAU);
 					g.fill();
-					g.fillStyle = isDark ? `rgba(255,255,255,${prog})` : `rgba(${P.ca2}, ${prog})`;
-					g.beginPath();
-					g.arc(x, y, 1.4 + prog * 1.2, 0, TAU);
-					g.fill();
+					g.stroke();
 				}
 			}
 
@@ -829,7 +841,6 @@
 				}
 			}
 
-			/* --- energy dots --- */
 			const drag = Math.pow(0.16, dt);
 			g.globalCompositeOperation = P.comp;
 			for (let i = sparks.length - 1; i >= 0; i--) {
@@ -851,7 +862,6 @@
 			}
 			g.globalCompositeOperation = 'source-over';
 
-			/* --- dust --- */
 			for (const s of stars) {
 				s.tw += prefersReduced ? 0 : s.twSpeed * dt * 60;
 				const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(s.tw));
@@ -863,13 +873,13 @@
 
 			g.globalAlpha = 1;
 
-			/* --- glitch: slice the frame, re-print it misaligned, drop flat
-			   colour blocks over it. Seeded per step so it holds for a twos frame. --- */
+			/* Glitch slices are seeded per step so each holds for a full twos frame. */
 			if (!prefersReduced) {
 				if (t > glitchNext) {
 					glitchNext = t + 3 + Math.random() * 6;
 					glitchUntil = t + 0.15 + Math.random() * 0.2;
 				}
+				syncGlitch(t < glitchUntil, step);
 				if (t < glitchUntil) {
 					for (let i = 0; i < 6; i++) {
 						const s = step * 13 + i * 3;
@@ -889,6 +899,7 @@
 
 		return () => {
 			cancelAnimationFrame(raf);
+			syncGlitch(false, 0);
 			observer.disconnect();
 			window.removeEventListener('resize', resize);
 			window.removeEventListener('mousemove', onMouse);

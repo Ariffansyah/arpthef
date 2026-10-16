@@ -1,21 +1,17 @@
 import type { Theme } from './theme';
 
-/**
- * The two dimensions the site renders in. `Background3D` (canvas) and
- * `Character3D` (WebGL) both read these, so the sidebar lighting stays in
- * register with the printing plates and wash behind it.
- */
+/** Shared by Background3D and Character3D so the portrait lighting matches the plates. */
 export const DIMENSIONS = {
 	light: {
-		ink: 0xc80036, // web strands
-		plateA: 0x00a9c0, // cyan plate
-		plateB: 0xe4007f, // magenta plate
-		key: 0xfff5e1, // warm cream key light
+		ink: 0x0c1844,
+		plateA: 0x00a9c0,
+		plateB: 0xe4007f,
+		key: 0xfff5e1,
 		sky: 0xfff5e1,
-		ground: 0xc4afff // the light wash violet
+		ground: 0xc4afff
 	},
 	dark: {
-		ink: 0xebe2ff,
+		ink: 0xfff5e1,
 		plateA: 0x00e5ff,
 		plateB: 0xff2d96,
 		key: 0xfff5e1,

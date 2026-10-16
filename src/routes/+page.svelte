@@ -120,43 +120,37 @@
 		<!-- @container: the name scales to its column so it never runs into the paragraph -->
 		<div class="@container flex flex-col gap-4">
 			<h1
-				class="text-[length:clamp(2.5rem,15cqw,6rem)] leading-none font-black tracking-tighter text-ink"
+				class="font-display plates text-[length:clamp(3rem,17cqw,7.5rem)] leading-[0.95] text-ink"
 			>
-				Mohammad<br /><span class="text-brand">Ariffansyah</span>
+				Mohammad<br /><span class="judul-komik">Ariffansyah</span>
 			</h1>
-			<p class="text-xs font-black tracking-[0.5em] text-balance text-ink-faint uppercase">
-				Software Engineering • Surabaya, ID
-			</p>
+			<p class="narasi">Software Engineering • Surabaya, ID</p>
 		</div>
 		<div class="flex flex-col gap-8 xl:max-w-xl xl:justify-self-end">
 			<p class="text-xl leading-relaxed font-medium text-ink-muted md:text-2xl">
-				Specializing in <span class="text-ink underline decoration-brand decoration-4"
-					>full-stack web development</span
-				>
+				Specializing in <span class="bg-pop px-1 text-on-pop box-decoration-clone">full-stack web development</span>
 				and backend architecture. Just a dev who likes shipping features, messing around with new frameworks,
 				and making sure
-				<span class="text-ink underline decoration-brand decoration-4"
-					>production stays up</span
-				>.
+				<span class="bg-pop px-1 text-on-pop box-decoration-clone">production stays up</span>.
 			</p>
 			<div class="flex items-center gap-10">
 				<a
 					href={resolve('/about')}
-					class="text-xs font-black tracking-widest text-ink uppercase underline decoration-brand decoration-2 underline-offset-8 transition-all hover:text-brand-hover hover:decoration-brand-hover"
+					class="tekan rounded-md bg-cta px-5 py-2 font-display text-2xl text-cta-ink [text-shadow:none] hover:bg-ink hover:text-surface"
 					>Learn More</a
 				>
-				<div class="flex gap-6">
+				<div class="flex gap-4">
 					<a
 						href="https://github.com/Ariffansyah"
 						target="_blank"
-						class="text-ink-faint transition-colors hover:text-ink"
-						aria-label="github"><i class="fa-brands fa-github fa-xl"></i></a
+						class="tekan flex h-11 w-11 items-center justify-center rounded-md bg-card text-ink hover:bg-pop hover:text-on-pop"
+						aria-label="github"><i class="fa-brands fa-github fa-lg"></i></a
 					>
 					<a
 						href="https://linkedin.com/in/arpthef/"
 						target="_blank"
-						class="text-ink-faint transition-colors hover:text-ink"
-						aria-label="linkedin"><i class="fa-brands fa-linkedin fa-xl"></i></a
+						class="tekan flex h-11 w-11 items-center justify-center rounded-md bg-card text-ink hover:bg-pop hover:text-on-pop"
+						aria-label="linkedin"><i class="fa-brands fa-linkedin fa-lg"></i></a
 					>
 				</div>
 			</div>
@@ -164,17 +158,15 @@
 	</div>
 
 	<div id="technologies" class="mb-32" use:intersect={{ threshold: 0.3, once: true }}>
-		<h2 class="mb-12 text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">
-			Stack / Tools
-		</h2>
-		<div class="tech-grid grid grid-cols-2 gap-8 md:grid-cols-4 xl:grid-cols-6" role="presentation">
+		<h2 class="narasi mb-10">Stack / Tools</h2>
+		<div class="tech-grid grid grid-cols-2 gap-6 md:grid-cols-4 xl:grid-cols-6" role="presentation">
 			{#each technologies as tech, i (tech.name)}
 				<div
-					class="group flex flex-col items-center justify-center gap-4 border border-brand px-2 py-8 text-center"
+					class="komik flex flex-col items-center justify-center gap-4 rounded-md bg-card px-2 py-7 text-center odd:-rotate-1 even:rotate-1"
 					role="presentation"
 				>
 					<img src={tech.icon} alt="" class="h-8 w-8" />
-					<span class="text-[10px] font-bold tracking-widest text-ink uppercase"
+					<span class="text-[11px] font-bold tracking-widest text-ink uppercase"
 						>{tech.name}</span
 					>
 				</div>
@@ -188,16 +180,14 @@
 		use:intersect={{ threshold: 0.3, once: true }}
 	>
 		<div class="lg:col-span-1">
-			<h2 class="mb-10 text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">
-				Background
-			</h2>
-			<div class="flex flex-col gap-4 border-l border-edge pl-4">
+			<h2 class="narasi mb-10">Background</h2>
+			<div class="flex flex-wrap gap-3 lg:flex-col lg:items-start">
 				{#each tabs as tab (tab.label)}
 					<button
-						class="text-left text-xs font-black tracking-widest uppercase transition-all {activeTab ===
-						tab.value
-							? 'text-brand'
-							: 'text-ink-faint hover:text-ink-muted'}"
+						class="tekan rounded-md px-4 py-1.5 font-display text-xl {activeTab === tab.value
+							? 'bg-pop text-on-pop'
+							: 'bg-card text-ink hover:bg-pop hover:text-on-pop'}"
+						aria-pressed={activeTab === tab.value}
 						onclick={() => (activeTab = tab.value)}
 					>
 						{tab.label}
@@ -207,90 +197,90 @@
 		</div>
 
 		<div class="lg:col-span-2">
-			<div class="flex flex-col gap-12">
+			<div class="flex flex-col gap-8">
 				{#if activeTab === 'work'}
 					{#each showWorkExperiences as exp, i (i)}
-						<div class="flex flex-col gap-2">
+						<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
 							<span
 								class="text-[10px] font-bold uppercase {textColors[
 									i % textColors.length
 								]} tracking-widest">{exp.date}</span
 							>
-							<h3 class="text-2xl font-black text-ink">{exp.title}</h3>
+							<h3 class="font-display text-3xl text-ink">{exp.title}</h3>
 							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
 								{exp.name}
 							</p>
-							<p class="mt-2 max-w-2xl leading-relaxed text-ink-muted">{exp.description}</p>
+							<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{exp.description}</p>
 						</div>
 					{/each}
 					{#if workExperiences.length > 3}
 						<button
 							onclick={toggleShowMoreWork}
-							class="w-fit text-[10px] font-black tracking-[0.2em] text-ink-faint uppercase hover:text-brand"
+							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 						>
 							{isShowMoreWork ? '[-] Show Less' : '[+] Show More'}
 						</button>
 					{/if}
 				{:else if activeTab === 'education'}
 					{#each showEducationExperiences as edu, i (i)}
-						<div class="flex flex-col gap-2">
+						<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
 							<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
 								>{edu.date}</span
 							>
-							<h3 class="text-2xl font-black text-ink">{edu.name}</h3>
-							<p class="mt-2 max-w-2xl leading-relaxed text-ink-muted">{edu.description}</p>
+							<h3 class="font-display text-3xl text-ink">{edu.name}</h3>
+							<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{edu.description}</p>
 						</div>
 					{/each}
 					{#if educationExperiences.length > 3}
 						<button
 							onclick={toggleShowMoreEdu}
-							class="w-fit text-[10px] font-black tracking-widest text-ink-faint uppercase hover:text-brand"
+							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 						>
 							{isShowMoreEdu ? '[-] Show Less' : '[+] Show More'}
 						</button>
 					{/if}
 				{:else if activeTab === 'organization'}
 					{#each showOrganizationExperiences as org, i (i)}
-						<div class="flex flex-col gap-2">
+						<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
 							<span
 								class="text-[10px] font-bold uppercase {textColors[
 									i % textColors.length
 								]} tracking-widest">{org.date}</span
 							>
-							<h3 class="text-2xl font-black text-ink">{org.title}</h3>
+							<h3 class="font-display text-3xl text-ink">{org.title}</h3>
 							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
 								{org.name}
 							</p>
-							<p class="mt-2 max-w-2xl leading-relaxed text-ink-muted">{org.description}</p>
+							<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{org.description}</p>
 						</div>
 					{/each}
 					{#if organizationExperiences.length > 3}
 						<button
 							onclick={toggleShowMoreOrg}
-							class="w-fit text-[10px] font-black tracking-widest text-ink-faint uppercase hover:text-brand"
+							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 						>
 							{isShowMoreOrg ? '[-] Show Less' : '[+] Show More'}
 						</button>
 					{/if}
 				{:else if activeTab === 'achievement'}
 					{#each showAchievements as ach, i (i)}
-						<div class="flex flex-col gap-2">
+						<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
 							<span
 								class="text-[10px] font-bold uppercase {textColors[
 									i % textColors.length
 								]} tracking-widest">{ach.date}</span
 							>
-							<h3 class="text-2xl font-black text-ink">{ach.title}</h3>
+							<h3 class="font-display text-3xl text-ink">{ach.title}</h3>
 							<p class="text-sm font-bold tracking-widest text-brand uppercase">
 								{ach.name}
 							</p>
-							<p class="mt-2 max-w-2xl leading-relaxed text-ink-muted">{ach.description}</p>
+							<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{ach.description}</p>
 						</div>
 					{/each}
 					{#if achievementItems.length > 3}
 						<button
 							onclick={toggleShowMoreAch}
-							class="w-fit text-[10px] font-black tracking-widest text-ink-faint uppercase hover:text-brand"
+							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 						>
 							{isShowMoreAch ? '[-] Show Less' : '[+] Show More'}
 						</button>
@@ -301,23 +291,23 @@
 	</div>
 
 	<div id="projects" class="mb-32" use:intersect={{ threshold: 0.3, once: true }}>
-		<div class="mb-12 flex items-baseline justify-between border-b border-edge pb-8">
-			<h2 class="text-[10px] font-black tracking-[0.5em] text-ink-faint uppercase">
-				Latest Projects
-			</h2>
+		<div class="mb-10 flex items-center justify-between gap-4">
+			<h2 class="narasi">Latest Projects</h2>
 			<a
 				href={resolve('/projects')}
-				class="text-[10px] font-black tracking-widest text-brand uppercase hover:underline"
+				class="tekan rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
 				>View All</a
 			>
 		</div>
-		<div class="grid grid-cols-1 gap-12 lg:grid-cols-3" role="presentation">
+		<div class="grid grid-cols-1 gap-10 lg:grid-cols-3" role="presentation">
 			{#each data.projects as project (project.id)}
 				<a
 					href={resolve('/projects/[slug]', { slug: project.slug })}
-					class="project-card group flex flex-col gap-6"
+					class="project-card group flex flex-col gap-5"
 				>
-					<div class="aspect-video w-full overflow-hidden border border-brand bg-card">
+					<div
+						class="komik aspect-video w-full overflow-hidden rounded-md bg-card transition-transform duration-150 group-hover:-translate-y-1 group-hover:-rotate-1"
+					>
 						<img
 							src={project.images[0]}
 							alt=""
@@ -325,9 +315,7 @@
 						/>
 					</div>
 					<div class="flex flex-col gap-2">
-						<h3
-							class="text-2xl font-black tracking-tighter text-ink uppercase transition-colors group-hover:text-brand"
-						>
+						<h3 class="font-display text-3xl text-ink transition-colors group-hover:text-brand">
 							{project.name}
 						</h3>
 						<p class="line-clamp-2 text-sm leading-relaxed text-ink-muted">
@@ -341,14 +329,14 @@
 
 	<GroqChat />
 
-	<div class="border-t border-edge py-32 text-center">
+	<div class="py-32 text-center">
 		<a href={resolve('/contact')} class="group inline-flex items-center gap-6">
 			<span
-				class="text-5xl font-black tracking-tighter text-ink transition-all group-hover:text-brand lg:text-7xl"
+				class="judul-komik font-display text-6xl transition-transform group-hover:-rotate-2 lg:text-8xl"
 				>Contact</span
 			>
 			<span
-				class="text-4xl text-ink-faint transition-transform group-hover:translate-x-6 lg:text-7xl"
+				class="font-display text-5xl text-ink transition-transform group-hover:translate-x-6 lg:text-8xl"
 				>→</span
 			>
 		</a>
@@ -357,20 +345,20 @@
 
 {#if showScrollTop}
 	<button
-		class="fixed top-8 right-12 z-50 p-2 text-ink-faint transition-all hover:text-brand"
+		class="tekan fixed top-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-card text-ink hover:bg-pop hover:text-on-pop lg:right-12"
 		aria-label="scrollToSection"
 		onclick={() => scrollToSection(currentSectionIndex - 1)}
 	>
-		<i class="fa-solid fa-arrow-up fa-xl"></i>
+		<i class="fa-solid fa-arrow-up"></i>
 	</button>
 {/if}
 {#if showScrollBottom}
 	<button
-		class="fixed right-12 bottom-8 z-50 p-2 text-ink-faint transition-all hover:text-brand"
+		class="tekan fixed right-6 bottom-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-card text-ink hover:bg-pop hover:text-on-pop lg:right-12"
 		aria-label="scrollToSection"
 		onclick={() => scrollToSection(currentSectionIndex + 1)}
 	>
-		<i class="fa-solid fa-arrow-down fa-xl"></i>
+		<i class="fa-solid fa-arrow-down"></i>
 	</button>
 {/if}
 

@@ -23,7 +23,7 @@
 			href={asset(project.visit_link!)}
 			target="_blank"
 			rel="noopener noreferrer"
-			class="bg-cta text-cta-ink hover:bg-brand-hover inline-flex items-center gap-3 px-6 py-3 text-xs font-black tracking-widest uppercase transition-colors"
+			class="tekan bg-cta text-cta-ink hover:bg-ink hover:text-surface font-display inline-flex items-center gap-3 rounded-md px-5 py-2 text-2xl [text-shadow:none]"
 		>
 			Visit Project <span aria-hidden="true">↗</span>
 		</a>
@@ -61,20 +61,18 @@
 	>
 		<div class="@container flex flex-col gap-4">
 			<h1
-				class="text-ink text-[length:clamp(2.5rem,11cqw,8rem)] leading-none font-black tracking-tighter wrap-anywhere"
+				class="font-display plates text-ink text-[length:clamp(3rem,13cqw,9rem)] leading-[0.95] wrap-anywhere"
 			>
 				{project.name.split(' ').slice(0, -1).join(' ')}<br />
-				<span class="text-brand">{project.name.split(' ').slice(-1)}</span>
+				<span class="judul-komik">{project.name.split(' ').slice(-1)}</span>
 			</h1>
-			<p class="text-ink-faint text-[10px] font-black tracking-[0.5em] uppercase">
-				Case Study / Project Details
-			</p>
+			<p class="narasi">Case Study / Project Details</p>
 		</div>
 
-		<div class="flex flex-wrap gap-4 lg:gap-8">
+		<div class="flex flex-wrap gap-3">
 			{#each project.technologies as tech (tech.name)}
 				<div
-					class="flex items-center gap-3 opacity-40 grayscale transition-all hover:opacity-100 hover:grayscale-0"
+					class="border-edge-ink bg-card flex items-center gap-2 rounded-md border-2 px-3 py-1.5"
 				>
 					<img src={tech.icon} alt={tech.name} class="h-6 w-6" />
 					<span class="text-ink text-[10px] font-bold tracking-widest uppercase">{tech.name}</span>
@@ -110,7 +108,7 @@
 	{#if galleryImages.length > 0}
 		<div class="border-edge mt-32 border-t pt-16">
 			<div class="mb-12 flex items-baseline justify-between">
-				<h2 class="text-ink-faint text-[10px] font-black tracking-[0.5em] uppercase">Gallery</h2>
+				<h2 class="narasi">Gallery</h2>
 				<span class="text-ink-faint text-[10px] font-bold uppercase">Click to expand</span>
 			</div>
 
@@ -118,7 +116,7 @@
 				{#each galleryImages as imgUrl (imgUrl)}
 					<button
 						type="button"
-						class="group border-edge bg-card overflow-hidden border focus:outline-none"
+						class="group komik bg-card overflow-hidden rounded-md"
 						on:click={() => openLightbox(imgUrl)}
 						aria-label="View screenshot"
 					>
