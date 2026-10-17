@@ -14,6 +14,8 @@
 
 	injectAnalytics({ mode: dev ? 'development' : 'production' });
 
+	let character = $state<ReturnType<typeof Character3D>>();
+
 	const twos = (frames: number) => (t: number) => cubicOut(Math.ceil(t * frames) / frames);
 
 	let { children } = $props();
@@ -447,11 +449,16 @@
 		</ul>
 
 		<div class="mt-8 hidden md:block">
-			<div class="character-frame komik rounded-md">
+			<button
+				type="button"
+				class="character-frame komik block w-full cursor-pointer rounded-md"
+				aria-label="Poke {$theme === 'dark' ? 'Miles' : 'Gwen'}"
+				onclick={() => character?.poke()}
+			>
 				<div class="pointer-events-none aspect-4/5 w-full">
-					<Character3D />
+					<Character3D bind:this={character} />
 				</div>
-			</div>
+			</button>
 			<div class="mt-3 flex items-baseline justify-between px-0.5">
 				<span class="font-display text-ink text-xl">
 					{$theme === 'dark' ? 'Miles' : 'Gwen'}
