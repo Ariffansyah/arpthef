@@ -100,7 +100,7 @@
 	<div class="grid grid-cols-1 gap-20 xl:grid-cols-2">
 		<div class="flex flex-col gap-10">
 			<div class="flex flex-col gap-6" use:intersect={{ threshold: 0.1, once: true }}>
-				<p class="text-xl leading-relaxed font-medium text-ink-muted md:text-2xl">
+				<p class="kotak-narasi w-fit max-w-xl -rotate-1 text-lg leading-relaxed font-medium md:text-xl">
 					I am an undergraduate student primarily focused on <span class="bg-pop px-1 text-on-pop box-decoration-clone">backend development</span>, building the invisible engines that power the web.
 				</p>
 

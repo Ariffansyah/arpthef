@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(0.3, 1.4, 0.5, 1)",
+        "createdAt": "2026-10-01T14:54:29.966Z",
+        "reason": "Claude: literal motion — the 42 spider springs on an elastic silk thread when it reels up; overshoot is the physics, not decoration"
+      }
+    ]
+  }
+}

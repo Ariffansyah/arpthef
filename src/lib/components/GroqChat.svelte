@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
+	import { scale } from 'svelte/transition';
 
 	let messages = $state<{ role: string; content: string }[]>([
 		{ role: 'assistant', content: 'yo, ask me about arp.' }
@@ -8,11 +9,29 @@
 	let loading = $state(false);
 	let chatEnd = $state<HTMLDivElement>();
 	let robotPulse = $state(0);
+	let open = $state(false);
+	let inputEl = $state<HTMLInputElement>();
+	let fab = $state<HTMLButtonElement>();
+
+	const twos = (t: number) => Math.ceil(t * 3) / 3;
+	const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	async function show() {
+		open = true;
+		await tick();
+		inputEl?.focus();
+		scroll();
+	}
+
+	function close() {
+		open = false;
+		fab?.focus();
+	}
 
 	onMount(() => {
 		let raf: number;
-		function tick() { robotPulse = Math.sin(Math.floor(performance.now() / 83) * 83 / 800) * 0.15 + 0.85; raf = requestAnimationFrame(tick); }
-		raf = requestAnimationFrame(tick);
+		function pulse() { robotPulse = Math.sin(Math.floor(performance.now() / 83) * 83 / 800) * 0.15 + 0.85; raf = requestAnimationFrame(pulse); }
+		raf = requestAnimationFrame(pulse);
 		return () => cancelAnimationFrame(raf);
 	});
 
@@ -51,28 +70,38 @@
 	}
 </script>
 
-<div class="relative w-full px-6 py-12 lg:px-20 lg:py-24">
-	<div class="mx-auto max-w-4xl">
-		<div class="mb-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-			<div class="flex items-center gap-4">
-				<div class="robot-glow komik relative flex h-14 w-14 items-center justify-center rounded-md bg-cta" style="transform: scale({robotPulse})">
-					<i class="fa-solid fa-robot text-2xl text-cta-ink"></i>
+<svelte:window onkeydown={(e) => e.key === 'Escape' && open && close()} />
+
+{#if open}
+	<div
+		id="arp-chat"
+		role="dialog"
+		aria-label="Chat with arp AI"
+		class="fixed right-6 bottom-24 z-50 w-[min(24rem,calc(100vw-3rem))] origin-bottom-right lg:right-12"
+		style="height: min(32rem, calc(100dvh - 8rem))"
+		transition:scale={{ start: 0.6, duration: reduceMotion() ? 0 : 250, easing: twos }}
+	>
+		<div class="balon balon-kanan flex h-full flex-col bg-card shadow-[5px_5px_0_var(--shadow)]">
+			<div class="flex items-center gap-3 border-b-3 border-edge-ink px-4 py-3">
+				<div class="komik flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-cta">
+					<i class="fa-solid fa-robot text-lg text-cta-ink"></i>
 				</div>
-				<div>
-					<h2 class="font-display text-3xl text-ink">Chat w/ arp AI</h2>
-					<p class="text-[10px] font-bold tracking-wider text-ink-faint">
+				<div class="min-w-0 flex-1">
+					<h2 class="font-display text-2xl leading-none text-ink">Chat w/ arp AI</h2>
+					<p class="mt-1 text-[10px] font-bold tracking-wider text-ink-faint">
 						powered by Groq — ask me anything about arp
 					</p>
 				</div>
+				<button
+					onclick={close}
+					aria-label="Close chat"
+					class="tekan flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-card text-ink hover:bg-pop hover:text-on-pop"
+				>
+					<i class="fa-solid fa-xmark"></i>
+				</button>
 			</div>
-			<div class="hidden items-center gap-2 sm:flex">
-				<span class="h-1.5 w-1.5 rounded-full bg-brand"></span>
-				<span class="text-[9px] font-bold tracking-widest text-ink-faint uppercase">Live</span>
-			</div>
-		</div>
 
-		<div class="komik overflow-hidden rounded-md bg-surface">
-			<div class="chat-page flex h-80 flex-col gap-6 overflow-y-auto px-5 pt-5 pb-8">
+			<div class="chat-page flex flex-1 flex-col gap-6 overflow-y-auto bg-surface px-4 pt-4 pb-6">
 				{#each messages as msg, i (i)}
 					{@const isUser = msg.role === 'user'}
 					<div
@@ -80,7 +109,7 @@
 						style="animation-delay:{i * 30}ms"
 					>
 						<div
-							class="balon max-w-[80%] px-4 py-3 text-sm leading-relaxed {isUser
+							class="balon max-w-[85%] px-4 py-3 text-sm leading-relaxed {isUser
 								? 'balon-kanan bg-cta text-cta-ink whitespace-pre-wrap [--balon-bg:var(--cta)] [text-shadow:none]'
 								: 'markdown prose prose-sm bg-card text-ink prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5'}"
 						>
@@ -100,13 +129,15 @@
 				<div bind:this={chatEnd}></div>
 			</div>
 
-			<div class="border-t-3 border-edge-ink bg-card p-4">
+			<div class="border-t-3 border-edge-ink p-3">
 				<div class="flex gap-3">
 					<input
+						bind:this={inputEl}
 						bind:value={input}
 						onkeydown={keydown}
 						placeholder="ask about arp..."
-						class="flex-1 rounded-md border-2 border-edge-ink bg-surface px-4 py-3 text-sm text-ink outline-none placeholder:text-ink-faint transition-all focus:border-brand"
+						aria-label="Message"
+						class="min-w-0 flex-1 rounded-md border-2 border-edge-ink bg-surface px-4 py-3 text-sm text-ink outline-none placeholder:text-ink-faint transition-all focus:border-brand"
 					/>
 					<button
 						onclick={send}
@@ -120,7 +151,21 @@
 			</div>
 		</div>
 	</div>
-</div>
+{/if}
+
+<button
+	bind:this={fab}
+	onclick={() => (open ? close() : show())}
+	aria-expanded={open}
+	aria-controls="arp-chat"
+	aria-label={open ? 'Close chat' : 'Chat with arp AI'}
+	class="tekan fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-cta text-cta-ink hover:bg-ink hover:text-surface lg:right-12"
+>
+	<i
+		class="robot-glow fa-solid {open ? 'fa-xmark' : 'fa-robot'} text-2xl"
+		style="transform: scale({open ? 1 : robotPulse})"
+	></i>
+</button>
 
 <style>
 	.chat-page {

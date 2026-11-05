@@ -160,6 +160,18 @@
 	text-transform: uppercase;
 	text-shadow: none;
 }
+/* Narration box at paragraph size; same fixed cream as .narasi in both themes. */
+@utility kotak-narasi {
+	border: 2.5px solid #0c1844;
+	background: #fff5e1;
+	color: #0c1844;
+	padding: 0.875rem 1.25rem;
+	box-shadow:
+		calc(var(--ca-box) * -1) 0 0 var(--plate-a),
+		var(--ca-box) 0 0 var(--plate-b),
+		4px 4px 0 var(--shadow);
+	text-shadow: none;
+}
 /* Tail sits bottom-left; .balon-kanan moves it right. */
 @utility balon {
 	position: relative;

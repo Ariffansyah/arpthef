@@ -91,15 +91,15 @@
 	</div>
 
 	<div class="mt-24 py-24 text-center">
-		<a href={resolve('/contact')} class="group inline-flex items-center gap-6">
-			<span
-				class="judul-komik font-display text-5xl transition-transform group-hover:-rotate-2 lg:text-8xl"
-				>Have a project in mind?</span
-			>
-			<span
-				class="font-display text-4xl text-ink transition-transform group-hover:translate-x-4 lg:text-7xl"
-				>→</span
-			>
+		<a
+			href={resolve('/contact')}
+			class="balon group inline-flex items-center gap-6 bg-card px-8 py-6 text-left transition-transform hover:-rotate-1 lg:px-12 lg:py-8"
+		>
+			<span class="judul-komik font-display text-5xl lg:text-7xl">Have a project in mind?</span>
+			<i
+				class="fa-solid fa-arrow-right text-3xl text-ink transition-transform group-hover:translate-x-2 lg:text-5xl"
+				aria-hidden="true"
+			></i>
 		</a>
 	</div>
 </section>
