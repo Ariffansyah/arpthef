@@ -432,7 +432,7 @@
 		let pulses: Pulse[] = [];
 		let pulseTimer = 0;
 		let glitchUntil = 0;
-		let glitchNext = 2.5;
+		let glitchNext = 6;
 		const root = document.documentElement;
 		/* app.css reads data-glitch, --gx and --ca to tear the UI on the same frames. */
 		let glitchStep = -1;
@@ -441,8 +441,8 @@
 				if (step === glitchStep) return;
 				glitchStep = step;
 				root.dataset.glitch = '';
-				root.style.setProperty('--gx', `${((rand(step * 7.3) - 0.5) * 10).toFixed(1)}px`);
-				root.style.setProperty('--ca', (0.06 + rand(step * 3.1) * 0.08).toFixed(3));
+				root.style.setProperty('--gx', `${((rand(step * 7.3) - 0.5) * 5).toFixed(1)}px`);
+				root.style.setProperty('--ca', (0.04 + rand(step * 3.1) * 0.04).toFixed(3));
 			} else if ('glitch' in root.dataset) {
 				delete root.dataset.glitch;
 				root.style.removeProperty('--gx');
@@ -876,19 +876,19 @@
 			/* Glitch slices are seeded per step so each holds for a full twos frame. */
 			if (!prefersReduced) {
 				if (t > glitchNext) {
-					glitchNext = t + 3 + Math.random() * 6;
-					glitchUntil = t + 0.15 + Math.random() * 0.2;
+					glitchNext = t + 8 + Math.random() * 8;
+					glitchUntil = t + 0.12 + Math.random() * 0.12;
 				}
 				syncGlitch(t < glitchUntil, step);
 				if (t < glitchUntil) {
-					for (let i = 0; i < 6; i++) {
+					for (let i = 0; i < 3; i++) {
 						const s = step * 13 + i * 3;
 						const sy = rand(s) * h;
 						const sh = 4 + rand(s + 1) * 28;
-						const dx = (rand(s + 2) - 0.5) * 50;
+						const dx = (rand(s + 2) - 0.5) * 30;
 						g.drawImage(canvas, 0, sy * dpr, w * dpr, sh * dpr, dx, sy, w, sh);
-						g.fillStyle = `rgba(${GLITCH[i % GLITCH.length]}, ${isDark ? 0.4 : 0.3})`;
-						g.fillRect(rand(s + 4) * w, rand(s + 5) * h, 16 + rand(s + 6) * 150, 3 + rand(s + 7) * 18);
+						g.fillStyle = `rgba(${GLITCH[i % GLITCH.length]}, ${isDark ? 0.25 : 0.18})`;
+						g.fillRect(rand(s + 4) * w, rand(s + 5) * h, 16 + rand(s + 6) * 90, 3 + rand(s + 7) * 12);
 					}
 				}
 			}

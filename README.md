@@ -58,6 +58,11 @@ Feel free to reach out via the contact section of this site or through GitHub is
 
 This project is open source and available under the [MIT License](LICENSE).
 
+The 3D models in `static/models/` are not covered by the MIT License. Both are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) and were slimmed down (`scripts/slim-model.mjs`) and restyled as comic art at runtime:
+
+- `gwen.glb`: [Spider-Gwen - Across the Spider-Verse](https://sketchfab.com/3d-models/spider-gwen-across-the-spider-verse-297c91b697f7428ea634ab454a598219) by [Kabiidev](https://sketchfab.com/kabiidev)
+- `miles.glb`: [Fortnite Miles Morales](https://sketchfab.com/3d-models/fortnite-miles-morales-2eeed4f44ff64efda054b83325146842) by [sinner.chd](https://sketchfab.com/sinner.chd)
+
 ---
 
 Thank you for visiting my portfolio!

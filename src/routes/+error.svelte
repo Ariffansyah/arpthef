@@ -28,7 +28,7 @@
 </svelte:head>
 
 <section
-	class="relative z-10 flex min-h-screen w-full flex-col items-center justify-center px-6 py-24 lg:px-20"
+	class="relative z-10 flex min-h-screen w-full flex-col items-center justify-center px-6 pt-24 pb-36 lg:px-20"
 >
 	<div class="rise flex max-w-xl flex-col items-center gap-8 text-center">
 		<p class="narasi">Earth-{page.status} · {copy.tag}</p>

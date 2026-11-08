@@ -23,7 +23,7 @@
 	<link rel="canonical" href="https://arpthef.com/projects" />
 </svelte:head>
 
-<section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
+<section class="relative z-10 mx-auto w-full max-w-7xl px-6 py-12 lg:px-10 lg:py-24">
 	<div
 		class="@container mb-20 flex flex-col gap-4"
 		use:intersect={{ threshold: 0.3, once: true }}
@@ -92,7 +92,7 @@
 
 	<div class="mt-24 py-24 text-center">
 		<a
-			href={resolve('/contact')}
+			href="{resolve('/')}#contact"
 			class="balon group inline-flex items-center gap-6 bg-card px-8 py-6 text-left transition-transform hover:-rotate-1 lg:px-12 lg:py-8"
 		>
 			<span class="judul-komik font-display text-5xl lg:text-7xl">Have a project in mind?</span>

@@ -89,7 +89,7 @@
 	<link rel="canonical" href="https://arpthef.my.id/about" />
 </svelte:head>
 
-<section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
+<section class="relative z-10 mx-auto w-full max-w-7xl px-6 py-12 lg:px-10 lg:py-24">
 	<div class="mb-24 flex flex-col gap-4">
 		<h1 class="font-display plates text-7xl leading-[0.95] text-ink lg:text-9xl">
 			About<br /><span class="judul-komik">Me</span>
@@ -141,7 +141,7 @@
 			</div>
 
 			<a
-				href={resolve('/contact')}
+				href="{resolve('/')}#contact"
 				class="tekan w-fit rounded-md bg-cta px-5 py-2 font-display text-2xl text-cta-ink [text-shadow:none] hover:bg-ink hover:text-surface"
 			>
 				Get in touch

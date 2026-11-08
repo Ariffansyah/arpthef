@@ -255,7 +255,7 @@
 
 /* Set on <html> by Background3D during its glitch frames. */
 :root[data-glitch] {
-	--ca-box: 5px;
+	--ca-box: 3px;
 }
 :root[data-glitch] :is(.komik, .narasi, .tekan) {
 	translate: var(--gx, 0) 0;

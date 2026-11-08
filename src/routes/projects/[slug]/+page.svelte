@@ -53,7 +53,7 @@
 	<meta name="twitter:description" content={project.description} />
 </svelte:head>
 
-<section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
+<section class="relative z-10 mx-auto w-full max-w-6xl px-6 py-12 lg:px-10 lg:py-24">
 	<div
 		id="header"
 		class="mb-20 flex flex-col gap-6 lg:gap-10"
@@ -63,7 +63,9 @@
 			<h1
 				class="font-display plates text-ink text-[length:clamp(3rem,13cqw,9rem)] leading-[0.95] wrap-anywhere"
 			>
-				{project.name.split(' ').slice(0, -1).join(' ')}<br />
+				{#if project.name.includes(' ')}
+					{project.name.split(' ').slice(0, -1).join(' ')}<br />
+				{/if}
 				<span class="judul-komik">{project.name.split(' ').slice(-1)}</span>
 			</h1>
 			<p class="narasi">Case Study / Project Details</p>

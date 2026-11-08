@@ -201,7 +201,7 @@
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-<section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
+<section class="relative z-10 mx-auto w-full max-w-6xl px-6 py-12 lg:px-10 lg:py-24">
 	<h1 class="text-ink mb-12 text-5xl font-black tracking-tighter lg:text-8xl">
 		Back<span class="text-brand">stage</span>
 	</h1>

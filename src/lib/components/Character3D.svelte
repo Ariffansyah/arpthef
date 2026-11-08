@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * Sidebar spider-person. Gwen crosses over in the light dimension, Miles in
+	 * Home-page spider-person. Gwen crosses over in the light dimension, Miles in
 	 * the dark one; toggling the theme punches the old one out and the new one
 	 * in. Models live at `static/models/gwen.glb` / `static/models/miles.glb`;
 	 * if one is missing the slot quietly stays empty.
@@ -55,8 +55,8 @@
 			file: 'gwen',
 			clip: 'idle',
 			poseAt: 0,
-			bust: 0.22,
-			headAt: 0.52,
+			bust: 0.5,
+			headAt: 0.28,
 			lift: 0,
 			trick: 'hang'
 		},
@@ -64,8 +64,8 @@
 			file: 'miles',
 			clip: 'idle',
 			poseAt: 0,
-			bust: 0.22,
-			headAt: 0.52,
+			bust: 0.5,
+			headAt: 0.16,
 			lift: 0,
 			trick: 'camo'
 		}
@@ -578,7 +578,7 @@
 	onMount(() => {
 		prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-		// The sidebar is hidden below `md`; don't spin up WebGL or fetch a model there.
+		// The hero hides the character below `md`; don't spin up WebGL or fetch a model there.
 		const mq = window.matchMedia('(min-width: 768px)');
 		const sync = () => void (mq.matches ? start() : stop());
 		sync();

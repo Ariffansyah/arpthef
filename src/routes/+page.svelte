@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { technologies } from '$lib/constant/apps';
 	import { intersect } from '$lib/actions/intersect';
-	import { handleHistory } from '$lib/components/handleHistory';
-	import { onMount } from 'svelte';
+	import Character3D from '$lib/components/Character3D.svelte';
+	import { theme } from '$lib/theme';
 	import { resolve, asset } from '$app/paths';
 
 	let { data } = $props();
+
+	let character = $state<ReturnType<typeof Character3D>>();
 
 	const textColors = ['text-brand'];
 
@@ -51,52 +53,14 @@
 		isShowMoreAch = !isShowMoreAch;
 	}
 
-	// Jagged POW burst for the contact link: alternating outer and inner points.
-	const burst = Array.from({ length: 26 }, (_, i) => {
-		const a = (i / 26) * Math.PI * 2;
-		const r = i % 2 ? 0.64 : 1 - (i % 3) * 0.07;
-		return `${(Math.cos(a) * r * 96).toFixed(1)},${(Math.sin(a) * r * 62).toFixed(1)}`;
-	}).join(' ');
+	const socials = [
+		{ name: 'GitHub', url: 'https://github.com/Ariffansyah', icon: 'fa-github' },
+		{ name: 'LinkedIn', url: 'https://www.linkedin.com/in/arpthef/', icon: 'fa-linkedin' },
+		{ name: 'X (Twitter)', url: 'https://x.com/nishimiyaa12', icon: 'fa-x-twitter' },
+		{ name: 'Instagram', url: 'https://www.instagram.com/_arpchive/', icon: 'fa-instagram' }
+	];
 
-	const sectionIds = ['arpthef', 'technologies', 'experiences'];
-	let currentSectionIndex = 0;
-	let showScrollTop = $state(false);
-	let showScrollBottom = $state(false);
-
-	function updateSectionIndexAndVisibility() {
-		let closestSection = 0;
-		let minDistance = Infinity;
-		sectionIds.forEach((id, i) => {
-			const el = document.getElementById(id);
-			if (el) {
-				const rect = el.getBoundingClientRect();
-				const distance = Math.abs(rect.top);
-				if (distance < minDistance) {
-					minDistance = distance;
-					closestSection = i;
-				}
-			}
-		});
-		currentSectionIndex = closestSection;
-		showScrollTop = currentSectionIndex > 0;
-		showScrollBottom = currentSectionIndex < sectionIds.length - 1;
-	}
-
-	function scrollToSection(index: number) {
-		const section = document.getElementById(sectionIds[index]);
-		if (section) {
-			handleHistory(new Event('scroll'), `#${sectionIds[index]}`);
-			section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		}
-	}
-
-	if (typeof window !== 'undefined') {
-		window.addEventListener('scroll', updateSectionIndexAndVisibility);
-	}
-
-	onMount(() => {
-		updateSectionIndexAndVisibility();
-	});
+	const EMAIL = 'arppthef@outlook.co.id';
 </script>
 
 <svelte:head>
@@ -117,53 +81,151 @@
 	<link rel="canonical" href="https://arpthef.my.id/" />
 </svelte:head>
 
-<section class="relative z-10 w-full px-6 py-12 lg:px-20 lg:py-24">
+<section class="relative z-10 mx-auto w-full max-w-[96rem] px-6 py-10 lg:px-10 xl:px-20">
+	<!-- The first screen previews every section, so a recruiter gets the whole picture without scrolling. -->
 	<div
 		id="arpthef"
-		class="mb-32 grid grid-cols-1 gap-12 xl:grid-cols-2 xl:items-center"
-		use:intersect={{ threshold: 0.3, once: true }}
+		class="mb-32 grid grid-cols-1 gap-8 lg:min-h-[calc(100svh-10rem)] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:content-center lg:gap-x-10 lg:gap-y-12"
+		use:intersect={{ threshold: 0.2, once: true }}
 	>
-		<!-- @container: the name scales to its column so it never runs into the paragraph -->
-		<div class="@container flex flex-col gap-4">
+		<div class="halo @container flex flex-col gap-3 lg:col-start-1 lg:row-start-1 lg:self-start">
 			<h1
-				class="font-display plates text-[length:clamp(3rem,17cqw,7.5rem)] leading-[0.95] text-ink"
+				class="font-display plates text-[length:clamp(2.5rem,15cqw,4.5rem)] leading-[0.95] text-ink"
 			>
 				Mohammad<br /><span class="judul-komik">Ariffansyah</span>
 			</h1>
-			<p class="narasi">Software Engineering • Surabaya, ID</p>
-		</div>
-		<div class="flex flex-col gap-8 xl:max-w-xl xl:justify-self-end">
-			<div class="flex flex-col gap-4 text-lg leading-relaxed font-medium md:text-xl">
-				<p class="kotak-narasi w-fit max-w-md -rotate-1">
-					Specializing in <span class="bg-pop px-1 text-on-pop box-decoration-clone">full-stack web development</span>
-					and backend architecture.
-				</p>
-				<p class="kotak-narasi ml-6 w-fit max-w-lg rotate-1 md:ml-12">
-					Just a dev who likes shipping features, messing around with new frameworks, and making sure
-					<span class="bg-pop px-1 text-on-pop box-decoration-clone">production stays up</span>.
-				</p>
-			</div>
-			<div class="flex items-center gap-10">
+			<p class="narasi w-fit">Software Engineer • Surabaya, ID</p>
+			<p class="leading-relaxed text-ink-muted">
+				Full-stack web development and backend architecture.
 				<a
 					href={resolve('/about')}
-					class="tekan rounded-md bg-cta px-5 py-2 font-display text-2xl text-cta-ink [text-shadow:none] hover:bg-ink hover:text-surface"
-					>Learn More</a
+					class="font-bold whitespace-nowrap text-ink underline decoration-brand decoration-2 underline-offset-4 hover:text-brand"
+					>More about me →</a
 				>
-				<div class="flex gap-4">
+			</p>
+			<div class="flex flex-wrap items-center gap-3 pt-2">
+				<a
+					href={resolve('/assets/cv/cv-en.pdf')}
+					target="_blank"
+					class="tekan flex items-center gap-2 rounded-md bg-cta px-4 py-2 font-display text-xl text-cta-ink sm:px-5 sm:text-2xl [text-shadow:none] hover:bg-ink hover:text-surface"
+				>
+					<i class="fa-solid fa-file-arrow-down text-lg"></i> Download CV
+				</a>
+				{#each socials.slice(0, 2) as s (s.name)}
 					<a
-						href="https://github.com/Ariffansyah"
+						href={s.url}
 						target="_blank"
 						class="tekan flex h-11 w-11 items-center justify-center rounded-md bg-card text-ink hover:bg-pop hover:text-on-pop"
-						aria-label="github"><i class="fa-brands fa-github fa-lg"></i></a
+						aria-label={s.name}><i class="fa-brands {s.icon} fa-lg"></i></a
 					>
-					<a
-						href="https://linkedin.com/in/arpthef/"
-						target="_blank"
-						class="tekan flex h-11 w-11 items-center justify-center rounded-md bg-card text-ink hover:bg-pop hover:text-on-pop"
-						aria-label="linkedin"><i class="fa-brands fa-linkedin fa-lg"></i></a
+				{/each}
+			</div>
+		</div>
+
+		<button
+			type="button"
+			class="hidden w-64 cursor-pointer justify-self-center md:block lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center xl:w-80"
+			aria-label="Poke {$theme === 'dark' ? 'Miles' : 'Gwen'}"
+			onclick={() => character?.poke()}
+		>
+			<div class="pointer-events-none aspect-4/5 w-full mask-b-from-55% mask-b-to-95%">
+				<Character3D bind:this={character} />
+			</div>
+			<p class="narasi relative mx-auto -mt-4 w-fit">
+				{$theme === 'dark' ? 'Miles · Earth-1610' : 'Gwen · Earth-65'}
+			</p>
+		</button>
+
+		<div class="halo flex flex-col gap-3 lg:col-start-3 lg:row-start-1 lg:self-start">
+			<h2 class="narasi w-fit">Latest Projects</h2>
+			<ul class="flex flex-col">
+				{#each data.projects as project (project.id)}
+					<li class="border-b-2 border-edge last:border-b-0">
+						<a
+							href={resolve('/projects/[slug]', { slug: project.slug })}
+							class="group flex items-center justify-between gap-4 py-2.5"
+						>
+							<span class="font-display text-2xl text-ink transition-colors group-hover:text-brand"
+								>{project.name}</span
+							>
+							<span class="flex shrink-0 gap-1.5">
+								{#each project.technologies.slice(0, 3) as tech (tech.name)}
+									<img src={tech.icon} alt={tech.name} title={tech.name} class="h-4 w-4 dark:brightness-200" />
+								{/each}
+							</span>
+						</a>
+					</li>
+				{/each}
+			</ul>
+			<a
+				href={resolve('/projects')}
+				class="tekan w-fit self-end rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+				>All projects →</a
+			>
+		</div>
+
+		<div class="halo flex flex-col gap-3 lg:col-start-1 lg:row-start-2 lg:self-start">
+			<h2 class="narasi w-fit">Experience & Awards</h2>
+			<ul class="flex flex-col">
+				{#each [...workExperiences.slice(0, 2), ...achievementItems.slice(0, 2)] as exp (exp.id)}
+					{@const award = exp.category === 'achievement'}
+					<li class="flex items-start gap-3 border-b-2 border-edge py-1.5 last:border-b-0">
+						<span class="mt-1 w-4 shrink-0 text-center text-brand">
+							<i class="fa-solid {award ? 'fa-trophy' : 'fa-briefcase'}"></i>
+						</span>
+						<span class="flex min-w-0 flex-col">
+							<span class="font-display truncate text-xl text-ink">
+								{award ? `${exp.title} · ${exp.name}` : exp.title}
+							</span>
+							<span class="truncate text-[11px] font-bold tracking-wider text-ink-faint uppercase">
+								{award ? exp.date : `${exp.name} · ${exp.date}`}
+							</span>
+						</span>
+					</li>
+				{/each}
+			</ul>
+			<a
+				href="#experience"
+				class="tekan w-fit self-end rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+				>Full background ↓</a
+			>
+		</div>
+
+		<div class="halo flex flex-col gap-4 lg:col-start-3 lg:row-start-2 lg:self-start">
+			<h2 class="narasi w-fit">Stack & Contact</h2>
+			<ul class="flex flex-wrap gap-2">
+				{#each technologies.slice(0, 12) as tech (tech.name)}
+					<li
+						class="flex items-center gap-1.5 rounded-md border-2 border-edge-ink bg-card px-2 py-1 text-[10px] font-bold tracking-widest text-ink uppercase"
 					>
+						<img src={tech.icon} alt="" class="h-3.5 w-3.5 dark:brightness-200" />{tech.name}
+					</li>
+				{/each}
+			</ul>
+			<div class="flex flex-col gap-3 border-t-2 border-edge pt-3">
+				<a
+					href="mailto:{EMAIL}"
+					class="flex items-center gap-2 font-bold wrap-anywhere text-ink underline decoration-brand decoration-2 underline-offset-4 transition-colors hover:text-brand"
+				>
+					<i class="fa-regular fa-envelope"></i>{EMAIL}
+				</a>
+				<div class="flex flex-wrap gap-2">
+					{#each socials as s (s.name)}
+						<a
+							href={s.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="tekan flex h-9 w-9 items-center justify-center rounded-md bg-card text-ink hover:bg-pop hover:text-on-pop"
+							aria-label={s.name}><i class="fa-brands {s.icon}"></i></a
+						>
+					{/each}
 				</div>
 			</div>
+			<a
+				href="#contact"
+				class="tekan w-fit self-end rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+				>All contacts ↓</a
+			>
 		</div>
 	</div>
 
@@ -181,213 +243,205 @@
 		</ul>
 	</div>
 
-	<div
-		id="experiences"
-		class="mb-20 grid grid-cols-1 gap-x-10 gap-y-20 xl:grid-cols-2"
-	>
-		<div class="@container" use:intersect={{ threshold: 0.2, once: true }}>
-			<h2 class="narasi mb-8">Background</h2>
-			<div class="mb-8 grid grid-cols-2 gap-3 @2xl:grid-cols-4">
-				{#each tabs as tab (tab.value)}
-					<button
-						class="tekan rounded-md px-4 py-1.5 font-display text-xl {activeTab === tab.value
-							? 'bg-pop text-on-pop'
-							: 'bg-card text-ink hover:bg-pop hover:text-on-pop'}"
-						aria-pressed={activeTab === tab.value}
-						onclick={() => (activeTab = tab.value)}
-					>
-						{tab.label}
-					</button>
-				{/each}
-			</div>
+	<div id="experience" class="mb-32" use:intersect={{ threshold: 0.1, once: true }}>
+		<h2 class="font-display plates mb-8 text-6xl leading-[0.95] text-ink lg:text-7xl">
+			Experience
+		</h2>
+		<div class="mb-8 flex flex-wrap gap-3">
+			{#each tabs as tab (tab.value)}
+				<button
+					class="tekan rounded-md px-4 py-1.5 font-display text-xl {activeTab === tab.value
+						? 'bg-pop text-on-pop'
+						: 'bg-card text-ink hover:bg-pop hover:text-on-pop'}"
+					aria-pressed={activeTab === tab.value}
+					onclick={() => (activeTab = tab.value)}
+				>
+					{tab.label}
+				</button>
+			{/each}
+		</div>
 
-			<div class="flex flex-col gap-6">
-				{#if activeTab === 'work'}
-					{#each showWorkExperiences as exp, i (i)}
-						<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
-							<span
-								class="text-[10px] font-bold uppercase {textColors[
-									i % textColors.length
-								]} tracking-widest">{exp.date}</span
-							>
-							<h3 class="font-display text-2xl text-ink">{exp.title}</h3>
-							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-								{exp.name}
-							</p>
-							<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{exp.description}</p>
-						</div>
-					{/each}
-					{#if workExperiences.length > 3}
-						<button
-							onclick={toggleShowMoreWork}
-							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+		<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+			{#if activeTab === 'work'}
+				{#each showWorkExperiences as exp, i (i)}
+					<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
+						<span
+							class="text-[10px] font-bold uppercase {textColors[
+								i % textColors.length
+							]} tracking-widest">{exp.date}</span
 						>
-							{isShowMoreWork ? '[-] Show Less' : '[+] Show More'}
-						</button>
-					{/if}
-				{:else if activeTab === 'education'}
-					{#each showEducationExperiences as edu, i (i)}
-						<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
-							<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
-								>{edu.date}</span
-							>
-							<h3 class="font-display text-2xl text-ink">{edu.name}</h3>
-							<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{edu.description}</p>
-						</div>
-					{/each}
-					{#if educationExperiences.length > 3}
-						<button
-							onclick={toggleShowMoreEdu}
-							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+						<h3 class="font-display text-2xl text-ink">{exp.title}</h3>
+						<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
+							{exp.name}
+						</p>
+						<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{exp.description}</p>
+					</div>
+				{/each}
+			{:else if activeTab === 'education'}
+				{#each showEducationExperiences as edu, i (i)}
+					<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
+						<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
+							>{edu.date}</span
 						>
-							{isShowMoreEdu ? '[-] Show Less' : '[+] Show More'}
-						</button>
-					{/if}
-				{:else if activeTab === 'organization'}
-					{#each showOrganizationExperiences as org, i (i)}
-						<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
-							<span
-								class="text-[10px] font-bold uppercase {textColors[
-									i % textColors.length
-								]} tracking-widest">{org.date}</span
-							>
-							<h3 class="font-display text-2xl text-ink">{org.title}</h3>
-							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-								{org.name}
-							</p>
-							<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{org.description}</p>
-						</div>
-					{/each}
-					{#if organizationExperiences.length > 3}
-						<button
-							onclick={toggleShowMoreOrg}
-							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+						<h3 class="font-display text-2xl text-ink">{edu.name}</h3>
+						<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{edu.description}</p>
+					</div>
+				{/each}
+			{:else if activeTab === 'organization'}
+				{#each showOrganizationExperiences as org, i (i)}
+					<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
+						<span
+							class="text-[10px] font-bold uppercase {textColors[
+								i % textColors.length
+							]} tracking-widest">{org.date}</span
 						>
-							{isShowMoreOrg ? '[-] Show Less' : '[+] Show More'}
-						</button>
-					{/if}
-				{:else if activeTab === 'achievement'}
-					{#each showAchievements as ach, i (i)}
-						<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
-							<span
-								class="text-[10px] font-bold uppercase {textColors[
-									i % textColors.length
-								]} tracking-widest">{ach.date}</span
-							>
-							<h3 class="judul-komik font-display text-3xl">{ach.title}</h3>
-							<p class="text-sm font-bold tracking-widest text-brand uppercase">
-								{ach.name}
-							</p>
-							<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{ach.description}</p>
-						</div>
-					{/each}
-					{#if achievementItems.length > 3}
-						<button
-							onclick={toggleShowMoreAch}
-							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+						<h3 class="font-display text-2xl text-ink">{org.title}</h3>
+						<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
+							{org.name}
+						</p>
+						<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{org.description}</p>
+					</div>
+				{/each}
+			{:else if activeTab === 'achievement'}
+				{#each showAchievements as ach, i (i)}
+					<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
+						<span
+							class="text-[10px] font-bold uppercase {textColors[
+								i % textColors.length
+							]} tracking-widest">{ach.date}</span
 						>
-							{isShowMoreAch ? '[-] Show Less' : '[+] Show More'}
-						</button>
-					{/if}
-				{/if}
+						<h3 class="judul-komik font-display text-3xl">{ach.title}</h3>
+						<p class="text-sm font-bold tracking-widest text-brand uppercase">
+							{ach.name}
+						</p>
+						<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{ach.description}</p>
+					</div>
+				{/each}
+			{/if}
+		</div>
+
+		{#if activeTab === 'work' && workExperiences.length > 3}
+			<button
+				onclick={toggleShowMoreWork}
+				class="tekan mt-6 w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+			>
+				{isShowMoreWork ? '[-] Show Less' : '[+] Show More'}
+			</button>
+		{:else if activeTab === 'education' && educationExperiences.length > 3}
+			<button
+				onclick={toggleShowMoreEdu}
+				class="tekan mt-6 w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+			>
+				{isShowMoreEdu ? '[-] Show Less' : '[+] Show More'}
+			</button>
+		{:else if activeTab === 'organization' && organizationExperiences.length > 3}
+			<button
+				onclick={toggleShowMoreOrg}
+				class="tekan mt-6 w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+			>
+				{isShowMoreOrg ? '[-] Show Less' : '[+] Show More'}
+			</button>
+		{:else if activeTab === 'achievement' && achievementItems.length > 3}
+			<button
+				onclick={toggleShowMoreAch}
+				class="tekan mt-6 w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+			>
+				{isShowMoreAch ? '[-] Show Less' : '[+] Show More'}
+			</button>
+		{/if}
+	</div>
+
+	<div
+		id="projects"
+		class="splash komik mb-32 rounded-md p-6 md:p-8"
+		use:intersect={{ threshold: 0.05, once: true }}
+	>
+		<div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+			<h2 class="splash-title font-display text-5xl leading-none 2xl:text-6xl">Latest Projects</h2>
+			<a
+				href={resolve('/projects')}
+				class="tekan rounded-md bg-card px-4 py-2 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+				>View All →</a
+			>
+		</div>
+		<div class="grid grid-cols-1 gap-6 lg:grid-cols-2" role="presentation">
+			{#each data.projects as project (project.id)}
+				<a
+					href={resolve('/projects/[slug]', { slug: project.slug })}
+					class="project-card komik group flex flex-col overflow-hidden rounded-md bg-card transition-transform duration-150 hover:-translate-y-1 hover:-rotate-1 sm:flex-row"
+				>
+					<div
+						class="relative aspect-video shrink-0 overflow-hidden border-b-3 border-edge-ink sm:aspect-auto sm:w-2/5 sm:border-r-3 sm:border-b-0"
+					>
+						<img
+							src={project.images[0]}
+							alt=""
+							loading="lazy"
+							class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						/>
+					</div>
+					<div class="flex flex-1 flex-col gap-1.5 p-4">
+						<h3 class="font-display text-2xl text-ink transition-colors group-hover:text-brand">
+							{project.name}
+						</h3>
+						<p class="line-clamp-3 text-sm leading-relaxed text-ink-muted">
+							{project.description}
+						</p>
+						{#if project.technologies?.length}
+							<div class="mt-auto flex flex-wrap gap-2 pt-2">
+								{#each project.technologies as tech (tech.name)}
+									<img src={tech.icon} alt={tech.name} title={tech.name} class="h-4 w-4" />
+								{/each}
+							</div>
+						{/if}
+					</div>
+				</a>
+			{/each}
+		</div>
+	</div>
+
+	<div
+		id="contact"
+		class="grid grid-cols-1 gap-16 xl:grid-cols-2"
+		use:intersect={{ threshold: 0.2, once: true }}
+	>
+		<div class="flex flex-col gap-8">
+			<h2 class="font-display plates text-7xl leading-none text-ink lg:text-8xl">
+				Get in<br /><span class="judul-komik">Touch</span>
+			</h2>
+			<p class="kotak-narasi w-fit max-w-xl -rotate-1 text-lg leading-relaxed font-medium md:text-xl">
+				Feel free to reach out for inquiries, collaborations, or just to say hello. I am always open
+				to <span class="bg-pop px-1 text-on-pop box-decoration-clone">new opportunities</span> and discussions.
+			</p>
+			<div class="komik flex w-fit max-w-full flex-col gap-3 rounded-md bg-card p-6">
+				<p class="narasi">Email Me</p>
+				<a
+					href="mailto:{EMAIL}"
+					class="text-xl font-bold wrap-anywhere text-ink underline decoration-brand decoration-2 underline-offset-4 transition-colors hover:text-brand md:text-2xl"
+				>
+					{EMAIL}
+				</a>
 			</div>
 		</div>
 
-		<div
-			id="projects"
-			class="splash komik flex flex-col rounded-md p-6 md:p-8"
-			use:intersect={{ threshold: 0.2, once: true }}
-		>
-			<div class="mb-8 flex flex-wrap items-end justify-between gap-4">
-				<h2 class="splash-title font-display text-5xl leading-none 2xl:text-6xl">Latest Projects</h2>
-				<a
-					href={resolve('/projects')}
-					class="tekan rounded-md bg-card px-4 py-2 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-					>View All</a
-				>
-			</div>
-			<div class="flex flex-1 flex-col gap-6" role="presentation">
-				{#each data.projects as project (project.id)}
+		<div class="flex flex-col gap-8 xl:items-end xl:justify-end">
+			<p class="narasi">Social Media</p>
+			<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:w-full xl:max-w-md">
+				{#each socials as s (s.name)}
 					<a
-						href={resolve('/projects/[slug]', { slug: project.slug })}
-						class="project-card komik group flex flex-col overflow-hidden rounded-md bg-card transition-transform duration-150 hover:-translate-y-1 hover:-rotate-1 sm:flex-row xl:max-h-80 xl:flex-1"
+						href={s.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="tekan bg-card text-ink hover:bg-pop hover:text-on-pop flex items-center justify-between rounded-md px-4 py-3 text-xs font-bold tracking-widest uppercase"
+						aria-label="Visit my {s.name} profile"
 					>
-						<div
-							class="relative aspect-video shrink-0 overflow-hidden border-b-3 border-edge-ink sm:aspect-auto sm:w-2/5 sm:border-r-3 sm:border-b-0"
-						>
-							<img
-								src={project.images[0]}
-								alt=""
-								class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-							/>
-						</div>
-						<div class="flex flex-1 flex-col gap-1.5 p-4">
-							<h3 class="font-display text-2xl text-ink transition-colors group-hover:text-brand">
-								{project.name}
-							</h3>
-							<p class="line-clamp-2 text-sm leading-relaxed text-ink-muted xl:line-clamp-4">
-								{project.description}
-							</p>
-							{#if project.technologies?.length}
-								<div class="mt-auto flex flex-wrap gap-2 pt-2">
-									{#each project.technologies as tech (tech.name)}
-										<img src={tech.icon} alt={tech.name} title={tech.name} class="h-4 w-4" />
-									{/each}
-								</div>
-							{/if}
-						</div>
+						<span>{s.name}</span> <i class="fa-brands {s.icon} text-lg"></i>
 					</a>
 				{/each}
 			</div>
 		</div>
 	</div>
-
-	<div class="text-center">
-		<a
-			href={resolve('/contact')}
-			class="group inline-grid w-full max-w-sm place-items-center group-hover:[--ca-box:4px] lg:max-w-md"
-		>
-			<svg
-				class="col-start-1 row-start-1 w-full overflow-visible transition-transform group-hover:-rotate-3 group-hover:scale-105"
-				viewBox="-100 -66 200 132"
-				aria-hidden="true"
-			>
-				<polygon class="plate-a" points={burst} fill="var(--plate-a)" />
-				<polygon class="plate-b" points={burst} fill="var(--plate-b)" />
-				<polygon
-					points={burst}
-					fill="var(--cta)"
-					stroke="var(--edge-ink)"
-					stroke-width="3"
-					stroke-linejoin="round"
-					vector-effect="non-scaling-stroke"
-				/>
-			</svg>
-			<span class="burst-text font-display col-start-1 row-start-1 text-6xl lg:text-7xl"
-				>Contact!</span
-			>
-		</a>
-	</div>
 </section>
-
-{#if showScrollTop}
-	<button
-		class="tekan fixed top-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-card text-ink hover:bg-pop hover:text-on-pop lg:right-12"
-		aria-label="scrollToSection"
-		onclick={() => scrollToSection(currentSectionIndex - 1)}
-	>
-		<i class="fa-solid fa-arrow-up"></i>
-	</button>
-{/if}
-{#if showScrollBottom}
-	<button
-		class="tekan fixed right-6 bottom-24 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-card text-ink hover:bg-pop hover:text-on-pop lg:right-12"
-		aria-label="scrollToSection"
-		onclick={() => scrollToSection(currentSectionIndex + 1)}
-	>
-		<i class="fa-solid fa-arrow-down"></i>
-	</button>
-{/if}
 
 <style>
 	/* Spider-Man red: web lines spun from the top-right corner over Ben-Day dots. */
@@ -428,30 +482,22 @@
 			0.06em 0.06em 0 #0c1844;
 	}
 
-	.plate-a,
-	.plate-b {
-		transition: translate 83ms steps(1);
+	/* No panel, just a feathered wash so small text and icons stay legible over the busy background. */
+	.halo {
+		position: relative;
+		isolation: isolate;
 	}
-	.plate-a {
-		translate: calc(-2px - var(--ca-box)) 0;
-	}
-	.plate-b {
-		translate: calc(2px + var(--ca-box)) 0;
-	}
-	.burst-text {
-		rotate: -6deg;
-		color: var(--cta-ink);
-		-webkit-text-stroke: 0.05em #0c1844;
-		paint-order: stroke fill;
-		text-shadow: 0.06em 0.06em 0 #0c1844;
-	}
-
-	.no-scrollbar::-webkit-scrollbar {
-		display: none;
-	}
-	.no-scrollbar {
-		-ms-overflow-style: none;
-		scrollbar-width: none;
+	.halo::before {
+		content: '';
+		position: absolute;
+		inset: -1.5rem;
+		z-index: -1;
+		pointer-events: none;
+		background: color-mix(in srgb, var(--surface) 60%, transparent);
+		mask-image:
+			linear-gradient(to right, transparent, black 1.5rem, black calc(100% - 1.5rem), transparent),
+			linear-gradient(to bottom, transparent, black 1.5rem, black calc(100% - 1.5rem), transparent);
+		mask-composite: intersect;
 	}
 
 	:global(html) {
