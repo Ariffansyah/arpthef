@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { tick } from 'svelte';
 	import { scale } from 'svelte/transition';
+
+	/** The toggle lives in the dock (#chat-toggle); this is only the panel. */
+	let { open = $bindable(false) } = $props();
 
 	let messages = $state<{ role: string; content: string }[]>([
 		{ role: 'assistant', content: 'yo, ask me about arp.' }
@@ -8,32 +11,23 @@
 	let input = $state('');
 	let loading = $state(false);
 	let chatEnd = $state<HTMLDivElement>();
-	let robotPulse = $state(0);
-	let open = $state(false);
 	let inputEl = $state<HTMLInputElement>();
-	let fab = $state<HTMLButtonElement>();
 
 	const twos = (t: number) => Math.ceil(t * 3) / 3;
 	const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-	async function show() {
-		open = true;
-		await tick();
-		inputEl?.focus();
-		scroll();
-	}
+	$effect(() => {
+		if (!open) return;
+		tick().then(() => {
+			inputEl?.focus();
+			scroll();
+		});
+	});
 
 	function close() {
 		open = false;
-		fab?.focus();
+		document.getElementById('chat-toggle')?.focus();
 	}
-
-	onMount(() => {
-		let raf: number;
-		function pulse() { robotPulse = Math.sin(Math.floor(performance.now() / 83) * 83 / 800) * 0.15 + 0.85; raf = requestAnimationFrame(pulse); }
-		raf = requestAnimationFrame(pulse);
-		return () => cancelAnimationFrame(raf);
-	});
 
 	function scroll() {
 		chatEnd?.scrollIntoView({ behavior: 'smooth' });
@@ -73,11 +67,13 @@
 <svelte:window onkeydown={(e) => e.key === 'Escape' && open && close()} />
 
 {#if open}
+	<!-- Right-aligned to the dock so the tail sits over the toggle. 50vw + 9rem is the dock's right
+	     end on a phone (about half its 19rem width past centre), so the left edge stays on screen. -->
 	<div
 		id="arp-chat"
 		role="dialog"
 		aria-label="Chat with arp AI"
-		class="fixed right-6 bottom-24 z-50 w-[min(24rem,calc(100vw-3rem))] origin-bottom-right lg:right-12"
+		class="pointer-events-auto absolute right-0 bottom-full mb-5 w-[min(24rem,calc(50vw+9rem))] origin-bottom-right"
 		style="height: min(32rem, calc(100dvh - 8rem))"
 		transition:scale={{ start: 0.6, duration: reduceMotion() ? 0 : 250, easing: twos }}
 	>
@@ -153,19 +149,6 @@
 	</div>
 {/if}
 
-<button
-	bind:this={fab}
-	onclick={() => (open ? close() : show())}
-	aria-expanded={open}
-	aria-controls="arp-chat"
-	aria-label={open ? 'Close chat' : 'Chat with arp AI'}
-	class="tekan fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-cta text-cta-ink hover:bg-ink hover:text-surface lg:right-12"
->
-	<i
-		class="robot-glow fa-solid {open ? 'fa-xmark' : 'fa-robot'} text-2xl"
-		style="transform: scale({open ? 1 : robotPulse})"
-	></i>
-</button>
 
 <style>
 	.chat-page {
@@ -174,10 +157,6 @@
 			transparent 1.6px
 		);
 		background-size: 9px 9px;
-	}
-
-	.robot-glow {
-		transition: transform 0.1s ease;
 	}
 
 	.animate-in {

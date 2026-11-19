@@ -81,16 +81,17 @@
 	<link rel="canonical" href="https://arpthef.my.id/" />
 </svelte:head>
 
-<section class="relative z-10 mx-auto w-full max-w-[96rem] px-6 py-10 lg:px-10 xl:px-20">
-	<!-- The first screen previews every section, so a recruiter gets the whole picture without scrolling. -->
+<section class="relative z-10 mx-auto w-full max-w-[96rem] px-6 py-10 short:pt-6 lg:px-10 xl:px-20">
+	<!-- The first screen previews every section, so a recruiter gets the whole picture without scrolling.
+	     short: tightens it on laptop-height screens so the dock never covers the bottom row. -->
 	<div
 		id="arpthef"
-		class="mb-32 grid grid-cols-1 gap-8 lg:min-h-[calc(100svh-10rem)] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:content-center lg:gap-x-10 lg:gap-y-12"
+		class="mb-32 grid grid-cols-1 gap-8 lg:min-h-[calc(100svh-10rem)] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:content-center lg:gap-x-10 lg:gap-y-12 short:gap-y-6 short:max-xl:gap-x-6"
 		use:intersect
 	>
-		<div class="halo @container flex flex-col gap-3 lg:col-start-1 lg:row-start-1 lg:self-start">
+		<div class="halo @container flex flex-col gap-3 short:gap-2 lg:col-start-1 lg:row-start-1 lg:self-start">
 			<h1
-				class="font-display plates text-[length:clamp(2.5rem,15cqw,4.5rem)] leading-[0.95] text-ink"
+				class="font-display plates text-[length:clamp(2.5rem,15cqw,4.5rem)] leading-[0.95] text-ink short:text-[length:clamp(2.5rem,12cqw,3.25rem)]"
 			>
 				Mohammad<br /><span class="judul-komik">Ariffansyah</span>
 			</h1>
@@ -124,7 +125,7 @@
 
 		<button
 			type="button"
-			class="hidden w-64 cursor-pointer justify-self-center md:block lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center xl:w-80"
+			class="hidden w-64 cursor-pointer justify-self-center md:block lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center xl:w-80 short:max-xl:w-52"
 			aria-label="Poke {$theme === 'dark' ? 'Miles' : 'Gwen'}"
 			onclick={() => character?.poke()}
 		>
@@ -137,13 +138,20 @@
 		</button>
 
 		<div class="halo flex flex-col gap-3 lg:col-start-3 lg:row-start-1 lg:self-start">
-			<h2 class="narasi w-fit">Latest Projects</h2>
+			<div class="flex flex-wrap items-center justify-between gap-3">
+				<h2 class="narasi w-fit">Latest Projects</h2>
+				<a
+					href={resolve('/projects')}
+					class="tekan rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+					>All projects →</a
+				>
+			</div>
 			<ul class="flex flex-col">
 				{#each data.projects as project (project.id)}
 					<li class="border-b-2 border-edge last:border-b-0">
 						<a
 							href={resolve('/projects/[slug]', { slug: project.slug })}
-							class="group flex items-center justify-between gap-4 py-2.5"
+							class="group flex items-center justify-between gap-4 py-2.5 short:py-1.5"
 						>
 							<span class="font-display text-2xl text-ink transition-colors group-hover:text-brand"
 								>{project.name}</span
@@ -157,19 +165,21 @@
 					</li>
 				{/each}
 			</ul>
-			<a
-				href={resolve('/projects')}
-				class="tekan w-fit self-end rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-				>All projects →</a
-			>
 		</div>
 
 		<div class="halo flex flex-col gap-3 lg:col-start-1 lg:row-start-2 lg:self-start">
-			<h2 class="narasi w-fit">Experience & Awards</h2>
+			<div class="flex flex-wrap items-center justify-between gap-3">
+				<h2 class="narasi w-fit">Experience & Awards</h2>
+				<a
+					href="#experience"
+					class="tekan rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+					>Full background ↓</a
+				>
+			</div>
 			<ul class="flex flex-col">
 				{#each [...workExperiences.slice(0, 2), ...achievementItems.slice(0, 2)] as exp (exp.id)}
 					{@const award = exp.category === 'achievement'}
-					<li class="flex items-start gap-3 border-b-2 border-edge py-1.5 last:border-b-0">
+					<li class="flex items-start gap-3 border-b-2 border-edge py-1.5 short:py-1 last:border-b-0">
 						<span class="mt-1 w-4 shrink-0 text-center text-brand">
 							<i class="fa-solid {award ? 'fa-trophy' : 'fa-briefcase'}"></i>
 						</span>
@@ -184,15 +194,17 @@
 					</li>
 				{/each}
 			</ul>
-			<a
-				href="#experience"
-				class="tekan w-fit self-end rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-				>Full background ↓</a
-			>
 		</div>
 
 		<div class="halo flex flex-col gap-4 lg:col-start-3 lg:row-start-2 lg:self-start">
-			<h2 class="narasi w-fit">Stack & Contact</h2>
+			<div class="flex flex-wrap items-center justify-between gap-3">
+				<h2 class="narasi w-fit">Stack & Contact</h2>
+				<a
+					href="#contact"
+					class="tekan rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
+					>All contacts ↓</a
+				>
+			</div>
 			<ul class="flex flex-wrap gap-2">
 				{#each technologies.slice(0, 12) as tech (tech.name)}
 					<li
@@ -221,11 +233,6 @@
 					{/each}
 				</div>
 			</div>
-			<a
-				href="#contact"
-				class="tekan w-fit self-end rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-				>All contacts ↓</a
-			>
 		</div>
 	</div>
 
