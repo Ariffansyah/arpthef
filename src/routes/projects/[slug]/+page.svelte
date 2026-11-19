@@ -57,7 +57,7 @@
 	<div
 		id="header"
 		class="mb-20 flex flex-col gap-6 lg:gap-10"
-		use:intersect={{ threshold: 0.3, once: true }}
+		use:intersect
 	>
 		<div class="@container flex flex-col gap-4">
 			<h1
@@ -83,7 +83,7 @@
 		</div>
 	</div>
 
-	<div class="flex max-w-3xl flex-col gap-8" use:intersect={{ threshold: 0.3, once: true }}>
+	<div class="flex max-w-3xl flex-col gap-8" use:intersect>
 		<p class="text-ink-muted text-xl leading-relaxed font-medium md:text-2xl">
 			{project.description}
 		</p>
@@ -108,7 +108,7 @@
 	{/if}
 
 	{#if galleryImages.length > 0}
-		<div class="border-edge mt-32 border-t pt-16">
+		<div class="border-edge mt-32 border-t pt-16" use:intersect>
 			<div class="mb-12 flex items-baseline justify-between">
 				<h2 class="narasi">Gallery</h2>
 				<span class="text-ink-faint text-[10px] font-bold uppercase">Click to expand</span>

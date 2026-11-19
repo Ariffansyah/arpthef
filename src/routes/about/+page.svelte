@@ -99,7 +99,7 @@
 
 	<div class="grid grid-cols-1 gap-20 xl:grid-cols-2">
 		<div class="flex flex-col gap-10">
-			<div class="flex flex-col gap-6" use:intersect={{ threshold: 0.1, once: true }}>
+			<div class="flex flex-col gap-6" use:intersect>
 				<p class="kotak-narasi w-fit max-w-xl -rotate-1 text-lg leading-relaxed font-medium md:text-xl">
 					I am an undergraduate student primarily focused on <span class="bg-pop px-1 text-on-pop box-decoration-clone">backend development</span>, building the invisible engines that power the web.
 				</p>
@@ -148,7 +148,7 @@
 			</a>
 		</div>
 
-		<div class="flex flex-col gap-12" use:intersect={{ threshold: 0.1, once: true }}>
+		<div class="flex flex-col gap-12" use:intersect>
 			<div class="flex w-full flex-wrap gap-3">
 				{#each tabs as tab (tab.label)}
 					<button

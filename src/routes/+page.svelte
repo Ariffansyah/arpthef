@@ -86,7 +86,7 @@
 	<div
 		id="arpthef"
 		class="mb-32 grid grid-cols-1 gap-8 lg:min-h-[calc(100svh-10rem)] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:content-center lg:gap-x-10 lg:gap-y-12"
-		use:intersect={{ threshold: 0.2, once: true }}
+		use:intersect
 	>
 		<div class="halo @container flex flex-col gap-3 lg:col-start-1 lg:row-start-1 lg:self-start">
 			<h1
@@ -229,7 +229,7 @@
 		</div>
 	</div>
 
-	<div id="technologies" class="mb-32" use:intersect={{ threshold: 0.3, once: true }}>
+	<div id="technologies" class="mb-32" use:intersect>
 		<h2 class="narasi mb-10">Stack / Tools</h2>
 		<ul class="flex flex-wrap gap-3">
 			{#each technologies as tech (tech.name)}
@@ -243,7 +243,7 @@
 		</ul>
 	</div>
 
-	<div id="experience" class="mb-32" use:intersect={{ threshold: 0.1, once: true }}>
+	<div id="experience" class="mb-32" use:intersect>
 		<h2 class="font-display plates mb-8 text-6xl leading-[0.95] text-ink lg:text-7xl">
 			Experience
 		</h2>
@@ -354,7 +354,7 @@
 	<div
 		id="projects"
 		class="splash komik mb-32 rounded-md p-6 md:p-8"
-		use:intersect={{ threshold: 0.05, once: true }}
+		use:intersect
 	>
 		<div class="mb-8 flex flex-wrap items-end justify-between gap-4">
 			<h2 class="splash-title font-display text-5xl leading-none 2xl:text-6xl">Latest Projects</h2>
@@ -403,7 +403,7 @@
 	<div
 		id="contact"
 		class="grid grid-cols-1 gap-16 xl:grid-cols-2"
-		use:intersect={{ threshold: 0.2, once: true }}
+		use:intersect
 	>
 		<div class="flex flex-col gap-8">
 			<h2 class="font-display plates text-7xl leading-none text-ink lg:text-8xl">

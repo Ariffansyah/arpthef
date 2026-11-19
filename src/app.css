@@ -213,8 +213,8 @@
 	outline-offset: 2px;
 }
 
-/* Motion steps on twos (83 ms) like Background3D, and never starts hidden.
-   .visible comes from $lib/actions/intersect. */
+/* Motion steps on twos (83 ms) like Background3D. .visible and .reveal come from
+   $lib/actions/intersect; blocks already on screen at hydration only get this shake. */
 .visible :is(.komik, .narasi, .judul-komik, .plates) {
 	animation: print-in 250ms steps(1) backwards;
 }
@@ -239,6 +239,65 @@
 		--ca: 0.05;
 		--ca-box: 2px;
 		translate: -1px 0;
+	}
+}
+
+/* Blocks that start below the fold slam their children in one after another, and a list or
+   grid cascades item by item. .tekan is skipped: its hover hop shares the animation property. */
+@media screen and (prefers-reduced-motion: no-preference) {
+	.reveal:not(.visible) > :not(.tekan, ul, .grid),
+	.reveal:not(.visible) > :is(ul, .grid) > * {
+		opacity: 0;
+	}
+	.reveal.visible > :not(.tekan, ul, .grid),
+	.reveal.visible > :is(ul, .grid) > * {
+		animation: panel-in 333ms steps(1) backwards;
+		animation-delay: calc(var(--i) * 83ms);
+	}
+	/* Repeats every six, so a long list ripples row by row instead of trailing for seconds.
+	   6n + 1 is set too, or a grid's first item would inherit the grid's own index. */
+	:is(.reveal, .reveal > :is(ul, .grid)) > :nth-child(6n + 1) {
+		--i: 0;
+	}
+	:is(.reveal, .reveal > :is(ul, .grid)) > :nth-child(6n + 2) {
+		--i: 1;
+	}
+	:is(.reveal, .reveal > :is(ul, .grid)) > :nth-child(6n + 3) {
+		--i: 2;
+	}
+	:is(.reveal, .reveal > :is(ul, .grid)) > :nth-child(6n + 4) {
+		--i: 3;
+	}
+	:is(.reveal, .reveal > :is(ul, .grid)) > :nth-child(6n + 5) {
+		--i: 4;
+	}
+	:is(.reveal, .reveal > :is(ul, .grid)) > :nth-child(6n) {
+		--i: 5;
+	}
+}
+/* transform, not translate/rotate, so it stacks on .narasi's tilt and the glitch offset. */
+@keyframes panel-in {
+	0% {
+		opacity: 0;
+		transform: translateY(2.5rem) rotate(-3deg) scale(0.92);
+	}
+	25% {
+		opacity: 1;
+		--ca: 0.14;
+		--ca-box: 8px;
+		transform: translateY(-0.5rem) rotate(1deg) scale(1.03);
+	}
+	50% {
+		opacity: 1;
+		--ca: 0.08;
+		--ca-box: 4px;
+		transform: translateY(0.2rem) rotate(-0.5deg);
+	}
+	75% {
+		opacity: 1;
+		--ca: 0.05;
+		--ca-box: 2px;
+		transform: none;
 	}
 }
 

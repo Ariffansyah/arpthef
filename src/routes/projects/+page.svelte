@@ -26,7 +26,7 @@
 <section class="relative z-10 mx-auto w-full max-w-7xl px-6 py-12 lg:px-10 lg:py-24">
 	<div
 		class="@container mb-20 flex flex-col gap-4"
-		use:intersect={{ threshold: 0.3, once: true }}
+		use:intersect
 	>
 		<h1
 			class="font-display plates text-[length:clamp(3rem,15cqw,9rem)] leading-[0.95] text-ink"
@@ -39,7 +39,7 @@
 	<div class="w-full">
 		<div class="grid grid-cols-1 gap-x-10 gap-y-16 md:grid-cols-2 xl:grid-cols-3" role="presentation">
 			{#each data.projects as project (project.id)}
-				<div class="project-card group flex flex-col gap-6" role="presentation" use:intersect={{ threshold: 0.1, once: true }}>
+				<div class="project-card group flex flex-col gap-6" role="presentation" use:intersect>
 					<a
 						href={resolve('/projects/[slug]', { slug: project.slug })}
 						class="komik relative aspect-4/5 overflow-hidden rounded-md bg-card transition-transform duration-150 group-hover:-translate-y-1 group-hover:-rotate-1"
