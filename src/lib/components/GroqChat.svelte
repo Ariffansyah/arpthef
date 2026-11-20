@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import { scale } from 'svelte/transition';
+	import { ooze } from '$lib/symbiote';
 
 	/** The toggle lives in the dock (#chat-toggle); this is only the panel. */
 	let { open = $bindable(false) } = $props();
@@ -12,9 +12,6 @@
 	let loading = $state(false);
 	let chatEnd = $state<HTMLDivElement>();
 	let inputEl = $state<HTMLInputElement>();
-
-	const twos = (t: number) => Math.ceil(t * 3) / 3;
-	const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 	$effect(() => {
 		if (!open) return;
@@ -73,9 +70,9 @@
 		id="arp-chat"
 		role="dialog"
 		aria-label="Chat with arp AI"
-		class="pointer-events-auto absolute right-0 bottom-full mb-5 w-[min(24rem,calc(50vw+9rem))] origin-bottom-right"
+		class="pointer-events-auto absolute right-0 bottom-full mb-5 w-[min(24rem,calc(50vw+9rem))]"
 		style="height: min(32rem, calc(100dvh - 8rem))"
-		transition:scale={{ start: 0.6, duration: reduceMotion() ? 0 : 250, easing: twos }}
+		transition:ooze={{ from: document.getElementById('chat-toggle') }}
 	>
 		<div class="balon balon-kanan flex h-full flex-col bg-card shadow-[5px_5px_0_var(--shadow)]">
 			<div class="flex items-center gap-3 border-b-3 border-edge-ink px-4 py-3">

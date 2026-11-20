@@ -9,7 +9,7 @@
 	import { page } from '$app/state';
 	import { theme } from '$lib/theme';
 	import { lightboxImage, closeLightbox } from '$lib/lightbox';
-	import { symbioteToggle } from '$lib/symbiote';
+	import { ooze, symbioteNavigate, symbioteToggle } from '$lib/symbiote';
 	import { crossfade } from 'svelte/transition';
 
 	// The active pill slides to the next link on twos instead of blinking between them.
@@ -62,14 +62,7 @@
 				? page.url.pathname === '/' && !activeHash
 				: page.url.pathname.startsWith(l.path);
 
-	$effect(() => {
-		onNavigate((navigation) => {
-			if (!document.startViewTransition) return;
-			return new Promise((resolve) => {
-				document.startViewTransition(() => resolve());
-			});
-		});
-	});
+	onNavigate(symbioteNavigate);
 
 	$effect(() => {
 		window.addEventListener('scroll', onScroll, { passive: true });
@@ -270,7 +263,8 @@
 
 {#if $lightboxImage}
 	<div
-		class="bg-surface/95 fixed inset-0 z-100 flex items-center justify-center p-4 backdrop-blur-xl transition-all"
+		class="bg-surface/95 fixed inset-0 z-100 flex items-center justify-center p-4 backdrop-blur-xl"
+		transition:ooze
 		onclick={closeLightbox}
 		onkeydown={(e) => e.key === 'Escape' && closeLightbox()}
 		role="button"
@@ -294,7 +288,6 @@
 
 <style>
 	.dock {
-		view-transition-name: dock;
 		transition: transform 250ms steps(3);
 	}
 	/* transform, not translate, so the glitch frames' translate can't pull it back on screen.
@@ -381,56 +374,6 @@
 		-moz-osx-font-smoothing: grayscale;
 	}
 
-	:global(::view-transition-old(root)) {
-		animation: vt-tear-out 250ms steps(1) forwards;
-	}
-	:global(::view-transition-new(root)) {
-		animation: vt-tear-in 333ms steps(1);
-	}
-
-	/* No crossfade: two opaque plus-lighter snapshots would flash white. */
-	:global(::view-transition-old(dock)) {
-		display: none;
-	}
-	:global(::view-transition-new(dock)) {
-		animation: none;
-	}
-
-	@keyframes vt-tear-out {
-		0% {
-			clip-path: inset(0 0 46% 0);
-			translate: -18px 0;
-		}
-		33% {
-			clip-path: inset(38% 0 12% 0);
-			translate: 14px 0;
-		}
-		66% {
-			clip-path: inset(70% 0 0 0);
-			translate: -8px 0;
-		}
-		100% {
-			opacity: 0;
-		}
-	}
-	@keyframes vt-tear-in {
-		0% {
-			clip-path: inset(22% 0 30% 0);
-			translate: 16px 0;
-		}
-		25% {
-			clip-path: inset(0 0 18% 0);
-			translate: -10px 0;
-		}
-		50% {
-			clip-path: inset(0);
-			translate: 4px 0;
-		}
-		75% {
-			translate: -1px 0;
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		.dock {
 			transition: opacity 150ms;
@@ -442,9 +385,7 @@
 		}
 		.halftone,
 		.goo:hover,
-		.bot:not([aria-expanded='true']) i,
-		:global(::view-transition-old(root)),
-		:global(::view-transition-new(root)) {
+		.bot:not([aria-expanded='true']) i {
 			animation: none;
 		}
 	}

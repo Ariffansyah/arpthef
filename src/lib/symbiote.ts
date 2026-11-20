@@ -1,10 +1,12 @@
 import { tick } from 'svelte';
+import { browser } from '$app/environment';
+import type { OnNavigate } from '@sveltejs/kit';
 import { theme } from '$lib/theme';
 
 /**
- * Theme flip as a symbiote: the other dimension oozes out of `from` with tendrils racing
- * ahead, and the page turns over inside it. Venom-black going dark, Anti-Venom white going
- * light, so the goo's leading edge always contrasts with the page it eats. Built on View
+ * Page changes as a symbiote: the next page oozes out of a point with tendrils racing ahead,
+ * and the old one turns over inside it. Venom-black over a light page, Anti-Venom white over a
+ * dark one, so the goo's leading edge always contrasts with the page it eats. Built on View
  * Transitions: the new page is clipped to the goo, and an SVG in the new page inks its rim.
  */
 
@@ -18,6 +20,26 @@ const NS = 'http://www.w3.org/2000/svg';
 type Pt = [number, number];
 
 let running = false;
+let tap = { at: -Infinity, pt: [0, 0] as Pt };
+
+const centre = (el: Element): Pt => {
+	const b = el.getBoundingClientRect();
+	return [b.left + b.width / 2, b.top + b.height / 2];
+};
+
+if (browser)
+	addEventListener(
+		'click',
+		(e) => {
+			// detail 0 is a keyboard click, which has no pointer: start from what was activated.
+			tap = { at: performance.now(), pt: e.detail ? [e.clientX, e.clientY] : centre(e.target as Element) };
+		},
+		{ capture: true, passive: true }
+	);
+
+/** Where the reader just clicked, or the middle of the screen when nothing was (back button, Escape). */
+const lastTap = (): Pt =>
+	performance.now() - tap.at < 1000 ? tap.pt : [innerWidth / 2, innerHeight / 2];
 
 const xy = ([x, y]: Pt) => `${x.toFixed(1)} ${y.toFixed(1)}`;
 
@@ -32,8 +54,8 @@ function curve(pts: Pt[]): string {
 	return d + 'Z';
 }
 
-function frames(cx: number, cy: number) {
-	const reach = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));
+function frames(cx: number, cy: number, w = innerWidth, h = innerHeight, n = FRAMES) {
+	const reach = Math.hypot(Math.max(cx, w - cx), Math.max(cy, h - cy));
 	const rnd = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
 	const phase = [rnd(0, 7), rnd(0, 7), rnd(0, 7)];
 	// The wobble dips at most 15%, so the last frame still covers the farthest corner.
@@ -48,8 +70,8 @@ function frames(cx: number, cy: number) {
 	}));
 	const drops = Array.from({ length: 7 }, () => ({ angle: rnd(0, 7), gap: rnd(0.08, 0.3), r: rnd(3, 9) }));
 
-	return Array.from({ length: FRAMES }, (_, i) => {
-		const p = i / (FRAMES - 1);
+	return Array.from({ length: n }, (_, i) => {
+		const p = i / (n - 1);
 		const R = 26 + (end - 26) * p ** 1.7;
 		const edge = (a: number, inset = 0) => {
 			const k =
@@ -87,9 +109,9 @@ function frames(cx: number, cy: number) {
 	});
 }
 
-function overlay(toDark: boolean): SVGSVGElement {
-	const ink = toDark ? '#05060c' : '#fff5e1';
-	const shine = toDark ? '#fff5e1' : '#0c1844';
+function overlay(venom: boolean): SVGSVGElement {
+	const ink = venom ? '#05060c' : '#fff5e1';
+	const shine = venom ? '#fff5e1' : '#0c1844';
 	const svg = document.createElementNS(NS, 'svg');
 	svg.classList.add('symbiote');
 	svg.setAttribute('aria-hidden', 'true');
@@ -102,25 +124,19 @@ function overlay(toDark: boolean): SVGSVGElement {
 	return svg;
 }
 
-export async function symbioteToggle(from: HTMLElement) {
-	if (running) return;
-	if (!document.startViewTransition) return theme.toggle();
-
+async function spread([cx, cy]: Pt, update: () => unknown) {
 	const root = document.documentElement;
 	const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-	const toDark = !root.classList.contains('dark');
-	const box = from.getBoundingClientRect();
-	const shots = reduce ? [] : frames(box.left + box.width / 2, box.top + box.height / 2);
-	const svg = overlay(toDark);
+	const shots = reduce ? [] : frames(cx, cy);
+	const svg = overlay(!root.classList.contains('dark'));
 	const paths = [...svg.querySelectorAll('path')];
 	const draw = (i: number) => {
 		for (const p of paths) p.setAttribute('d', p.classList.contains('glint') ? shots[i].glint : shots[i].goo);
 	};
 
 	running = true;
-	root.dataset.symbiote = '';
 	const vt = document.startViewTransition(async () => {
-		theme.toggle();
+		await update();
 		if (!reduce) {
 			draw(0);
 			document.body.append(svg);
@@ -129,12 +145,13 @@ export async function symbioteToggle(from: HTMLElement) {
 	});
 
 	let done = false;
-	vt.finished.finally(() => {
+	const end = () => {
 		done = true;
 		running = false;
 		svg.remove();
-		delete root.dataset.symbiote;
-	});
+	};
+	// Rejects when an aborted navigation rejects the update; the cleanup is the same.
+	vt.finished.then(end, end);
 
 	try {
 		await vt.ready;
@@ -164,4 +181,36 @@ export async function symbioteToggle(from: HTMLElement) {
 		requestAnimationFrame(step);
 	};
 	requestAnimationFrame(step);
+}
+
+/** The theme flips inside goo that oozes out of the toggle. */
+export function symbioteToggle(from: HTMLElement) {
+	if (running) return;
+	if (!document.startViewTransition) return theme.toggle();
+	spread(centre(from), () => theme.toggle());
+}
+
+/** For onNavigate: the next page oozes out of wherever the reader just clicked. */
+export function symbioteNavigate(navigation: OnNavigate) {
+	if (running || !document.startViewTransition) return;
+	return new Promise<void>((resolve) =>
+		spread(lastTap(), async () => {
+			resolve();
+			await navigation.complete;
+		})
+	);
+}
+
+/**
+ * Svelte transition: the element oozes out of `from`'s centre (default: the last click) and is
+ * sucked back in on the way out. Just the goo's shape, without the page-wide rim.
+ */
+export function ooze(node: Element, { from }: { from?: Element | null } = {}) {
+	const box = node.getBoundingClientRect();
+	const [x, y] = from ? centre(from) : lastTap();
+	const shots = frames(x - box.left, y - box.top, box.width, box.height, 6).map((s) => s.goo);
+	return {
+		duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : shots.length * FRAME,
+		css: (t: number) => `clip-path: path('${shots[Math.min(shots.length - 1, Math.floor(t * shots.length))]}')`
+	};
 }

@@ -314,14 +314,11 @@
 	}
 }
 
-/* $lib/symbiote clips the new page to the goo itself; the dock joins the page so it gets eaten too. */
-:root[data-symbiote]::view-transition-old(root),
-:root[data-symbiote]::view-transition-new(root) {
+/* $lib/symbiote clips the new page to the goo itself. */
+::view-transition-old(root),
+::view-transition-new(root) {
 	animation: none;
 	mix-blend-mode: normal;
-}
-:root[data-symbiote] .dock {
-	view-transition-name: none;
 }
 .symbiote {
 	position: fixed;
