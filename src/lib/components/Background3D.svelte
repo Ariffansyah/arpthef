@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { DIMENSIONS, rgb } from '$lib/dimensions';
+	import { DIMENSIONS, PORTAL, rgb } from '$lib/dimensions';
 
 	let canvas: HTMLCanvasElement;
 
@@ -138,16 +138,7 @@
 		let webs: Web[] = [];
 		let stars: { x: number; y: number; size: number; tw: number; twSpeed: number; pal: number }[] = [];
 
-		/* Same in both themes. `tilt` is the direction the tunnel recedes. */
-		const PORTAL = {
-			glow: '190,140,255',
-			shell: '205,165,255',
-			facet: '250,235,255',
-			ring: '255,128,24',
-			rim: '255,214,110',
-			deep: '28,6,60',
-			mouth: '112,44,190'
-		};
+		/* `tilt` is the direction the tunnel recedes. */
 		const RIFTS = [
 			{ x: 0.87, y: 0.12, r: 0.2, seed: 3.2, spin: 0.1, phase: 0, period: 0.13, depth: 0.5, tilt: 0.8, label: 'EARTH-928' },
 			{ x: 0.13, y: 0.73, r: 0.2, seed: 7.7, spin: -0.13, phase: 2.1, period: 0.1, depth: 0.8, tilt: -0.5, label: 'EARTH-65' },

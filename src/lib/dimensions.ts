@@ -20,5 +20,16 @@ export const DIMENSIONS = {
 	}
 } as const satisfies Record<Theme, Record<string, number>>;
 
+/** Background3D's rifts, same in both themes; $lib/symbiote opens sections out of them too. */
+export const PORTAL = {
+	glow: '190,140,255',
+	shell: '205,165,255',
+	facet: '250,235,255',
+	ring: '255,128,24',
+	rim: '255,214,110',
+	deep: '28,6,60',
+	mouth: '112,44,190'
+};
+
 /** `0xff2d96` → `'255,45,150'`, for canvas `rgba()` strings. */
 export const rgb = (hex: number) => `${(hex >> 16) & 255},${(hex >> 8) & 255},${hex & 255}`;

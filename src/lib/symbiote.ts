@@ -2,6 +2,7 @@ import { tick } from 'svelte';
 import { browser } from '$app/environment';
 import type { OnNavigate } from '@sveltejs/kit';
 import { theme } from '$lib/theme';
+import { PORTAL } from '$lib/dimensions';
 
 /**
  * Page changes as a symbiote: the next page oozes out of a point with tendrils racing ahead,
@@ -18,6 +19,8 @@ const RIM = 14;
 const NS = 'http://www.w3.org/2000/svg';
 
 type Pt = [number, number];
+/** One frame: the clip, and for the goo an inset ring for the glint. */
+type Shot = { goo: string; glint?: string };
 
 let running = false;
 let tap = { at: -Infinity, pt: [0, 0] as Pt };
@@ -54,7 +57,7 @@ function curve(pts: Pt[]): string {
 	return d + 'Z';
 }
 
-function frames(cx: number, cy: number, w = innerWidth, h = innerHeight, n = FRAMES) {
+function frames(cx: number, cy: number, w = innerWidth, h = innerHeight, n = FRAMES, rim = RIM) {
 	const reach = Math.hypot(Math.max(cx, w - cx), Math.max(cy, h - cy));
 	const rnd = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
 	const phase = [rnd(0, 7), rnd(0, 7), rnd(0, 7)];
@@ -105,48 +108,108 @@ function frames(cx: number, cy: number, w = innerWidth, h = innerHeight, n = FRA
 			return `M${xy([x - r, y])}a${r} ${r} 0 1 1 ${2 * r} 0a${r} ${r} 0 1 1 ${-2 * r} 0Z`;
 		});
 
-		return { goo: curve(ring()) + strands.join('') + splatter.join(''), glint: curve(ring(RIM * 0.55)) };
+		return { goo: curve(ring()) + strands.join('') + splatter.join(''), glint: curve(ring(rim * 0.55)) };
 	});
 }
 
-function overlay(venom: boolean): SVGSVGElement {
-	const ink = venom ? '#05060c' : '#fff5e1';
-	const shine = venom ? '#fff5e1' : '#0c1844';
+/** A Background3D rift opening at (cx, cy) in a w×h box: a lopsided nonagon, turning as it widens. */
+function rift(cx: number, cy: number, w: number, h: number, rim: number, n = 6): Shot[] {
+	const spin = Math.random() * Math.PI * 2;
+	const facets = Array.from({ length: 9 }, () => [
+		(Math.random() - 0.5) * 0.3,
+		0.92 + Math.random() * 0.16
+	]);
+	// Those facets never cut in past 0.8 of the radius, so the last frame clears the corners, rim and all.
+	const end = (Math.hypot(Math.max(cx, w - cx), Math.max(cy, h - cy)) + rim) / 0.8;
+	return Array.from({ length: n }, (_, i) => {
+		const p = i / (n - 1);
+		const R = 12 + (end - 12) * p ** 1.5;
+		const pts = facets.map(([da, k], j) => {
+			const a = spin + p * 0.6 + ((j + da) / 9) * Math.PI * 2;
+			return xy([cx + Math.cos(a) * R * k, cy + Math.sin(a) * R * k]);
+		});
+		return { goo: `M${pts.join('L')}Z` };
+	});
+}
+
+/**
+ * Rim strokes from widest to narrowest. Each shows only its inner half, since the svg is clipped to
+ * the same shape it strokes; the plates sit under them so they only fringe the inner edge,
+ * misregistered like the rest of the page.
+ */
+function rim(layers: [number, string][], glint?: string): SVGSVGElement {
 	const svg = document.createElementNS(NS, 'svg');
 	svg.classList.add('symbiote');
 	svg.setAttribute('aria-hidden', 'true');
-	// The plates sit under the ink so they only fringe its inner edge, misregistered like the rest of the page.
-	svg.innerHTML = `
-		<path stroke-width="${RIM * 2}" style="stroke: var(--plate-a)" transform="translate(-3 0)" />
-		<path stroke-width="${RIM * 2}" style="stroke: var(--plate-b)" transform="translate(3 0)" />
-		<path stroke-width="${RIM * 2}" stroke="${ink}" />
-		<path class="glint" stroke-width="2.5" stroke="${shine}" stroke-dasharray="60 140 18 90" stroke-linecap="round" />`;
+	const [widest] = layers[0];
+	svg.innerHTML =
+		`<path stroke-width="${widest}" style="stroke: var(--plate-a)" transform="translate(-3 0)" />
+		<path stroke-width="${widest}" style="stroke: var(--plate-b)" transform="translate(3 0)" />` +
+		layers.map(([w, c]) => `<path stroke-width="${w}" stroke="${c}" />`).join('') +
+		(glint
+			? `<path class="glint" stroke-width="2.5" stroke="${glint}" stroke-dasharray="60 140 18 90" stroke-linecap="round" />`
+			: '');
 	return svg;
+}
+
+const gooRim = (venom: boolean, s = 1) =>
+	rim([[RIM * 2 * s, venom ? '#05060c' : '#fff5e1']], venom ? '#fff5e1' : '#0c1844');
+
+/** Inward from the edge: dark lip, lavender shell, dark again, then the orange tunnel ring with its gold rim. */
+const riftRim = (s: number) => {
+	const c = (k: keyof typeof PORTAL) => `rgb(${PORTAL[k]})`;
+	return rim([
+		[38 * s, c('rim')],
+		[34 * s, c('ring')],
+		[24 * s, c('deep')],
+		[20 * s, c('shell')],
+		[5 * s, c('deep')]
+	]);
+};
+
+const draw = (svg: SVGSVGElement, { goo, glint = goo }: Shot) => {
+	for (const p of svg.querySelectorAll('path'))
+		p.setAttribute('d', p.classList.contains('glint') ? glint : goo);
+};
+
+const clips = (shots: Shot[]) => [
+	...shots.map(({ goo }, i) => ({
+		clipPath: `path('${goo}')`,
+		offset: i / shots.length,
+		easing: 'step-end'
+	})),
+	{ clipPath: `path('${shots[shots.length - 1].goo}')`, offset: 1 }
+];
+
+/** Redraws the rim whenever `anim` steps to its next frame, until the svg is taken down. */
+function follow(anim: Animation, svg: SVGSVGElement, shots: Shot[]) {
+	let shown = 0;
+	const step = () => {
+		if (!svg.isConnected) return;
+		const i = Math.min(shots.length - 1, Math.floor(Number(anim.currentTime ?? 0) / FRAME));
+		if (i !== shown) draw(svg, shots[(shown = i)]);
+		requestAnimationFrame(step);
+	};
+	requestAnimationFrame(step);
 }
 
 async function spread([cx, cy]: Pt, update: () => unknown) {
 	const root = document.documentElement;
 	const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const shots = reduce ? [] : frames(cx, cy);
-	const svg = overlay(!root.classList.contains('dark'));
-	const paths = [...svg.querySelectorAll('path')];
-	const draw = (i: number) => {
-		for (const p of paths) p.setAttribute('d', p.classList.contains('glint') ? shots[i].glint : shots[i].goo);
-	};
+	const svg = gooRim(!root.classList.contains('dark'));
 
 	running = true;
 	const vt = document.startViewTransition(async () => {
 		await update();
 		if (!reduce) {
-			draw(0);
+			draw(svg, shots[0]);
 			document.body.append(svg);
 		}
 		await tick();
 	});
 
-	let done = false;
 	const end = () => {
-		done = true;
 		running = false;
 		svg.remove();
 	};
@@ -165,22 +228,9 @@ async function spread([cx, cy]: Pt, update: () => unknown) {
 		root.animate({ opacity: [0, 1] }, { duration: 200, easing: 'ease-out', pseudoElement });
 		return;
 	}
-	const anim = root.animate(
-		[
-			...shots.map(({ goo }, i) => ({ clipPath: `path('${goo}')`, offset: i / FRAMES, easing: 'step-end' })),
-			{ clipPath: `path('${shots[FRAMES - 1].goo}')`, offset: 1 }
-		],
-		{ duration: FRAMES * FRAME, pseudoElement }
-	);
-	// The new page is a live snapshot, so redrawing the rim here shows up inside the clip on the same frame.
-	let shown = 0;
-	const step = () => {
-		if (done) return;
-		const i = Math.min(FRAMES - 1, Math.floor(Number(anim.currentTime ?? 0) / FRAME));
-		if (i !== shown) draw((shown = i));
-		requestAnimationFrame(step);
-	};
-	requestAnimationFrame(step);
+	const anim = root.animate(clips(shots), { duration: FRAMES * FRAME, pseudoElement });
+	// The new page is a live snapshot, so redrawing the rim shows up inside the clip on the same frame.
+	follow(anim, svg, shots);
 }
 
 /** The theme flips inside goo that oozes out of the toggle. */
@@ -213,4 +263,49 @@ export function ooze(node: Element, { from }: { from?: Element | null } = {}) {
 		duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : shots.length * FRAME,
 		css: (t: number) => `clip-path: path('${shots[Math.min(shots.length - 1, Math.floor(t * shots.length))]}')`
 	};
+}
+
+/**
+ * Opens `el` out of a Background3D portal, or under goo crawling in from one side, on twos. The
+ * rim is inked by a copy of the clip laid over the element in page coordinates, so it scrolls along.
+ */
+export function emerge(el: HTMLElement, from: 'portal' | 'symbiote') {
+	const [w, h] = [el.offsetWidth, el.offsetHeight];
+	if (!w || !h) return;
+	// A full-width rim would bury chips and one-line headings.
+	const s = Math.min(1, Math.min(w, h) / 120);
+	const b = el.getBoundingClientRect();
+	// Open on what is drawn, not the middle of a full-width block holding one short heading.
+	const range = document.createRange();
+	range.selectNodeContents(el);
+	const c = range.getBoundingClientRect();
+	const [l, t, cw, ch] = c.width ? [c.left - b.left, c.top - b.top, c.width, c.height] : [0, 0, w, h];
+	const shots =
+		from === 'portal'
+			? rift(l + cw / 2, t + ch / 2, w, h, 19 * s)
+			: frames(Math.random() < 0.5 ? l : l + cw, t + Math.random() * ch, w, h, 6, RIM * s);
+	const svg =
+		from === 'portal' ? riftRim(s) : gooRim(!document.documentElement.classList.contains('dark'), s);
+	// Tilts turn about the centre, so the untilted box around it plus the same tilt lines the rim up.
+	const [cx, cy] = [b.left + b.width / 2, b.top + b.height / 2];
+	const { rotate, scale } = getComputedStyle(el);
+	Object.assign(svg.style, {
+		position: 'absolute',
+		zIndex: '20',
+		left: `${cx + scrollX - w / 2}px`,
+		top: `${cy + scrollY - h / 2}px`,
+		width: `${w}px`,
+		height: `${h}px`,
+		rotate,
+		scale
+	});
+	draw(svg, shots[0]);
+	document.body.append(svg);
+
+	const timing = { duration: shots.length * FRAME };
+	const anim = el.animate(clips(shots), timing);
+	svg.animate(clips(shots), timing);
+	follow(anim, svg, shots);
+	const end = () => svg.remove();
+	anim.finished.then(end, end);
 }
