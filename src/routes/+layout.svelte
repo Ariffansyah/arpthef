@@ -357,6 +357,10 @@
 		mix-blend-mode: screen;
 		opacity: 0.16;
 	}
+	/* Drifting, it repaints a full-screen blend on twos, which weak GPUs feel. */
+	:global([data-lite]) .halftone {
+		animation: none;
+	}
 	@keyframes halftone-drift {
 		to {
 			background-position: 40px 25px;

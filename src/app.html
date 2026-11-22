@@ -12,6 +12,14 @@
 						: window.matchMedia('(prefers-color-scheme: dark)').matches;
 					if (dark) document.documentElement.classList.add('dark');
 				} catch (e) {}
+				// Few cores, little memory or Save-Data: Background3D, Character3D and app.css draw less.
+				var n = navigator;
+				if (
+					(n.hardwareConcurrency || 8) <= 4 ||
+					(n.deviceMemory || 8) <= 2 ||
+					(n.connection && n.connection.saveData)
+				)
+					document.documentElement.dataset.lite = '';
 			})();
 		</script>
 		<link rel="icon" href="%sveltekit.assets%/Logo.webp" />

@@ -169,6 +169,8 @@
 	let lookYaw = 0;
 	let lookPitch = 0;
 
+	let offscreen = false;
+
 	let pokeAt = -Infinity;
 	let sfx = $state('');
 	let sfxTimer: ReturnType<typeof setTimeout> | undefined;
@@ -467,17 +469,18 @@
 		ink = new THREE.MeshBasicMaterial({ color: INK, side: THREE.BackSide });
 		ink.onBeforeCompile = inkLine;
 
+		const lite = 'lite' in document.documentElement.dataset;
 		try {
 			renderer = new THREE.WebGLRenderer({
 				alpha: true,
-				antialias: true,
+				antialias: !lite,
 				powerPreference: 'low-power'
 			});
 		} catch {
 			renderer = null;
 			return;
 		}
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+		renderer.setPixelRatio(lite ? 1 : Math.min(window.devicePixelRatio || 1, 2));
 		// No tone mapping: ACES greys the flat inks.
 		renderer.outputColorSpace = THREE.SRGBColorSpace;
 		renderer.setClearAlpha(0);
@@ -522,7 +525,7 @@
 		const tricking = !!current && u < current.trick.rise + current.trick.hold + current.trick.fall;
 		if (!prefersReduced || tricking) raf = requestAnimationFrame(frame);
 
-		if (document.hidden || !renderer) return;
+		if (document.hidden || offscreen || !renderer) return;
 
 		// Everything moves on twos (83 ms), like the rest of the page.
 		const tick = Math.floor(now / TWOS);
@@ -586,11 +589,15 @@
 
 		const ro = new ResizeObserver(resize);
 		ro.observe(host);
+		// Scrolled past, it would otherwise keep skinning and drawing on twos for nobody.
+		const io = new IntersectionObserver(([e]) => (offscreen = !e.isIntersecting));
+		io.observe(host);
 		window.addEventListener('mousemove', onMouse);
 
 		return () => {
 			mq.removeEventListener('change', sync);
 			ro.disconnect();
+			io.disconnect();
 			window.removeEventListener('mousemove', onMouse);
 			clearTimeout(sfxTimer);
 			stop();
@@ -615,6 +622,10 @@
 	.off-register {
 		filter: drop-shadow(calc(-1.5px - var(--ca-box)) 0 0 var(--plate-a))
 			drop-shadow(calc(1.5px + var(--ca-box)) 0 0 var(--plate-b));
+	}
+	/* The filter re-runs on every frame the canvas draws. */
+	:global([data-lite]) .off-register {
+		filter: none;
 	}
 
 	.sfx {

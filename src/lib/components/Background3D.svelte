@@ -9,7 +9,8 @@
 		if (!ctx) return;
 		const g = ctx;
 
-		const dpr = Math.min(window.devicePixelRatio || 1, 2);
+		const lite = 'lite' in document.documentElement.dataset;
+		const dpr = lite ? 1 : Math.min(window.devicePixelRatio || 1, 2);
 		const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		const TAU = Math.PI * 2;
 
@@ -193,7 +194,7 @@
 			for (const web of webs) web.broken = makeBroken(web.spokes, web.seed);
 
 			stars = [];
-			for (let i = 0; i < 130; i++) {
+			for (let i = 0; i < (lite ? 50 : 130); i++) {
 				stars.push({
 					x: rand(i + 900) * w,
 					y: rand(i + 1000) * h,
@@ -256,8 +257,15 @@
 			return { p0, p1, cx: mx + (hx - mx) * k, cy: my + (hy - my) * k };
 		}
 
-		/* Cyan plate left, magenta right, ink centred; `draw` re-issues the path at an offset. */
+		/* Cyan plate left, magenta right, ink centred; `draw` re-issues the path at an offset.
+		   Lite prints the ink alone: the plates triple the strokes on the busiest paths. */
 		function caStroke(draw: (dx: number, dy: number) => void, a: number, lw: number, off: number, ink = P.web) {
+			if (lite) {
+				g.lineWidth = lw;
+				g.strokeStyle = `rgba(${ink}, ${a})`;
+				draw(0, 0);
+				return;
+			}
 			g.globalCompositeOperation = P.comp;
 			g.lineWidth = lw + 0.5;
 			g.strokeStyle = `rgba(${P.ca1}, ${a * 0.55})`;
