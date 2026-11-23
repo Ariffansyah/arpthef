@@ -186,7 +186,8 @@ function follow(anim: Animation, svg: SVGSVGElement, shots: Shot[]) {
 	let shown = 0;
 	const step = () => {
 		if (!svg.isConnected) return;
-		const i = Math.min(shots.length - 1, Math.floor(Number(anim.currentTime ?? 0) / FRAME));
+		// currentTime reads a hair below 0 on the first frame, which would index shots[-1].
+		const i = Math.min(shots.length - 1, Math.max(0, Math.floor(Number(anim.currentTime ?? 0) / FRAME)));
 		if (i !== shown) draw(svg, shots[(shown = i)]);
 		requestAnimationFrame(step);
 	};
@@ -265,11 +266,26 @@ export function ooze(node: Element, { from }: { from?: Element | null } = {}) {
 	};
 }
 
+let queue: [HTMLElement, 'portal' | 'symbiote'][] = [];
+
 /**
  * Opens `el` out of a Background3D portal, or under goo crawling in from one side, on twos. The
  * rim is inked by a copy of the clip laid over the element in page coordinates, so it scrolls along.
+ * A cascade starts several at once; they are measured together and inked together on the next
+ * frame, since inserting a rim between two measurements forces a page-wide layout each time.
+ * app.css holds each one hidden for its first 83 ms, so the wait never shows.
  */
 export function emerge(el: HTMLElement, from: 'portal' | 'symbiote') {
+	if (!queue.length)
+		requestAnimationFrame(() => {
+			const ink = queue.map(([el, from]) => measure(el, from));
+			queue = [];
+			for (const go of ink) go?.();
+		});
+	queue.push([el, from]);
+}
+
+function measure(el: HTMLElement, from: 'portal' | 'symbiote') {
 	const [w, h] = [el.offsetWidth, el.offsetHeight];
 	if (!w || !h) return;
 	// A full-width rim would bury chips and one-line headings.
@@ -300,12 +316,14 @@ export function emerge(el: HTMLElement, from: 'portal' | 'symbiote') {
 		scale
 	});
 	draw(svg, shots[0]);
-	document.body.append(svg);
 
-	const timing = { duration: shots.length * FRAME };
-	const anim = el.animate(clips(shots), timing);
-	svg.animate(clips(shots), timing);
-	follow(anim, svg, shots);
-	const end = () => svg.remove();
-	anim.finished.then(end, end);
+	return () => {
+		document.body.append(svg);
+		const timing = { duration: shots.length * FRAME };
+		const anim = el.animate(clips(shots), timing);
+		svg.animate(clips(shots), timing);
+		follow(anim, svg, shots);
+		const end = () => svg.remove();
+		anim.finished.then(end, end);
+	};
 }

@@ -2,6 +2,7 @@
 	import { intersect } from '$lib/actions/intersect';
 	import { cubicOut } from 'svelte/easing';
 	import { resolve } from '$app/paths';
+	import ExperienceTabs from '$lib/components/ExperienceTabs.svelte';
 
 	function bioAnimation(_node: HTMLElement, { duration }: { duration: number }) {
 		return {
@@ -17,52 +18,7 @@
 		};
 	}
 
-	const textColors = ['text-brand'];
-
-	const tabs = [
-		{ label: 'Work', value: 'work' },
-		{ label: 'Education', value: 'education' },
-		{ label: 'Organization', value: 'organization' },
-		{ label: 'Achievement', value: 'achievement' }
-	];
-
-	let activeTab = 'work';
-
 	export let data;
-
-	$: byCategory = (c: string) => data.experiences.filter((e) => e.category === c);
-	$: workExperiences = byCategory('work');
-	$: educationExperiences = byCategory('education');
-	$: organizationExperiences = byCategory('organization');
-	$: achievementItems = byCategory('achievement');
-
-	let isShowMoreWork = false;
-	$: showWorkExperiences = isShowMoreWork ? workExperiences : workExperiences.slice(0, 3);
-	function toggleShowMoreWork() {
-		isShowMoreWork = !isShowMoreWork;
-	}
-
-	let isShowMoreEdu = false;
-	$: showEducationExperiences = isShowMoreEdu
-		? educationExperiences
-		: educationExperiences.slice(0, 3);
-	function toggleShowMoreEdu() {
-		isShowMoreEdu = !isShowMoreEdu;
-	}
-
-	let isShowMoreOrg = false;
-	$: showOrganizationExperiences = isShowMoreOrg
-		? organizationExperiences
-		: organizationExperiences.slice(0, 3);
-	function toggleShowMoreOrg() {
-		isShowMoreOrg = !isShowMoreOrg;
-	}
-
-	let isShowMoreAch = false;
-	$: showAchievements = isShowMoreAch ? achievementItems : achievementItems.slice(0, 3);
-	function toggleShowMoreAch() {
-		isShowMoreAch = !isShowMoreAch;
-	}
 
 	let isBioExpanded = false;
 	function toggleBio() {
@@ -148,113 +104,8 @@
 			</a>
 		</div>
 
-		<div class="flex flex-col gap-12" use:intersect>
-			<div class="flex w-full flex-wrap gap-3">
-				{#each tabs as tab (tab.label)}
-					<button
-						class="tekan rounded-md px-4 py-1.5 font-display text-xl whitespace-nowrap {activeTab ===
-						tab.value
-							? 'bg-pop text-on-pop'
-							: 'bg-card text-ink hover:bg-pop hover:text-on-pop'}"
-						aria-pressed={activeTab === tab.value}
-						on:click={() => (activeTab = tab.value)}
-					>
-						{tab.label}
-					</button>
-				{/each}
-			</div>
-
-			<div class="flex flex-col gap-8">
-				{#if activeTab === 'work'}
-					{#each showWorkExperiences as exp, i (i)}
-						<div class="komik flex flex-col gap-1 rounded-md bg-card p-5">
-							<span
-								class="text-[10px] font-bold tracking-widest uppercase {textColors[
-									i % textColors.length
-								]}">{exp.date}</span
-							>
-							<h3 class="font-display text-2xl text-ink">{exp.title}</h3>
-							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-								{exp.name}
-							</p>
-							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{exp.description}</p>
-						</div>
-					{/each}
-					{#if workExperiences.length > 3}
-						<button
-							on:click={toggleShowMoreWork}
-							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-						>
-							{isShowMoreWork ? '[-] Show Less' : '[+] Show More'}
-						</button>
-					{/if}
-				{:else if activeTab === 'education'}
-					{#each showEducationExperiences as edu, i (i)}
-						<div class="komik flex flex-col gap-1 rounded-md bg-card p-5">
-							<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
-								>{edu.date}</span
-							>
-							<h3 class="font-display text-2xl text-ink">{edu.name}</h3>
-							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{edu.description}</p>
-						</div>
-					{/each}
-					{#if educationExperiences.length > 3}
-						<button
-							on:click={toggleShowMoreEdu}
-							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-						>
-							{isShowMoreEdu ? '[-] Show Less' : '[+] Show More'}
-						</button>
-					{/if}
-				{:else if activeTab === 'organization'}
-					{#each showOrganizationExperiences as org, i (i)}
-						<div class="komik flex flex-col gap-1 rounded-md bg-card p-5">
-							<span
-								class="text-[10px] font-bold tracking-widest uppercase {textColors[
-									i % textColors.length
-								]}">{org.date}</span
-							>
-							<h3 class="font-display text-2xl text-ink">{org.title}</h3>
-							<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-								{org.name}
-							</p>
-							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{org.description}</p>
-						</div>
-					{/each}
-					{#if organizationExperiences.length > 3}
-						<button
-							on:click={toggleShowMoreOrg}
-							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-						>
-							{isShowMoreOrg ? '[-] Show Less' : '[+] Show More'}
-						</button>
-					{/if}
-				{:else if activeTab === 'achievement'}
-					{#each showAchievements as ach, i (i)}
-						<div class="komik flex flex-col gap-1 rounded-md bg-card p-5">
-							<span
-								class="text-[10px] font-bold tracking-widest uppercase {textColors[
-									i % textColors.length
-								]}">{ach.date}</span
-							>
-							<h3 class="font-display text-2xl text-ink">{ach.title}</h3>
-							<p class="text-sm font-bold tracking-widest text-brand uppercase">
-								{ach.name}
-							</p>
-							<p class="mt-2 text-sm leading-relaxed text-ink-muted">{ach.description}</p>
-						</div>
-					{/each}
-					{#if achievementItems.length > 3}
-						<button
-							on:click={toggleShowMoreAch}
-							class="tekan w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-						>
-							{isShowMoreAch ? '[-] Show Less' : '[+] Show More'}
-						</button>
-					{/if}
-				{/if}
-			</div>
+		<div use:intersect>
+			<ExperienceTabs experiences={data.experiences} class="grid gap-8" />
 		</div>
 	</div>
 </section>
-

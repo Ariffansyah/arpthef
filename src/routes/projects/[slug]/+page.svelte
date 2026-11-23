@@ -125,6 +125,7 @@
 						<img
 							src={imgUrl}
 							alt="{project.name} screenshot"
+							loading="lazy"
 							class="aspect-video w-full cursor-pointer object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
 						/>
 					</button>

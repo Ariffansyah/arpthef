@@ -1,3 +1,6 @@
-import { getProjects } from '$lib/server/db';
+import { getProjects, PUBLIC_CACHE } from '$lib/server/db';
 
-export const load = async () => ({ projects: await getProjects() });
+export const load = async ({ setHeaders }) => {
+	setHeaders(PUBLIC_CACHE);
+	return { projects: await getProjects() };
+};

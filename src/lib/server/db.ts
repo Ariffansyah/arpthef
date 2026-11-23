@@ -62,6 +62,12 @@ export type Experience = {
 	sort: number;
 };
 
+// Public pages are the same for everyone, so the CDN serves them and refreshes in the background.
+// A backstage edit shows up within a minute, or one visit later after a quiet spell.
+export const PUBLIC_CACHE = {
+	'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=86400'
+};
+
 export async function getProjects(limit?: number) {
 	let query = db
 		.from('projects')

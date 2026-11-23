@@ -458,19 +458,19 @@
 
 		function frame() {
 			const now = performance.now();
-			/* Motion steps at 12 fps (twos); only mouse parallax runs every frame. */
+			/* Everything, parallax included, steps at 12 fps (twos): a redraw costs hundreds of
+			   strokes, and following the mouse every frame multiplied that by the refresh rate. */
 			const step = Math.floor((now - start) * 0.012);
 			const t = step / 12;
-			const dt = Math.min(0.1, t - lastT);
-			lastT = t;
-
-			tx += (targetTX - tx) * 0.09;
-			ty += (targetTY - ty) * 0.09;
-
-			if (dt === 0 && Math.abs(targetTX - tx) < 0.05 && Math.abs(targetTY - ty) < 0.05) {
+			if (t === lastT) {
 				raf = requestAnimationFrame(frame);
 				return;
 			}
+			const dt = Math.min(0.1, t - lastT);
+			lastT = t;
+
+			tx += (targetTX - tx) * 0.38;
+			ty += (targetTY - ty) * 0.38;
 
 			g.clearRect(0, 0, w, h);
 			g.globalAlpha = P.alpha;

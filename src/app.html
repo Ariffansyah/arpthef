@@ -24,9 +24,12 @@
 		</script>
 		<link rel="icon" href="%sveltekit.assets%/Logo.webp" />
 		<link rel="shortcut icon" href="%sveltekit.assets%/Logo.webp" />
+		<!-- Icons only: don't hold the first paint for a third-party stylesheet. -->
 		<link
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 			rel="stylesheet"
+			media="print"
+			onload="this.media = 'all'"
 		/>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,26 +39,9 @@
 		/>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<meta property="og:title" content="arpthef" />
-		<meta property="og:description" content="Welcome to arpthef portofolio." />
-		<meta property="og:image" content="%sveltekit.assets%/Logo.webp" />
-		<meta property="og:url" content="https://arpthef.my.id/" />
-		<meta property="og:type" content="website" />
-
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content="arpthef" />
-		<meta name="twitter:description" content="Welcome to arpthef portofolio" />
-		<meta name="twitter:image" content="%sveltekit.assets%/Logo.webp" />
-
+		<!-- Titles, descriptions, canonical and og/twitter tags are per page, in each <svelte:head>. -->
 		%sveltekit.head%
 		<title>arpthef</title>
-		<meta name="description" content="Arpthef personal website." />
-		<meta
-			name="keywords"
-			content="arpthef, portfolio, personal website, web developer, programmer, Ariffansyah, Mohammad, Mohammad Ariffansyah"
-		/>
-		<meta name="author" content="Mohammad Ariffansyah" />
-		<link rel="canonical" href="https://arpthef.my.id/" />
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>

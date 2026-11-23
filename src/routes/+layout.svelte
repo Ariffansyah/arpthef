@@ -255,11 +255,9 @@
 	<Background3D />
 </div>
 
-
 <div class="halftone pointer-events-none fixed inset-0 z-0" aria-hidden="true"></div>
 
 <div class="reading-scrim pointer-events-none fixed inset-0 z-0" aria-hidden="true"></div>
-
 
 {#if $lightboxImage}
 	<div
@@ -351,20 +349,10 @@
 		opacity: 0.14;
 		mix-blend-mode: multiply;
 		mask-image: radial-gradient(125% 125% at 50% 45%, transparent 28%, black 100%);
-		animation: halftone-drift 24s steps(288) infinite;
 	}
 	:global(.dark) .halftone {
 		mix-blend-mode: screen;
 		opacity: 0.16;
-	}
-	/* Drifting, it repaints a full-screen blend on twos, which weak GPUs feel. */
-	:global([data-lite]) .halftone {
-		animation: none;
-	}
-	@keyframes halftone-drift {
-		to {
-			background-position: 40px 25px;
-		}
 	}
 
 	/* clip, not hidden: hidden turns body into a scroll container and unsticks the bar. */
@@ -387,7 +375,6 @@
 			opacity: 0;
 			pointer-events: none;
 		}
-		.halftone,
 		.goo:hover,
 		.bot:not([aria-expanded='true']) i {
 			animation: none;

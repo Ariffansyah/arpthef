@@ -2,56 +2,17 @@
 	import { technologies } from '$lib/constant/apps';
 	import { intersect } from '$lib/actions/intersect';
 	import Character3D from '$lib/components/Character3D.svelte';
+	import ExperienceTabs from '$lib/components/ExperienceTabs.svelte';
 	import { theme } from '$lib/theme';
-	import { resolve, asset } from '$app/paths';
+	import { resolve } from '$app/paths';
 
 	let { data } = $props();
 
 	let character = $state<ReturnType<typeof Character3D>>();
 
-	const textColors = ['text-brand'];
-
-	let activeTab = $state('work');
-	const tabs = [
-		{ label: 'Work', value: 'work' },
-		{ label: 'Achievement', value: 'achievement' },
-		{ label: 'Education', value: 'education' },
-		{ label: 'Organization', value: 'organization' }
-	];
-
 	const byCategory = (c: string) => data.experiences.filter((e) => e.category === c);
 	let workExperiences = $derived(byCategory('work'));
-	let educationExperiences = $derived(byCategory('education'));
-	let organizationExperiences = $derived(byCategory('organization'));
 	let achievementItems = $derived(byCategory('achievement'));
-
-	let isShowMoreWork = $state(false);
-	let showWorkExperiences = $derived(isShowMoreWork ? workExperiences : workExperiences.slice(0, 3));
-	function toggleShowMoreWork() {
-		isShowMoreWork = !isShowMoreWork;
-	}
-
-	let isShowMoreEdu = $state(false);
-	let showEducationExperiences = $derived(isShowMoreEdu
-		? educationExperiences
-		: educationExperiences.slice(0, 3));
-	function toggleShowMoreEdu() {
-		isShowMoreEdu = !isShowMoreEdu;
-	}
-
-	let isShowMoreOrg = $state(false);
-	let showOrganizationExperiences = $derived(isShowMoreOrg
-		? organizationExperiences
-		: organizationExperiences.slice(0, 3));
-	function toggleShowMoreOrg() {
-		isShowMoreOrg = !isShowMoreOrg;
-	}
-
-	let isShowMoreAch = $state(false);
-	let showAchievements = $derived(isShowMoreAch ? achievementItems : achievementItems.slice(0, 3));
-	function toggleShowMoreAch() {
-		isShowMoreAch = !isShowMoreAch;
-	}
 
 	const socials = [
 		{ name: 'GitHub', url: 'https://github.com/Ariffansyah', icon: 'fa-github' },
@@ -65,8 +26,6 @@
 
 <svelte:head>
 	<title>arp - Home</title>
-	<link rel="icon" href={asset('/Logo.webp')} />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta property="og:title" content="arpthef" />
 	<meta property="og:description" content="Welcome to arpthef portfolio." />
 	<meta property="og:image" content="https://arpthef.my.id/Logo.webp" />
@@ -206,7 +165,7 @@
 				>
 			</div>
 			<ul class="flex flex-wrap gap-2">
-				{#each technologies.slice(0, 12) as tech (tech.name)}
+				{#each technologies as tech (tech.name)}
 					<li
 						class="flex items-center gap-1.5 rounded-md border-2 border-edge-ink bg-card px-2 py-1 text-[10px] font-bold tracking-widest text-ink uppercase"
 					>
@@ -214,148 +173,20 @@
 					</li>
 				{/each}
 			</ul>
-			<div class="flex flex-col gap-3 border-t-2 border-edge pt-3">
-				<a
-					href="mailto:{EMAIL}"
-					class="flex items-center gap-2 font-bold wrap-anywhere text-ink underline decoration-brand decoration-2 underline-offset-4 transition-colors hover:text-brand"
-				>
-					<i class="fa-regular fa-envelope"></i>{EMAIL}
-				</a>
-				<div class="flex flex-wrap gap-2">
-					{#each socials as s (s.name)}
-						<a
-							href={s.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="tekan flex h-9 w-9 items-center justify-center rounded-md bg-card text-ink hover:bg-pop hover:text-on-pop"
-							aria-label={s.name}><i class="fa-brands {s.icon}"></i></a
-						>
-					{/each}
-				</div>
-			</div>
+			<a
+				href="mailto:{EMAIL}"
+				class="flex items-center gap-2 border-t-2 border-edge pt-3 font-bold wrap-anywhere text-ink underline decoration-brand decoration-2 underline-offset-4 transition-colors hover:text-brand"
+			>
+				<i class="fa-regular fa-envelope"></i>{EMAIL}
+			</a>
 		</div>
-	</div>
-
-	<div id="technologies" class="mb-32" use:intersect>
-		<h2 class="narasi mb-10">Stack / Tools</h2>
-		<ul class="flex flex-wrap gap-3">
-			{#each technologies as tech (tech.name)}
-				<li
-					class="flex items-center gap-2 rounded-md border-2 border-edge-ink bg-card px-3 py-1.5 shadow-[2px_2px_0_var(--shadow)] odd:-rotate-1 even:rotate-1"
-				>
-					<img src={tech.icon} alt="" class="h-4 w-4" />
-					<span class="text-[11px] font-bold tracking-widest text-ink uppercase">{tech.name}</span>
-				</li>
-			{/each}
-		</ul>
 	</div>
 
 	<div id="experience" class="mb-32" use:intersect>
 		<h2 class="font-display plates mb-8 text-6xl leading-[0.95] text-ink lg:text-7xl">
 			Experience
 		</h2>
-		<div class="mb-8 flex flex-wrap gap-3">
-			{#each tabs as tab (tab.value)}
-				<button
-					class="tekan rounded-md px-4 py-1.5 font-display text-xl {activeTab === tab.value
-						? 'bg-pop text-on-pop'
-						: 'bg-card text-ink hover:bg-pop hover:text-on-pop'}"
-					aria-pressed={activeTab === tab.value}
-					onclick={() => (activeTab = tab.value)}
-				>
-					{tab.label}
-				</button>
-			{/each}
-		</div>
-
-		<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-			{#if activeTab === 'work'}
-				{#each showWorkExperiences as exp, i (i)}
-					<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
-						<span
-							class="text-[10px] font-bold uppercase {textColors[
-								i % textColors.length
-							]} tracking-widest">{exp.date}</span
-						>
-						<h3 class="font-display text-2xl text-ink">{exp.title}</h3>
-						<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-							{exp.name}
-						</p>
-						<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{exp.description}</p>
-					</div>
-				{/each}
-			{:else if activeTab === 'education'}
-				{#each showEducationExperiences as edu, i (i)}
-					<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
-						<span class="text-[10px] font-bold tracking-widest text-ink-faint uppercase"
-							>{edu.date}</span
-						>
-						<h3 class="font-display text-2xl text-ink">{edu.name}</h3>
-						<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{edu.description}</p>
-					</div>
-				{/each}
-			{:else if activeTab === 'organization'}
-				{#each showOrganizationExperiences as org, i (i)}
-					<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
-						<span
-							class="text-[10px] font-bold uppercase {textColors[
-								i % textColors.length
-							]} tracking-widest">{org.date}</span
-						>
-						<h3 class="font-display text-2xl text-ink">{org.title}</h3>
-						<p class="text-sm font-bold tracking-tight text-ink-faint uppercase">
-							{org.name}
-						</p>
-						<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{org.description}</p>
-					</div>
-				{/each}
-			{:else if activeTab === 'achievement'}
-				{#each showAchievements as ach, i (i)}
-					<div class="komik flex flex-col gap-2 rounded-md bg-card p-6">
-						<span
-							class="text-[10px] font-bold uppercase {textColors[
-								i % textColors.length
-							]} tracking-widest">{ach.date}</span
-						>
-						<h3 class="judul-komik font-display text-3xl">{ach.title}</h3>
-						<p class="text-sm font-bold tracking-widest text-brand uppercase">
-							{ach.name}
-						</p>
-						<p class="mt-1 max-w-2xl leading-relaxed text-ink-muted">{ach.description}</p>
-					</div>
-				{/each}
-			{/if}
-		</div>
-
-		{#if activeTab === 'work' && workExperiences.length > 3}
-			<button
-				onclick={toggleShowMoreWork}
-				class="tekan mt-6 w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-			>
-				{isShowMoreWork ? '[-] Show Less' : '[+] Show More'}
-			</button>
-		{:else if activeTab === 'education' && educationExperiences.length > 3}
-			<button
-				onclick={toggleShowMoreEdu}
-				class="tekan mt-6 w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-			>
-				{isShowMoreEdu ? '[-] Show Less' : '[+] Show More'}
-			</button>
-		{:else if activeTab === 'organization' && organizationExperiences.length > 3}
-			<button
-				onclick={toggleShowMoreOrg}
-				class="tekan mt-6 w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-			>
-				{isShowMoreOrg ? '[-] Show Less' : '[+] Show More'}
-			</button>
-		{:else if activeTab === 'achievement' && achievementItems.length > 3}
-			<button
-				onclick={toggleShowMoreAch}
-				class="tekan mt-6 w-fit rounded-md bg-card px-3 py-1.5 text-[11px] font-bold tracking-[0.2em] text-ink uppercase hover:bg-pop hover:text-on-pop"
-			>
-				{isShowMoreAch ? '[-] Show Less' : '[+] Show More'}
-			</button>
-		{/if}
+		<ExperienceTabs experiences={data.experiences} class="grid grid-cols-1 gap-6 lg:grid-cols-3" />
 	</div>
 
 	<div

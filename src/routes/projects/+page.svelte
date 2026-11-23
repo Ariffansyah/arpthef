@@ -13,14 +13,14 @@
 	/>
 	<meta name="author" content="mohammad ariffansyah" />
 	<meta property="og:title" content="projects - arp" />
-	<meta property="og:image" content="https://arpthef.com/logo.webp" />
+	<meta property="og:image" content="https://arpthef.my.id/Logo.webp" />
 	<meta property="og:description" content="explore some of my projects and works." />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://arpthef.com/projects" />
+	<meta property="og:url" content="https://arpthef.my.id/projects" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="projects - arp" />
 	<meta name="twitter:description" content="explore some of my projects and works." />
-	<link rel="canonical" href="https://arpthef.com/projects" />
+	<link rel="canonical" href="https://arpthef.my.id/projects" />
 </svelte:head>
 
 <section class="relative z-10 mx-auto w-full max-w-7xl px-6 py-12 lg:px-10 lg:py-24">
